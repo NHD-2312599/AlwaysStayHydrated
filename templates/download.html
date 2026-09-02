@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+  <link rel="stylesheet" href="/static/css/mobile-responsive.css">
+  <title>Tải xuống – Always Stay Hydrated</title>
+
+  <style>
+    @font-face { font-family:'NeueHaasGroteskDisplay'; src:url('/static/fonts/SVN-NeueHaasGroteskDisplay-Thin.ttf') format('truetype'); font-weight:100; }
+    @font-face { font-family:'NeueHaasGroteskDisplay'; src:url('/static/fonts/SVN-NeueHaasGroteskDisplay-ExtraLight.ttf') format('truetype'); font-weight:200; }
+    @font-face { font-family:'NeueHaasGroteskDisplay'; src:url('/static/fonts/SVN-NeueHaasGroteskDisplay-Light.ttf') format('truetype'); font-weight:300; }
+    @font-face { font-family:'NeueHaasGroteskDisplay'; src:url('/static/fonts/SVN-NeueHaasGroteskDisplay-SemiLight.ttf') format('truetype'); font-weight:400; }
+    @font-face { font-family:'NeueHaasGroteskDisplay'; src:url('/static/fonts/SVN-NeueHaasGroteskDisplay-Regular.ttf') format('truetype'); font-weight:500; }
+    @font-face { font-family:'NeueHaasGroteskDisplay'; src:url('/static/fonts/SVN-NeueHaasGroteskDisplay-Medium.ttf') format('truetype'); font-weight:600; }
+    @font-face { font-family:'NeueHaasGroteskDisplay'; src:url('/static/fonts/SVN-NeueHaasGroteskDisplay-Bold.ttf') format('truetype'); font-weight:700; }
+    @font-face { font-family:'NeueHaasGroteskDisplay'; src:url('/static/fonts/SVN-NeueHaasGroteskDisplay-Black.ttf') format('truetype'); font-weight:900; }
+    @font-face { font-family:'Recoleta'; src:url('/static/fonts/SVN-Recoleta-Regular.ttf') format('truetype'); font-weight:400; }
+    @font-face { font-family:'Recoleta'; src:url('/static/fonts/SVN-Recoleta-Medium.ttf') format('truetype'); font-weight:500; }
+    @font-face { font-family:'Recoleta'; src:url('/static/fonts/SVN-Recoleta-SemiBold.ttf') format('truetype'); font-weight:600; }
+    @font-face { font-family:'Recoleta'; src:url('/static/fonts/SVN-Recoleta-Bold.ttf') format('truetype'); font-weight:700; }
+
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+    :root {
+      --green:        #2D6A4F;
+      --green-dark:   #1B4332;
+      --green-deeper: #0D2B1E;
+      --cream:        #F7F3E8;
+      --cream-dark:   #EDE8D8;
+      --text:         #0D2B1E;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'NeueHaasGroteskDisplay', Arial, Helvetica, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 100px;
+      background: var(--cream);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(56,102,65,0.10);
+    }
+    .nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .nav-logo img { height:40px; width:auto; object-fit:contain; }
+    .nav-links { display:flex; gap:40px; list-style:none; }
+    .nav-links a { text-decoration:none; color:var(--text); font-size:15px; font-weight:500; transition:color .18s; }
+    .nav-links a:hover, .nav-links a.active { color:var(--green); font-weight:700; }
+    .btn-login {
+      background: var(--green-dark); color:#fff; border:none; border-radius:8px;
+      padding:10px 22px; font-family:inherit; font-size:14px; font-weight:600;
+      cursor:pointer; text-decoration:none; transition:background .18s;
+    }
+    .btn-login:hover { background:var(--green); }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      text-align: center;
+      padding: 56px 24px 40px;
+    }
+    .page-header h1 {
+      font-family: 'Recoleta', serif;
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 700;
+      color: var(--green-dark);
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .page-header p {
+      font-size: 18px;
+      color: var(--text);
+      opacity: .75;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* ── DOWNLOAD CARD ── */
+    .download-section {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .download-card {
+      background: #fff;
+      border: 1.5px solid rgba(56,102,65,0.15);
+      border-radius: 20px;
+      padding: 36px 36px 32px;
+      box-shadow: 0 8px 32px rgba(56,102,65,0.08);
+    }
+
+    /* App info row */
+    .app-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(56,102,65,0.10);
+    }
+    .app-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: 0 4px 16px rgba(56,102,65,0.18);
+    }
+    .app-icon img { width:100%; height:100%; object-fit:cover; }
+    .app-meta { flex: 1; }
+    .app-meta h2 {
+      font-family: 'Recoleta', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-bottom: 3px;
+    }
+    .app-meta .app-version {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      opacity: .6;
+    }
+    .platform-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(56,102,65,0.08);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--green-dark);
+      letter-spacing: .3px;
+    }
+    .platform-badge svg { width:14px; height:14px; }
+
+    /* Download button */
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      background: var(--green-dark);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 16px 28px;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .18s, transform .12s;
+      margin-bottom: 16px;
+    }
+    .btn-download:hover {
+      background: var(--green);
+      transform: translateY(-1px);
+    }
+    .btn-download:active { transform: translateY(0); }
+    .btn-download svg { width:20px; height:20px; flex-shrink:0; }
+
+    .download-note {
+      text-align: center;
+      font-size: 12.5px;
+      color: var(--text);
+      opacity: .55;
+      margin-bottom: 28px;
+    }
+
+    /* File info row */
+    .file-info {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .info-chip {
+      flex: 1;
+      background: rgba(56,102,65,0.06);
+      border-radius: 10px;
+      padding: 12px 14px;
+      text-align: center;
+    }
+    .info-chip .chip-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text);
+      opacity: .5;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .info-chip .chip-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--green-dark);
+    }
+
+    /* Install steps */
+    .install-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      opacity: .5;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .steps { display:flex; flex-direction:column; gap:10px; }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--green-dark);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .step-text {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.5;
+      padding-top: 3px;
+    }
+    .step-text strong { color: var(--green-dark); }
+
+    /* ── SECURITY WARNING NOTICE ── */
+    .warning-block {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(56,102,65,0.10);
+    }
+    .warning-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #fff7e6;
+      border: 1px solid #f3c969;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+    .warning-banner .warn-icon {
+      width: 22px; height: 22px; flex-shrink: 0; margin-top: 1px;
+    }
+    .warning-banner p {
+      font-size: 13.5px;
+      color: #7a5b00;
+      line-height: 1.5;
+    }
+    .warning-banner p strong { color: #5c4400; }
+
+    .warning-screen {
+      background: rgba(56,102,65,0.04);
+      border: 1px solid rgba(56,102,65,0.12);
+      border-radius: 14px;
+      padding: 18px 18px 16px;
+      margin-bottom: 14px;
+    }
+    .warning-screen:last-child { margin-bottom: 0; }
+    .warning-screen-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Recoleta', serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--green-dark);
+      margin-bottom: 12px;
+    }
+    .warning-screen-title .badge-num {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--green-dark);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      display:flex; align-items:center; justify-content:center;
+      font-family: 'NeueHaasGroteskDisplay', sans-serif;
+      flex-shrink: 0;
+    }
+    .warning-mini-steps { display:flex; flex-direction:column; gap:8px; padding-left: 30px; }
+    .warning-mini-step {
+      font-size: 13.5px;
+      color: var(--text);
+      line-height: 1.55;
+      position: relative;
+      padding-left: 18px;
+    }
+    .warning-mini-step::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--green-dark);
+      font-weight: 700;
+    }
+    .warning-mini-step strong { color: var(--green-dark); }
+    .warning-mini-step .btn-tag {
+      display:inline-block;
+      background: var(--green-dark);
+      color:#fff;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 6px;
+      margin: 0 2px;
+    }
+    .warning-mini-step .btn-tag.outline {
+      background: transparent;
+      border: 1.4px solid var(--green-dark);
+      color: var(--green-dark);
+    }
+    .warning-disclaimer {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 18px;
+      padding: 12px 14px;
+      background: rgba(56,102,65,0.06);
+      border-radius: 10px;
+    }
+    .warning-disclaimer svg { width:16px; height:16px; flex-shrink:0; margin-top:2px; }
+    .warning-disclaimer p {
+      font-size: 12px;
+      color: var(--text);
+      opacity: .75;
+      line-height: 1.5;
+    }
+
+    /* ── DEVICE GUIDE SECTION ── */
+    .device-block {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(56,102,65,0.10);
+    }
+    .device-intro {
+      font-size: 13.5px;
+      color: var(--text);
+      opacity: .75;
+      margin-bottom: 14px;
+      line-height: 1.55;
+    }
+    .device-accordion { display:flex; flex-direction:column; gap:8px; }
+    .device-item {
+      border: 1px solid rgba(56,102,65,0.14);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .device-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 13px 16px;
+      background: rgba(56,102,65,0.04);
+      cursor: pointer;
+      user-select: none;
+      transition: background .15s;
+    }
+    .device-header:hover { background: rgba(56,102,65,0.09); }
+    .device-header-left { display:flex; align-items:center; gap:10px; }
+    .device-badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .4px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      background: var(--green-dark);
+      color: #fff;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .device-badge.general { background: #5c8a6b; }
+    .device-badge.xiaomi  { background: #e05a00; }
+    .device-badge.samsung { background: #1b4bb0; }
+    .device-badge.oppo    { background: #1e6e4f; }
+    .device-header-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--green-dark);
+    }
+    .device-chevron {
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+      color: var(--green-dark);
+      transition: transform .22s ease;
+    }
+    .device-item.open .device-chevron { transform: rotate(180deg); }
+    .device-body {
+      display: none;
+      padding: 14px 18px 16px;
+      border-top: 1px solid rgba(56,102,65,0.10);
+    }
+    .device-item.open .device-body { display: block; }
+    .device-steps { display:flex; flex-direction:column; gap:7px; }
+    .device-step {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.55;
+      padding-left: 18px;
+      position: relative;
+    }
+    .device-step::before {
+      content: "→";
+      position: absolute; left: 0;
+      color: var(--green-dark);
+      font-weight: 700;
+    }
+    .device-step strong { color: var(--green-dark); }
+    .device-step .path {
+      font-size: 11.5px;
+      background: rgba(56,102,65,0.08);
+      border: 1px solid rgba(56,102,65,0.18);
+      border-radius: 5px;
+      padding: 2px 7px;
+      font-family: monospace;
+      color: var(--green-dark);
+      white-space: nowrap;
+    }
+    .device-note {
+      margin-top: 10px;
+      padding: 9px 12px;
+      background: #fff7e6;
+      border: 1px solid #f3c969;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #7a5b00;
+      line-height: 1.5;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--green-dark);
+      color: #fff;
+      padding: 56px 80px 32px;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 48px;
+      flex-wrap: wrap;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .footer-logo-col { display:flex; flex-direction:column; align-items:flex-start; gap:12px; }
+    .footer-col h4 { font-family:'Recoleta',serif; font-size:30px; font-weight:700; margin-bottom:14px; color:#fff; }
+    .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:8px; }
+    .footer-col ul li a { text-decoration:none; color:rgba(255,255,255,.75); font-size:14px; font-weight:400; transition:color .18s; }
+    .footer-col ul li a:hover { color:#fff; }
+    .footer-copy { text-align:center; padding-top:36px; font-size:12.5px; color:rgba(255,255,255,.5); max-width:1100px; margin:0 auto; }
+
+    /* ── TOAST ── */
+    .toast {
+      position:fixed; left:50%; bottom:36px;
+      transform:translateX(-50%) translateY(20px);
+      background:var(--green-dark); color:#fff;
+      padding:14px 24px; border-radius:10px;
+      font-size:14.5px; font-weight:500;
+      box-shadow:0 12px 32px rgba(0,0,0,.22);
+      display:flex; align-items:center; gap:10px;
+      z-index:1000; opacity:0; pointer-events:none;
+      transition:opacity .25s ease, transform .25s ease;
+      max-width:90vw; text-align:center;
+    }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 780px) {
+      nav { padding:12px 20px; }
+      .nav-links { display:none; }
+      footer { padding:40px 24px 28px; }
+      .footer-inner { flex-direction:column; gap:28px; }
+      .download-card { padding:24px 20px 22px; }
+      .file-info { flex-wrap:wrap; }
+      .info-chip { min-width:calc(50% - 6px); }
+      .warning-mini-steps { padding-left: 24px; }
+      .warning-screen { padding: 16px 14px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a class="nav-logo" href="{{ url_for('landing') }}">
+      <img src="{{ url_for('static', filename='pictures/Logo2.png') }}" alt="logo" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="{{ url_for('download_page') }}" class="active">Tải xuống</a></li>
+    </ul>
+    <a href="{{ url_for('login') }}" class="btn-login">Đăng nhập</a>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <h1>Tải về cho Android</h1>
+    <p>Cài đặt ứng dụng trên điện thoại của bạn và học Khải mọi lúc, mọi nơi.</p>
+  </div>
+
+  <!-- DOWNLOAD CARD -->
+  <section class="download-section">
+    <div class="download-card">
+
+      <!-- App info -->
+      <div class="app-info">
+        <div class="app-icon">
+          <img src="{{ url_for('static', filename='pictures/Logo_Mobile.png') }}" alt="App icon" />
+        </div>
+        <div class="app-meta">
+          <h2>Always Stay Hydrated</h2>
+          <div class="app-version">Phiên bản Demo thử nghiệm 0.0.1</div>
+        </div>
+        <div class="platform-badge">
+          <!-- Android icon -->
+          <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.523 15.341a.83.83 0 1 1-.001 1.66.83.83 0 0 1 0-1.66m-11.046 0a.83.83 0 1 1-.001 1.66.83.83 0 0 1 0-1.66M17.7 9H6.3c-.165 0-.3.134-.3.3v7.4c0 .166.135.3.3.3h.9v2.7a.9.9 0 0 0 1.8 0V17h6v2.7a.9.9 0 0 0 1.8 0V17h.9c.165 0 .3-.134.3-.3V9.3c0-.166-.135-.3-.3-.3M8.1 3.532l-1.17-2.028a.225.225 0 0 0-.39.224l1.185 2.054A7.166 7.166 0 0 0 4.8 7.5h14.4a7.166 7.166 0 0 0-2.925-3.718l1.185-2.054a.225.225 0 0 0-.39-.224L15.9 3.532A7.1 7.1 0 0 0 12 2.5c-1.39 0-2.69.4-3.9 1.032"/>
+          </svg>
+          Android
+        </div>
+      </div>
+
+      <!-- Download button -->
+      <a href="{{ url_for('static', filename='AlwaysStayHydrated_Demo.apk') }}"
+         class="btn-download"
+         download>
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 3v13m0 0-4-4m4 4 4-4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4 20h16" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+        Tải file APK
+      </a>
+      <p class="download-note">File APK · Android 8.0 trở lên</p>
+
+      <!-- File info chips -->
+      <div class="file-info">
+        <div class="info-chip">
+          <div class="chip-label">Phiên bản</div>
+          <div class="chip-value">0.0.1</div>
+        </div>
+        <div class="info-chip">
+          <div class="chip-label">Cập nhật</div>
+          <div class="chip-value">06/2026</div>
+        </div>
+        <div class="info-chip">
+          <div class="chip-label">Yêu cầu</div>
+          <div class="chip-value">Android 8.0+</div>
+        </div>
+      </div>
+
+      <!-- Install steps -->
+      <div class="install-title">Hướng dẫn cài đặt</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">Nhấn <strong>Tải file APK</strong> ở trên để tải về điện thoại.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">Mở file APK vừa tải và nhấn <strong>Cài đặt</strong>.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">Mở ứng dụng, đăng nhập và bắt đầu học! 🎉</div>
+        </div>
+      </div>
+
+      <!-- Security warning guide -->
+      <div class="warning-block">
+        <div class="install-title">Nếu điện thoại hiện cảnh báo</div>
+
+        <div class="warning-banner">
+          <svg class="warn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2 1 21h22L12 2Z" fill="#f3c969"/>
+            <path d="M12 9.5v4.5" stroke="#5c4400" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="12" cy="17" r="1" fill="#5c4400"/>
+          </svg>
+          <p><strong>Đây là cảnh báo bình thường.</strong> Vì ứng dụng được tải trực tiếp (không qua Google Play Store), điện thoại sẽ hiển thị 1–2 màn hình cảnh báo dưới đây trong quá trình cài đặt. Bạn chỉ cần làm theo hướng dẫn để tiếp tục.</p>
+        </div>
+
+        <!-- Screen 1: Unknown source -->
+        <div class="warning-screen">
+          <div class="warning-screen-title">
+            <span class="badge-num">1</span>
+            Màn hình "Nguy hiểm" / Cài đặt từ nguồn không xác định
+          </div>
+          <div class="warning-mini-steps">
+            <div class="warning-mini-step">Tick vào ô <strong>"Tôi nhận thức được rủi ro và tự nguyện gánh chịu mọi hậu quả có thể xảy ra."</strong></div>
+            <div class="warning-mini-step">Nhấn nút <span class="btn-tag">OK</span> để tiếp tục.</div>
+          </div>
+        </div>
+
+        <!-- Screen 2: Play Protect -->
+        <div class="warning-screen">
+          <div class="warning-screen-title">
+            <span class="badge-num">2</span>
+            Màn hình Google Play Protect
+          </div>
+          <div class="warning-mini-steps">
+            <div class="warning-mini-step">Hệ thống sẽ hiện thông báo <strong>"Đã chặn ứng dụng để bảo vệ thiết bị của bạn"</strong> vì đây là ứng dụng demo, chưa phổ biến trên Play Protect.</div>
+            <div class="warning-mini-step">Nhấn vào dòng chữ <span class="btn-tag outline">Tiếp tục cài đặt</span> (nằm phía trên nút "Tôi hiểu") — <strong>không</strong> nhấn nút "Tôi hiểu" nếu bạn vẫn muốn cài app.</div>
+            <div class="warning-mini-step">App sẽ tiếp tục quá trình cài đặt như bình thường.</div>
+          </div>
+        </div>
+
+        <div class="warning-disclaimer">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="#386641" stroke-width="1.6"/>
+            <path d="M12 8v.01M12 11v5" stroke="#386641" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <p>Đây là dự án<strong> sẽ không đăng ký với Google Play Store vì lý do bảo an.</strong> Ứng dụng vẫn an toàn để cài đặt — các cảnh báo trên áp dụng cho mọi APK tải ngoài store, không riêng gì ứng dụng Always Stay Hydrated.</p>
+        </div>
+      </div>
+
+      <!-- Device-specific installation guide -->
+      <div class="device-block">
+        <div class="install-title">Nếu điện thoại vẫn không cho cài đặt</div>
+        <p class="device-intro">Một số dòng máy có thêm lớp bảo mật riêng. Chọn hãng máy của bạn bên dưới để xem hướng dẫn chi tiết.</p>
+
+        <div class="device-accordion">
+
+          <!-- General Android -->
+          <div class="device-item" id="dev-general">
+            <div class="device-header" onclick="toggleDevice('dev-general')">
+              <div class="device-header-left">
+                <span class="device-badge general">Mọi máy</span>
+                <span class="device-header-title">Cài đặt chung Android</span>
+              </div>
+              <svg class="device-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="device-body">
+              <div class="device-steps">
+                <div class="device-step">Vào <span class="path">Cài đặt → Ứng dụng → Quyền truy cập đặc biệt → Cài ứng dụng không rõ nguồn gốc</span></div>
+                <div class="device-step">Chọn <strong>trình duyệt hoặc ứng dụng quản lý file</strong> bạn dùng để tải APK (Chrome, Files, v.v.)</div>
+                <div class="device-step">Bật <strong>"Cho phép từ nguồn này"</strong> → quay lại và mở lại file APK.</div>
+              </div>
+              <div class="device-note">💡 Nếu bật quyền này trước khi tải, máy sẽ không hỏi lại trong các lần cài sau.</div>
+            </div>
+          </div>
+
+          <!-- Play Protect -->
+          <div class="device-item" id="dev-playprotect">
+            <div class="device-header" onclick="toggleDevice('dev-playprotect')">
+              <div class="device-header-left">
+                <span class="device-badge general">Mọi máy</span>
+                <span class="device-header-title">Tắt / giảm Google Play Protect</span>
+              </div>
+              <svg class="device-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="device-body">
+              <div class="device-steps">
+                <div class="device-step">Mở <strong>Google Play Store</strong> → nhấn <strong>ảnh đại diện</strong> góc trên phải → chọn <strong>Play Protect</strong></div>
+                <div class="device-step">Nhấn biểu tượng <strong>⚙️ (Cài đặt)</strong> góc trên phải</div>
+                <div class="device-step">Tắt tuỳ chọn <strong>"Quét ứng dụng bằng Play Protect"</strong></div>
+              </div>
+              <div class="device-note">⚠️ Màn hình chặn lúc cài đôi khi vẫn xuất hiện 1 lần sau khi tắt Play Protect — vẫn cần nhấn <strong>"Tiếp tục cài đặt"</strong> như hướng dẫn ở trên.</div>
+            </div>
+          </div>
+
+          <!-- Xiaomi -->
+          <div class="device-item" id="dev-xiaomi">
+            <div class="device-header" onclick="toggleDevice('dev-xiaomi')">
+              <div class="device-header-left">
+                <span class="device-badge xiaomi">Xiaomi</span>
+                <span class="device-header-title">Xiaomi / Redmi / POCO (MIUI)</span>
+              </div>
+              <svg class="device-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="device-body">
+              <div class="device-steps">
+                <div class="device-step">Vào <span class="path">Cài đặt → Ứng dụng → Quyền → Cài đặt ứng dụng không rõ nguồn gốc</span> → bật quyền cho trình duyệt/file manager.</div>
+                <div class="device-step">Nếu vẫn bị chặn: vào <span class="path">Cài đặt → Cài đặt thêm → Tuỳ chọn nhà phát triển</span> → bật <strong>"Cài qua USB"</strong> và tắt <strong>"Tối ưu hoá MIUI"</strong>.</div>
+                <div class="device-step">Một số máy yêu cầu <strong>đăng nhập Mi Account</strong> và xác minh số điện thoại trước khi cho cài app ngoài Store.</div>
+              </div>
+              <div class="device-note">💡 Chưa bật Developer options? Vào <span class="path">Cài đặt → Giới thiệu điện thoại → Phiên bản MIUI</span> và nhấn liên tục <strong>7 lần</strong> để mở khoá.</div>
+            </div>
+          </div>
+
+          <!-- Samsung -->
+          <div class="device-item" id="dev-samsung">
+            <div class="device-header" onclick="toggleDevice('dev-samsung')">
+              <div class="device-header-left">
+                <span class="device-badge samsung">Samsung</span>
+                <span class="device-header-title">Samsung (One UI)</span>
+              </div>
+              <svg class="device-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="device-body">
+              <div class="device-steps">
+                <div class="device-step">Vào <span class="path">Cài đặt → Bảo mật và quyền riêng tư → Cài ứng dụng không rõ nguồn gốc</span></div>
+                <div class="device-step">Chọn ứng dụng bạn dùng để tải file (Chrome, My Files...) → bật <strong>"Cho phép"</strong></div>
+                <div class="device-step">Quay lại mở file APK và nhấn <strong>Cài đặt</strong> như bình thường.</div>
+              </div>
+              <div class="device-note">✅ Samsung thường ít chặn gắt hơn các hãng khác — chỉ cần bật quyền một lần là đủ.</div>
+            </div>
+          </div>
+
+          <!-- Oppo / Vivo -->
+          <div class="device-item" id="dev-oppo">
+            <div class="device-header" onclick="toggleDevice('dev-oppo')">
+              <div class="device-header-left">
+                <span class="device-badge oppo">Oppo / Vivo</span>
+                <span class="device-header-title">Oppo / Vivo (ColorOS / FuntouchOS)</span>
+              </div>
+              <svg class="device-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="device-body">
+              <div class="device-steps">
+                <div class="device-step">Vào <span class="path">Cài đặt → Bảo mật → Quyền riêng tư → Cài đặt từ nguồn không xác định</span> → bật cho ứng dụng tải file.</div>
+                <div class="device-step">Nếu vẫn bị chặn: tìm phần <strong>"Phone Manager"</strong> hoặc <strong>"Bảo vệ hệ thống"</strong> trong cài đặt → tắt tính năng quét/chặn ứng dụng bên ngoài.</div>
+              </div>
+              <div class="device-note">💡 ColorOS/FuntouchOS đôi khi có thêm mục <strong>"Purity / Security Protection"</strong> riêng — nếu máy vẫn chặn, thử tìm và tắt tính năng đó trong Cài đặt bảo mật.</div>
+            </div>
+          </div>
+
+        </div><!-- end device-accordion -->
+      </div><!-- end device-block -->
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo-col">
+        <img src="{{ url_for('static', filename='pictures/Logo.png') }}"
+             alt="Always Stay Hydrated Logo" width="150" />
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          <li><a href="{{ url_for('index') }}#about">About</a></li>
+          <li><a href="{{ url_for('index') }}#feedback">Feedback</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#">Features</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="{{ url_for('download_page') }}">Tải xuống</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-copy">©2026 AlwaysStayHydrated. All right reserved</div>
+  </footer>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <svg style="width:18px;height:18px;flex-shrink:0" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="2"/>
+      <path d="M8 12.5l2.5 2.5L16 9.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>Đang tải xuống...</span>
+  </div>
+
+  <script>
+    // Show toast on download click
+    document.querySelector('.btn-download').addEventListener('click', () => {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    });
+
+    // Device accordion toggle
+    function toggleDevice(id) {
+      const item = document.getElementById(id);
+      item.classList.toggle('open');
+    }
+  </script>
+
+</body>
+</html>

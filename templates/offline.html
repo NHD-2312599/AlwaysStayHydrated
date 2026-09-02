@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Offline — Always Stay Hydrated</title>
+<link rel="stylesheet" href="/static/css/theme.css">
+<style>
+  * { margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+  }
+  .offline-card {
+    max-width: 380px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 36px 28px;
+  }
+  .offline-icon {
+    width: 64px; height: 64px;
+    margin: 0 auto 18px;
+    border-radius: 18px;
+    background: var(--water-lt);
+    color: var(--water);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+  }
+  h1 { font-size: 1.25rem; font-weight: 800; color: var(--text-pri); margin-bottom: 8px; }
+  p { font-size: 0.92rem; color: var(--text-sec); line-height: 1.5; }
+  .retry-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 24px;
+    border-radius: 99px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .retry-btn:hover { background: var(--accent-dk); }
+</style>
+</head>
+<body>
+  <div class="offline-card">
+    <div class="offline-icon">📡</div>
+    <h1>Không có kết nối Internet</h1>
+    <p>Dữ liệu đã tải trước vẫn có thể sử dụng. Hãy kiểm tra lại kết nối mạng của bạn.</p>
+    <button class="retry-btn" onclick="window.location.reload()">Thử lại</button>
+  </div>
+</body>
+</html>

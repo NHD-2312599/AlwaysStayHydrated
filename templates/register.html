@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#386641">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Đăng ký — Always Stay Hydrated</title>
+  <link rel="preload" href="{{ url_for('static', filename='fonts/BDLifelessGrotesk-Regular.woff2') }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ url_for('static', filename='fonts/BDLifelessGrotesk-Bold.woff2') }}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+  <style>
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Thin.ttf') format('truetype');
+      font-weight: 100;
+    }
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-ExtraLight.ttf') format('truetype');
+      font-weight: 200;
+    }
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Light.ttf') format('truetype');
+      font-weight: 300;
+    }
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-SemiLight.ttf') format('truetype');
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Regular.ttf') format('truetype');
+      font-weight: 500;
+    }
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Medium.ttf') format('truetype');
+      font-weight: 600;
+    }
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Bold.ttf') format('truetype');
+      font-weight: 700;
+    }
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Black.ttf') format('truetype');
+      font-weight: 900;
+    }
+
+    :root {
+      --bg: #F7F3E8;
+      --green-deep: #1B4332;
+      --green-dark: #0D2B1E;
+      --green-mid: #2D6A4F;
+      --green-light: #D8F3DC;
+      --green-glow: #52b788;
+      --cream: #F7F3E8;
+      --white: #ffffff;
+      --error: #c0392b;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'NeueHaasGroteskDisplay', Arial, Helvetica, sans-serif;
+      background: var(--cream);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    /* ── Outer card ── */
+    .wrap {
+      width: 960px;
+      min-height: 580px;
+      border-radius: 24px;
+      display: flex;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,105,62,0.18), 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    /* ── Hero side ── */
+    .hero {
+      flex: 1;
+      background: var(--green-deep);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 56px 52px;
+      overflow: hidden;
+    }
+
+    /* Decorative water circles */
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(110,231,160,0.18);
+      top: -80px; left: -80px;
+      animation: pulse 6s ease-in-out infinite;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(110,231,160,0.12);
+      bottom: 40px; right: -60px;
+      animation: pulse 8s ease-in-out infinite 1s;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+
+    /* Wave SVG at bottom of hero */
+    .wave-wrap {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 120px;
+      overflow: hidden;
+    }
+    .wave-wrap svg {
+      width: 200%;
+      height: 100%;
+      animation: wave-move 7s linear infinite;
+    }
+    @keyframes wave-move {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Drop icon */
+    .drop-icon {
+      width: 44px; height: 44px;
+      margin-bottom: 24px;
+      position: relative; z-index: 1;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--green-glow);
+      margin-bottom: 12px;
+      position: relative; z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: 38px;
+      font-weight: 900;
+      color: var(--cream);
+      line-height: 1.1;
+      margin-bottom: 16px;
+      position: relative; z-index: 1;
+    }
+
+    .hero h1 span {
+      color: var(--green-glow);
+    }
+
+    .hero-sub {
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(254,250,224,0.72);
+      line-height: 1.65;
+      max-width: 280px;
+      position: relative; z-index: 1;
+    }
+
+    /* Stat pills */
+    .pill-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+      position: relative; z-index: 1;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(110,231,160,0.12);
+      border: 1px solid rgba(110,231,160,0.25);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 12px;
+      color: var(--green-glow);
+      font-weight: 600;
+    }
+    .pill-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green-glow);
+    }
+
+    /* ── Form panel ── */
+    .panel-wrap {
+      width: 420px;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 36px;
+    }
+
+    .panel { width: 100%; }
+
+    .form-header {
+      margin-bottom: 28px;
+    }
+    .form-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--green-dark);
+      line-height: 1.15;
+      margin-bottom: 6px;
+    }
+    .form-subtitle {
+      font-size: 13px;
+      color: var(--green-mid);
+      font-weight: 400;
+    }
+
+    /* Fields */
+    .field {
+      margin-bottom: 14px;
+    }
+    label {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--green-dark);
+      margin-bottom: 6px;
+    }
+    .input-wrap {
+      position: relative;
+    }
+    .input-wrap svg {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--green-light);
+      pointer-events: none;
+      transition: color 0.2s;
+    }
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 11px 14px 11px 38px;
+      border-radius: 10px;
+      border: 1.5px solid #c8f0de;
+      background: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--green-dark);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input[type="text"]::placeholder,
+    input[type="password"]::placeholder {
+      color: #b0c9bc;
+      font-weight: 400;
+    }
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: var(--green-deep);
+      box-shadow: 0 0 0 3px rgba(0,105,62,0.10);
+    }
+    input[type="text"]:focus + svg,
+    input[type="password"]:focus + svg {
+      color: var(--green-deep);
+    }
+    /* icon color on focus — sibling trick won't work; use :focus-within on wrap */
+    .input-wrap:focus-within svg {
+      color: var(--green-deep);
+    }
+
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 18px 0;
+      color: #b0c9bc;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #dff0e8;
+    }
+
+    /* Primary button */
+    .primary-btn {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 10px;
+      border: none;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      background: var(--green-deep);
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(0,105,62,0.22);
+    }
+    .primary-btn:hover {
+      background: #005432;
+      box-shadow: 0 6px 22px rgba(0,105,62,0.30);
+    }
+    .primary-btn:active {
+      transform: scale(0.985);
+    }
+
+    /* Ripple */
+    .primary-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.08);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .primary-btn:hover::after { opacity: 1; }
+
+    /* Footer */
+    .footer-links {
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--green-mid);
+      text-align: center;
+    }
+    .footer-links a {
+      color: var(--green-deep);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .footer-links a:hover { text-decoration: underline; }
+
+    /* Error */
+    .msg {
+      background: #fff0ee;
+      border: 1px solid #f5c6c2;
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: var(--error);
+      font-size: 13px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .wrap {
+        width: 100%;
+        min-height: unset;
+        flex-direction: column;
+        border-radius: 20px;
+      }
+      .hero {
+        padding: 36px 28px 100px;
+        align-items: center;
+        text-align: center;
+      }
+      .hero h1 { font-size: 28px; }
+      .hero-sub { max-width: 100%; }
+      .pill-row { justify-content: center; }
+      .drop-icon { margin-left: auto; margin-right: auto; }
+      .panel-wrap {
+        width: 100%;
+        padding: 28px 20px 36px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero::before, .hero::after, .wave-wrap svg { animation: none; }
+    }
+  </style>
+  <link rel="stylesheet" href="/static/css/mobile-responsive.css">
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- ── Hero ── -->
+    <div class="hero">
+      <!-- Drop icon -->
+      <svg class="drop-icon" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22 4C22 4 8 16.5 8 26a14 14 0 0 0 28 0C36 16.5 22 4 22 4Z" fill="rgba(110,231,160,0.22)" stroke="#6EE7A0" stroke-width="1.8"/>
+        <path d="M16 28c0 3.3 2.7 6 6 6" stroke="rgba(110,231,160,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+
+      <div class="hero-eyebrow">Always Stay Hydrated</div>
+      <h1>Ghi khắc Ngôi lời<br>mỗi <span>ngày.</span></h1>
+      <p class="hero-sub">Tham gia cùng chúng mình — luôn đóng ấn Ngôi lời của Chúa trọn vẹn.</p>
+
+
+      <!-- Animated water wave -->
+      <div class="wave-wrap">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,60 C150,100 350,0 600,60 C850,120 1050,20 1200,60 L1200,120 L0,120 Z" fill="rgba(110,231,160,0.10)"/>
+          <path d="M0,80 C200,40 400,110 600,80 C800,50 1000,100 1200,80 L1200,120 L0,120 Z" fill="rgba(110,231,160,0.07)"/>
+          <!-- repeat for seamless loop -->
+          <path d="M1200,60 C1350,100 1550,0 1800,60 C2050,120 2250,20 2400,60 L2400,120 L1200,120 Z" fill="rgba(110,231,160,0.10)"/>
+          <path d="M1200,80 C1400,40 1600,110 1800,80 C2000,50 2200,100 2400,80 L2400,120 L1200,120 Z" fill="rgba(110,231,160,0.07)"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ── Panel ── -->
+    <div class="panel-wrap">
+      <div class="panel">
+        <div class="form-header">
+          <div class="form-title">Tạo tài khoản</div>
+          <div class="form-subtitle">Bắt đầu hành trình cùng ASH</div>
+        </div>
+
+        {% if msg %}<div class="msg">{{ msg }}</div>{% endif %}
+
+        <form method="post" action="/register">
+          <div class="field">
+            <label for="username">Tên đăng nhập</label>
+            <div class="input-wrap">
+              <input id="username" name="username" type="text" placeholder="Tên đăng nhập của bạn..." autocomplete="username" required />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="password">Mật khẩu</label>
+            <div class="input-wrap">
+              <input id="password" name="password" type="password" placeholder="Mật khẩu..." autocomplete="new-password" required />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="password_repeat">Xác nhận mật khẩu</label>
+            <div class="input-wrap">
+              <input id="password_repeat" name="password_repeat" type="password" placeholder="Nhập lại mật khẩu..." required />
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>
+              </svg>
+            </div>
+          </div>
+
+          <div style="height: 4px;"></div>
+
+          <button class="primary-btn" type="submit">Đăng ký ngay</button>
+        </form>
+
+        <div class="footer-links">
+          Bạn đã có tài khoản? <a href="/login">Đăng nhập</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js");
+    }
+  </script>
+  <script src="/static/js/pwa-install.js"></script>
+</body>
+</html>

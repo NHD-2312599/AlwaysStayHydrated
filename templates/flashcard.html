@@ -1,0 +1,2157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#386641">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alway Stay Hydrated — Flashcard</title>
+<link rel="stylesheet" href="/static/css/theme.css">
+<style>
+:root {
+--bg:        #F7F3E8;
+      --bg-grad1:  #F7F3E8;
+      --bg-grad2:  #EDE8D8;
+      --surface:   #FFFFFF;
+      --surface2:  #F0FBF4;
+      --border:    #E4DFC9;
+      --border2:   #386641;
+      --text-pri:  #0D2B1E;
+      --text-sec:  #3D6B55;
+      --text-ter:  #7EA98D;
+      --accent:    #2D6A4F;
+      --accent-lt: #D8F3DC;
+      --accent-dk: #1B4332;
+      --green:     #1A7A4A;
+      --green-lt:  #D8F3DC;
+      --red:       #B91C1C;
+      --red-lt:    #FEE2E2;
+      --amber:     #B45309;
+      --amber-lt:  #FEF3C7;
+      --purple:    #7C3AED;
+      --purple-lt: #EDE9FE;
+      --shadow-sm: 0 1px 2px rgba(13,43,30,0.06);
+      --shadow-md: 0 4px 16px rgba(13,43,30,0.08);
+      --shadow-lg: 0 12px 32px rgba(13,43,30,0.12);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
+  background: linear-gradient(180deg, var(--bg-grad1) 0%, var(--bg-grad2) 100%);
+  min-height: 100vh;
+  color: var(--text-pri);
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER ── */
+.header {
+  width: 100%;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: 0 32px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.brand:hover {
+  opacity: 0.82;
+}
+
+.brand-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--accent);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-pri);
+  letter-spacing: -0.01em;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.user-info {
+  font-size: 0.85rem;
+  color: var(--text-sec);
+  font-weight: 600;
+  padding: 6px 14px;
+  background: var(--surface2);
+  border-radius: 99px;
+}
+
+.logout-btn {
+  font-family: 'NeueHaasGroteskDisplay', inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 9px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-sec);
+  cursor: pointer;
+  transition: all 0.18s;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.logout-btn:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+/* ── TABS ── */
+.tabs-wrapper {
+  position: relative;
+  width: 100%;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.tabs-wrapper::before,
+.tabs-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tabs-wrapper::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--surface), transparent);
+}
+
+.tabs-wrapper::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--surface), transparent);
+}
+
+.tabs {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 32px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  min-height: 40px;
+  border: 1px solid transparent;
+  border-radius: 99px;
+  background: none;
+  font-family: 'NeueHaasGroteskDisplay', inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-sec);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.18s;
+  flex-shrink: 0;
+  letter-spacing: 0.01em;
+}
+
+.tab:hover { color: var(--text-pri); background: var(--bg); }
+.tab.active {
+  color: #fff;
+  background: var(--accent);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-name {
+  white-space: nowrap;
+}
+
+.tab-count {
+  font-size: 0.72rem;
+  background: var(--border);
+  border-radius: 10px;
+  padding: 1px 7px;
+  color: var(--text-ter);
+  font-weight: 600;
+}
+
+.tab.active .tab-count {
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+}
+
+/* ── MAIN LAYOUT ── */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 28px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 32px 48px;
+  width: 100%;
+}
+
+/* ── CARD STUDY ── */
+.study-area { display: flex; flex-direction: column; gap: 20px; }
+
+.progress-row { display: flex; align-items: center; gap: 14px; }
+.progress-bar { flex: 1; height: 8px; background: var(--surface2); border-radius: 99px; overflow: hidden; box-shadow: inset 0 1px 2px rgba(22,41,31,0.08); }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #4F9D6C); border-radius: 99px; transition: width 0.4s; }
+.progress-label { font-size: 0.78rem; color: var(--text-ter); white-space: nowrap; font-weight: 500; }
+.progress-done { font-size: 0.9rem; color: var(--accent); font-weight: 700; }
+
+/* Card flip */
+.card-wrap {
+  perspective: 1400px;
+  cursor: pointer;
+  position: relative;
+}
+
+.card-mask {
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.94);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  z-index: 10;
+  padding: 20px;
+  text-align: center;
+}
+
+.card-mask.hidden {
+  display: none;
+}
+
+.study-panel {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface2);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.study-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.study-text {
+  color: var(--text-sec);
+  line-height: 1.6;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4,0,.2,1);
+}
+
+.card.face2 { transform: rotateY(90deg); }
+.card.face3 { transform: rotateY(180deg); }
+.card.face4 { transform: rotateY(270deg); }
+
+.face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  transition: box-shadow 0.2s;
+}
+
+.card-wrap:hover .face {
+  box-shadow: var(--shadow-lg);
+}
+
+.face-1 { transform: rotateY(0deg); }
+.face-2 { transform: rotateY(-90deg); }
+.face-3 { transform: rotateY(-180deg); }
+.face-4 { transform: rotateY(-270deg); }
+
+.face-indicator {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.fi-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.fi-dot.f1 { background: var(--accent); transform: scale(1.2); }
+.fi-dot.f2 { background: var(--amber); transform: scale(1.2); }
+.fi-dot.f3 { background: var(--red); transform: scale(1.2); }
+.fi-dot.f4 { background: var(--purple); transform: scale(1.2); }
+
+.face-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: var(--text-ter);
+}
+
+.face-1 .face-label { color: var(--accent); }
+.face-2 .face-label { color: var(--amber); }
+.face-3 .face-label { color: var(--red); }
+.face-4 .face-label { color: var(--purple); }
+
+.card-ref {
+  font-size: 0.72rem;
+  color: var(--accent);
+  margin-bottom: 12px;
+  font-weight: 700;
+  background: var(--accent-lt);
+  padding: 3px 10px;
+  border-radius: 6px;
+  display: inline-block;
+  letter-spacing: 0.03em;
+}
+
+.card-title {
+  font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--text-pri);
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 3.2em;
+  align-items: center;
+  word-break: break-word;
+}
+
+.card-verse,
+.card-analysis,
+.card-speech {
+  font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.9;
+  color: var(--text-pri);
+  flex: 1;
+  overflow-y: auto;
+}
+
+.card-analysis {
+  font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
+  font-size: 0.95rem;
+  font-style: normal;
+  line-height: 1.75;
+  color: var(--text-sec);
+}
+
+.card-speech {
+  font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
+  font-size: 0.95rem;
+  font-style: normal;
+  line-height: 1.75;
+  color: var(--text-sec);
+}
+
+.card-empty {
+  color: var(--text-ter);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.card-empty:hover { color: var(--accent); }
+
+/* ── NESTED BULLET LISTS (các cấp độ gạch đầu dòng khi xem thẻ) ── */
+.card-verse ul,
+.card-analysis ul,
+.card-speech ul {
+  margin: 6px 0;
+  padding-left: 24px;
+  list-style-type: disc;
+}
+.card-verse ul ul,
+.card-analysis ul ul,
+.card-speech ul ul {
+  margin: 2px 0;
+  list-style-type: circle;
+}
+.card-verse ul ul ul,
+.card-analysis ul ul ul,
+.card-speech ul ul ul {
+  list-style-type: square;
+}
+.card-verse ul ul ul ul,
+.card-analysis ul ul ul ul,
+.card-speech ul ul ul ul {
+  list-style-type: '– ';
+}
+.card-verse li,
+.card-analysis li,
+.card-speech li {
+  margin: 3px 0;
+  padding-left: 2px;
+}
+
+/* Nav */
+.nav-row { display: flex; align-items: center; justify-content: center; gap: 14px; }
+
+.btn {
+  font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 11px 24px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-sec);
+  cursor: pointer;
+  transition: all 0.18s;
+  letter-spacing: 0.01em;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:hover { background: var(--surface2); border-color: var(--accent); color: var(--accent); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  padding: 11px 30px;
+}
+
+.btn-primary:hover { background: var(--accent-dk); color: #fff; }
+
+/* Status */
+.status-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+.btn-status {
+  font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: all 0.18s;
+  color: var(--text-sec);
+  letter-spacing: 0.01em;
+}
+
+.btn-status:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+
+.btn-status.g { border-color: #9fe3b8; }
+.btn-status.g:hover, .btn-status.g.on { background: var(--green-lt); border-color: var(--green); color: var(--green); }
+.btn-status.g.on { box-shadow: 0 0 0 3px var(--green-lt); }
+
+.btn-status.r { border-color: #fcd34d; }
+.btn-status.r:hover, .btn-status.r.on { background: var(--amber-lt); border-color: var(--amber); color: var(--amber); }
+.btn-status.r.on { box-shadow: 0 0 0 3px var(--amber-lt); }
+
+.btn-status.h { border-color: #fca5a5; }
+.btn-status.h:hover, .btn-status.h.on { background: var(--red-lt); border-color: var(--red); color: var(--red); }
+.btn-status.h.on { box-shadow: 0 0 0 3px var(--red-lt); }
+
+/* ── SIDEBAR ── */
+.sidebar { display: flex; flex-direction: column; gap: 18px; }
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.panel-header {
+  padding: 14px 18px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-ter);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-list { max-height: 420px; overflow-y: auto; }
+
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.list-item:last-child { border-bottom: none; }
+.list-item:hover { background: var(--bg); }
+.list-item.active { background: var(--accent-lt); }
+
+.list-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.list-dot.g { background: var(--green); }
+.list-dot.r { background: var(--amber); }
+.list-dot.h { background: var(--red); }
+
+.list-ref { font-size: 0.72rem; font-weight: 700; color: var(--accent); min-width: 55px; background: var(--accent-lt); padding: 3px 7px; border-radius: 6px; }
+.list-title { font-size: 0.85rem; color: var(--text-sec); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.list-btn {
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: none;
+  cursor: pointer;
+  color: var(--text-ter);
+  font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
+  opacity: 0;
+  transition: all 0.15s;
+  font-weight: 500;
+}
+
+.list-item:hover .list-btn { opacity: 1; }
+.list-btn:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-lt); }
+
+.btn-add-card {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  background: none;
+  font-size: 0.85rem;
+  color: var(--text-ter);
+  cursor: pointer;
+  font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-top: 1px solid var(--border);
+  font-weight: 600;
+}
+
+.btn-add-card:hover { background: var(--accent-lt); color: var(--accent); }
+
+/* ── MODAL ── */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(22,41,31,0.45);
+  backdrop-filter: blur(2px);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal.active {
+  display: flex;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  padding: 32px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-pri);
+}
+
+.modal-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: var(--text-ter);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  border-radius: 8px;
+}
+
+.modal-close:hover { color: var(--text-pri); background: var(--bg); }
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-ter);
+  margin-bottom: 7px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  font-size: 0.9rem;
+  padding: 10px 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text-pri);
+  outline: none;
+  resize: vertical;
+  line-height: 1.6;
+  transition: border 0.15s, box-shadow 0.15s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px var(--accent-lt);
+}
+
+.formatting-toolbar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.format-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  color: var(--text-pri);
+}
+
+.format-btn:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.format-btn:active {
+  transform: scale(0.95);
+}
+
+.editable-field {
+  width: 100%;
+  font-size: 0.9rem;
+  padding: 10px 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text-pri);
+  outline: none;
+  min-height: 40px;
+  word-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.6;
+  transition: border 0.15s, box-shadow 0.15s;
+}
+
+.editable-field:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px var(--accent-lt);
+}
+
+.editable-field:empty::before {
+  content: attr(data-placeholder);
+  color: var(--text-ter);
+  pointer-events: none;
+}
+
+.form-group textarea { min-height: 100px; }
+
+.editable-tall { min-height: 90px; }
+
+.color-underline-group {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  border-left: 1px solid var(--border);
+  padding-left: 6px;
+  margin-left: 2px;
+}
+
+.format-btn-u {
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.format-btn-uc {
+  padding: 6px 8px;
+  font-size: 0.85rem;
+}
+
+/* ── NESTED BULLET LISTS (các cấp độ gạch đầu dòng khi nhập liệu) ── */
+.editable-field ul {
+  margin: 6px 0;
+  padding-left: 24px;
+  list-style-type: disc;
+}
+.editable-field ul ul {
+  margin: 2px 0;
+  list-style-type: circle;
+}
+.editable-field ul ul ul {
+  list-style-type: square;
+}
+.editable-field ul ul ul ul {
+  list-style-type: '– ';
+}
+.editable-field li {
+  margin: 3px 0;
+}
+
+.format-btn-list {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+/* ── STATS MODAL ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.stat-card {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  background: var(--bg);
+  transition: transform 0.15s;
+}
+
+.stat-card:hover { transform: translateY(-2px); }
+
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  color: var(--text-ter);
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--text-ter);
+  font-size: 0.9rem;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2.5px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-right: 10px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── LIBRARY VIEW ── */
+.library-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 36px 32px 48px;
+  width: 100%;
+}
+
+.library-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.library-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-pri);
+  letter-spacing: -0.01em;
+}
+
+.btn-create-tab {
+  font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 11px 22px;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.18s;
+  letter-spacing: 0.01em;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-create-tab:hover {
+  background: var(--accent-dk);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.tabs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.tab-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  cursor: pointer;
+  transition: all 0.22s;
+  display: flex;
+  flex-wrap: wrap; 
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+}
+
+.tab-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+
+.tab-card-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-pri);
+  letter-spacing: -0.005em;
+}
+
+.tab-card-menu {
+  display: flex;
+  gap: 6px;
+}
+
+.tab-card-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  color: var(--text-ter);
+}
+
+.tab-card-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-lt);
+}
+
+.tab-card-count {
+  font-size: 0.85rem;
+  color: var(--text-sec);
+  font-weight: 500;
+}
+
+.tab-card-desc {
+  font-size: 0.85rem;
+  color: var(--text-ter);
+  line-height: 1.5;
+}
+
+.tab-card-action {
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+}
+
+.btn-study-tab {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 0;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+  font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-study-tab:hover {
+  background: var(--accent-dk);
+  box-shadow: var(--shadow-sm);
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+    padding: 20px 16px 36px;
+    gap: 20px;
+  }
+
+  .tabs {
+    padding: 10px 16px;
+  }
+
+  .sidebar {
+    order: 2;
+  }
+
+  .card {
+    height: 320px;
+  }
+
+  .face {
+    padding: 22px;
+  }
+
+  .library-container {
+    padding: 24px 16px 36px;
+  }
+
+  .library-title {
+    font-size: 1.3rem;
+  }
+
+  .tabs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-row { gap: 8px; }
+  .btn { padding: 10px 16px; font-size: 0.85rem; }
+
+  .status-row { gap: 8px; }
+  .btn-status { flex: 1; min-width: 0; padding: 10px 8px; font-size: 0.78rem; }
+
+  .header { padding: 0 16px; }
+  .header-inner { height: 56px; }
+  .user-info { display: none; }
+
+  .chapter-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: normal !important;
+    word-break: break-word;
+    flex-wrap: wrap;
+    width: 320px;
+    min-height: 70px;
+    text-align: center;
+    line-height: 1.4;
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card { height: 360px; }
+  .card-title { font-size: 1.05rem; }
+}
+#badgeToastContainer {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+.badge-toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #2b2f3a, #1c1f27);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 12px 16px;
+  min-width: 240px;
+  max-width: 320px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.badge-toast.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+.badge-toast .badge-toast-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+.badge-toast .badge-toast-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.7;
+  margin: 0 0 2px 0;
+}
+.badge-toast .badge-toast-name {
+  font-weight: 700;
+  font-size: 15px;
+  margin: 0;
+}
+.badge-toast.rarity-rare { border-color: #4fa3ff; }
+.badge-toast.rarity-epic { border-color: #b24fff; }
+.badge-toast.rarity-legendary { border-color: #ffd24f; }
+</style>
+<link rel="stylesheet" href="/static/css/mobile-responsive.css">
+</head>
+
+<script src="/static/js/session-refresh.js"></script>
+<script src="/static/js/sw-register.js"></script>
+<script>
+// ── Hiển thị toast khi unlock achievement mới ──────────────────────────────
+function showBadgeToasts(achievements) {
+  if (!achievements || !achievements.length) return;
+  let container = document.getElementById('badgeToastContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'badgeToastContainer';
+    document.body.appendChild(container);
+  }
+
+  achievements.forEach((badge, i) => {
+    const toast = document.createElement('div');
+    toast.className = 'badge-toast' + (badge.rarity ? ' rarity-' + badge.rarity : '');
+    toast.innerHTML =
+      '<div class="badge-toast-icon">' + (badge.icon || '🏆') + '</div>' +
+      '<div>' +
+        '<p class="badge-toast-title">Đã đạt thành tích mới</p>' +
+        '<p class="badge-toast-name">' + (badge.name || '') + '</p>' +
+      '</div>';
+    container.appendChild(toast);
+
+    setTimeout(() => toast.classList.add('show'), 50 + i * 150);
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, 4000 + i * 150);
+  });
+}
+</script>
+
+<body class="has-bottom-nav">
+<div id="badgeToastContainer"></div>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-inner">
+    <div class="brand" onclick="window.location.href='{{ url_for("index") }}'" style="cursor:pointer;">
+      <img src="{{ url_for('static', filename='pictures/Logo2.png') }}" alt="Always Stay Hydrated Logo"width="120">
+    </div>
+    <div class="header-right">
+      <div class="user-info" id="user-info">{{ user }} ({{ role }})</div>
+      <button id="btn-back-library" onclick="exitStudyMode()" class="logout-btn" style="display: none;">← Thư Viện</button>
+      <a href="{{ url_for('flashcard_logout') }}" class="logout-btn" onclick="clearAshCaches()">Đăng Xuất</a>
+    </div>
+  </div>
+</div>
+
+<!-- Library View -->
+<div id="library-view" class="library-container">
+  <div class="library-header">
+    <div class="library-title">📚 Thư Viện Học Phần</div>
+    {% if role == 'admin' %}
+    <button type="button" class="btn-create-tab" onclick="showCreateTabModal()">+ Thêm Học Phần</button>
+    {% endif %}
+  </div>
+  <div class="tabs-grid" id="tabs-grid"></div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs-wrapper" id="tabs-wrapper">
+  <div class="tabs" id="tabs-container"></div>
+</div>
+
+<!-- Study View -->
+<div id="study-view" style="display: none;">
+<!-- Main Layout -->
+<div class="layout">
+  <!-- Study Area -->
+  <div class="study-area">
+    <!-- Progress -->
+    <div class="progress-row">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+      </div>
+      <span class="progress-label"><span class="progress-done" id="progress-count">0</span> / <span id="total-count">0</span></span>
+    </div>
+
+    <!-- Card Flip -->
+    <div class="card-wrap" id="card-container">
+      <div class="card" id="card">
+        <!-- Face 1: Title -->
+        <div class="face face-1">
+          <div class="face-indicator">
+            <div class="fi-dot f1"></div>
+            <div class="fi-dot"></div>
+            <div class="fi-dot"></div>
+            <div class="fi-dot"></div>
+          </div>
+          <div class="face-label">Tiêu Đề</div>
+          <div class="card-ref" id="card-ref"></div>
+          <div class="card-title" id="card-title"></div>
+        </div>
+
+        <!-- Face 2: Verse -->
+        <div class="face face-2">
+          <div class="face-indicator">
+            <div class="fi-dot"></div>
+            <div class="fi-dot f2"></div>
+            <div class="fi-dot"></div>
+            <div class="fi-dot"></div>
+          </div>
+          <div class="face-label">Trích Đoạn</div>
+          <div class="card-verse" id="card-verse"></div>
+        </div>
+
+        <!-- Face 3: Analysis -->
+        <div class="face face-3">
+          <div class="face-indicator">
+            <div class="fi-dot"></div>
+            <div class="fi-dot"></div>
+            <div class="fi-dot f3"></div>
+            <div class="fi-dot"></div>
+          </div>
+          <div class="face-label">Giải Nghĩa</div>
+          <div class="card-analysis" id="card-analysis"></div>
+        </div>
+
+        <!-- Face 4: Speech -->
+        <div class="face face-4">
+          <div class="face-indicator">
+            <div class="fi-dot"></div>
+            <div class="fi-dot"></div>
+            <div class="fi-dot"></div>
+            <div class="fi-dot f4"></div>
+          </div>
+          <div class="face-label">Gợi Ý Speech</div>
+          <div class="card-speech" id="card-speech"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-row">
+      <button class="btn" id="btn-prev" onclick="previousCard()">← Trước</button>
+      <span style="font-size: 0.85rem; color: var(--text-ter); font-weight: 500;" id="card-index">-</span>
+      <button class="btn" id="btn-next" onclick="nextCard()">Sau →</button>
+    </div>
+
+    <!-- Status Buttons -->
+    <div class="status-row">
+      <button class="btn-status g" data-status="g" onclick="setStatus('g')">✓ Thuộc</button>
+      <button class="btn-status r" data-status="r" onclick="setStatus('r')">⟲ Cần Ôn Lại</button>
+      <button class="btn-status h" data-status="h" onclick="setStatus('h')">✗ Chưa Thuộc</button>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Stats Panel -->
+    <div class="panel">
+      <div class="panel-header">
+        Thống Kê
+        <button onclick="showStats()" style="border: none; background: none; cursor: pointer; color: var(--accent); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.03em;">Chi tiết →</button>
+      </div>
+      <div style="padding: 18px; font-size: 0.85rem; display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-sec);">
+          <span style="display:flex; align-items:center; gap:7px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;"></span>Thuộc</span>
+          <strong id="stat-passed" style="color: var(--text-pri); font-size: 1rem;">0</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-sec);">
+          <span style="display:flex; align-items:center; gap:7px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--amber);display:inline-block;"></span>Cần ôn</span>
+          <strong id="stat-review" style="color: var(--text-pri); font-size: 1rem;">0</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid var(--border); color: var(--text-sec);">
+          <span>Tiến độ</span>
+          <strong id="stat-percentage" style="color: var(--accent); font-weight: 700; font-size: 1.05rem;">0%</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards List -->
+    <div class="panel">
+      <div class="panel-header">Danh Sách Thẻ</div>
+      <div class="card-list" id="card-list"></div>
+      {% if role == 'admin' %}
+      <button class="btn-add-card" onclick="showAddCardModal()">+ Thêm Thẻ</button>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<!-- End Study View -->
+</div>
+
+<!-- Stats Modal -->
+<div class="modal" id="stats-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span>Thống Kê Chi Tiết</span>
+      <button class="modal-close" onclick="closeModal('stats-modal')">×</button>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="modal-total">0</div>
+        <div class="stat-label">Tổng Thẻ</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="modal-passed">0</div>
+        <div class="stat-label">Đã Thuộc</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="modal-review">0</div>
+        <div class="stat-label">Cần Ôn Lại</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="modal-hard">0</div>
+        <div class="stat-label">Chưa Thuộc</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Tab Modal -->
+<div class="modal" id="tab-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span id="tab-modal-title">Thêm Học Phần Mới</span>
+      <button class="modal-close" onclick="closeModal('tab-modal')">×</button>
+    </div>
+    <form id="tab-form" onsubmit="saveTab(event)">
+      <div class="form-group">
+        <label>Tên Học Phần</label>
+        <div class="formatting-toolbar">
+          <button type="button" class="format-btn" onclick="applyFormat('bold')" title="In đậm (Ctrl+B)"><strong>B</strong></button>
+          <button type="button" class="format-btn" onclick="applyFormat('italic')" title="In nghiêng (Ctrl+I)"><em>I</em></button>
+          <button type="button" class="format-btn" onclick="applyFormat('underline')" title="Gạch chân (Ctrl+U)"><u>U</u></button>
+        </div>
+        <div id="form-tab-name" contenteditable="true" data-placeholder="Nhập tên học phần..." class="editable-field"></div>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%;" id="tab-save-btn">Lưu Học Phần</button>
+    </form>
+  </div>
+</div>
+
+<!-- Add/Edit Card Modal -->
+<div class="modal" id="card-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span id="modal-title">Thêm Thẻ Mới</span>
+      <button class="modal-close" onclick="closeModal('card-modal')">×</button>
+    </div>
+    <form id="card-form" onsubmit="saveCard(event)">
+      <div class="form-group">
+        <label>Tham Chiếu (ví dụ: Khải 1:1)</label>
+        <input type="text" id="form-ref" required>
+      </div>
+      <div class="form-group">
+        <label>Tiêu Đề</label>
+        <input type="text" id="form-title" maxlength="80" required><small style="color:var(--text-ter)">Tối đa 80 ký tự</small>
+      </div>
+      <div class="form-group">
+        <label>Trích Đoạn</label>
+        <div class="formatting-toolbar">
+          <button type="button" class="format-btn" onclick="applyFormatTo('bold','form-verse')" title="In đậm"><strong>B</strong></button>
+          <button type="button" class="format-btn" onclick="applyFormatTo('italic','form-verse')" title="In nghiêng"><em>I</em></button>
+          <button type="button" class="format-btn format-btn-u" onclick="applyFormatTo('underline','form-verse')" title="Gạch chân">U</button>
+          <div class="color-underline-group" title="Gạch đầu dòng">
+            <button type="button" class="format-btn format-btn-list" onclick="applyFormatTo('insertUnorderedList','form-verse')" title="Bật/tắt gạch đầu dòng">•</button>
+            <button type="button" class="format-btn format-btn-list" onclick="applyListIndent('out','form-verse')" title="Giảm cấp độ (thụt ra)">⇤</button>
+            <button type="button" class="format-btn format-btn-list" onclick="applyListIndent('in','form-verse')" title="Tăng cấp độ (thụt vào)">⇥</button>
+          </div>
+          <div class="color-underline-group" title="Màu chữ">
+            <button type="button" class="format-btn format-btn-uc" onclick="applyTextColor('#e74c3c','form-verse')"><span style="color:#e74c3c;">A</span></button>
+            <button type="button" class="format-btn format-btn-uc" onclick="applyTextColor('#27ae60','form-verse')"><span style="color:#27ae60;">A</span></button>
+            <button type="button" class="format-btn format-btn-uc" onclick="applyTextColor('#2980b9','form-verse')"><span style="color:#2980b9;">A</span></button>
+            <button type="button" class="format-btn format-btn-uc" onclick="applyTextColor('#f39c12','form-verse')"><span style="color:#f39c12;">A</span></button>
+            <button type="button" class="format-btn format-btn-uc" onclick="applyTextColor('#8e44ad','form-verse')"><span style="color:#8e44ad;">A</span></button>
+          </div>
+        </div>
+        <div id="form-verse" contenteditable="true" data-placeholder="Nhập trích đoạn..." class="editable-field editable-tall"></div>
+      </div>
+      <div class="form-group">
+        <label>Giải Nghĩa</label>
+        <div class="formatting-toolbar">
+          <button type="button" class="format-btn" onclick="applyFormatTo('bold','form-analysis')" title="In đậm"><strong>B</strong></button>
+          <button type="button" class="format-btn" onclick="applyFormatTo('italic','form-analysis')" title="In nghiêng"><em>I</em></button>
+          <button type="button" class="format-btn format-btn-u" onclick="applyFormatTo('underline','form-analysis')" title="Gạch chân">U</button>
+          <div class="color-underline-group" title="Gạch đầu dòng">
+            <button type="button" class="format-btn format-btn-list" onclick="applyFormatTo('insertUnorderedList','form-analysis')" title="Bật/tắt gạch đầu dòng">•</button>
+            <button type="button" class="format-btn format-btn-list" onclick="applyListIndent('out','form-analysis')" title="Giảm cấp độ (thụt ra)">⇤</button>
+            <button type="button" class="format-btn format-btn-list" onclick="applyListIndent('in','form-analysis')" title="Tăng cấp độ (thụt vào)">⇥</button>
+          </div>
+          <div class="color-underline-group" title="Màu chữ">
+            <button type="button" class="format-btn format-btn-uc" onclick="applyTextColor('#e74c3c','form-analysis')"><span style="color:#e74c3c;">A</span></button>
+            <button type="button" class="format-btn format-btn-uc" onclick="applyTextColor('#27ae60','form-analysis')"><span style="color:#27ae60;">A</span></button>
+            <button type="button" class="format-btn format-btn-uc" onclick="applyTextColor('#2980b9','form-analysis')"><span style="color:#2980b9;">A</span></button>
+            <button type="button" class="format-btn format-btn-uc" onclick="applyTextColor('#f39c12','form-analysis')"><span style="color:#f39c12;">A</span></button>
+            <button type="button" class="format-btn format-btn-uc" onclick="applyTextColor('#8e44ad','form-analysis')"><span style="color:#8e44ad;">A</span></button>
+          </div>
+        </div>
+        <div id="form-analysis" contenteditable="true" data-placeholder="Nhập giải nghĩa..." class="editable-field editable-tall"></div>
+      </div>
+      <div class="form-group">
+        <label>Gợi Ý Speech</label>
+        <div class="formatting-toolbar">
+          <button type="button" class="format-btn" onclick="applyFormatTo('bold','form-speech')" title="In đậm"><strong>B</strong></button>
+          <button type="button" class="format-btn" onclick="applyFormatTo('italic','form-speech')" title="In nghiêng"><em>I</em></button>
+          <button type="button" class="format-btn format-btn-u" onclick="applyFormatTo('underline','form-speech')" title="Gạch chân">U</button>
+          <div class="color-underline-group" title="Gạch đầu dòng">
+            <button type="button" class="format-btn format-btn-list" onclick="applyFormatTo('insertUnorderedList','form-speech')" title="Bật/tắt gạch đầu dòng">•</button>
+            <button type="button" class="format-btn format-btn-list" onclick="applyListIndent('out','form-speech')" title="Giảm cấp độ (thụt ra)">⇤</button>
+            <button type="button" class="format-btn format-btn-list" onclick="applyListIndent('in','form-speech')" title="Tăng cấp độ (thụt vào)">⇥</button>
+          </div>
+          <div class="color-underline-group" title="Màu chữ">
+            <button type="button" class="format-btn format-btn-uc" onclick="applyTextColor('#e74c3c','form-speech')"><span style="color:#e74c3c;">A</span></button>
+            <button type="button" class="format-btn format-btn-uc" onclick="applyTextColor('#27ae60','form-speech')"><span style="color:#27ae60;">A</span></button>
+            <button type="button" class="format-btn format-btn-uc" onclick="applyTextColor('#2980b9','form-speech')"><span style="color:#2980b9;">A</span></button>
+            <button type="button" class="format-btn format-btn-uc" onclick="applyTextColor('#f39c12','form-speech')"><span style="color:#f39c12;">A</span></button>
+            <button type="button" class="format-btn format-btn-uc" onclick="applyTextColor('#8e44ad','form-speech')"><span style="color:#8e44ad;">A</span></button>
+          </div>
+        </div>
+        <div id="form-speech" contenteditable="true" data-placeholder="Nhập gợi ý speech..." class="editable-field editable-tall"></div>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%;">Lưu Thẻ</button>
+    </form>
+  </div>
+</div>
+
+<script>
+let APP_DATA = {
+  tabs: [],
+  currentTabId: null,
+  currentCardIndex: 0,
+  role: '{{ role }}',
+  currentView: 'library' // 'library' or 'study'
+};
+
+// Initialize
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadData();
+  setupEventListeners();
+  updateViewUI();
+});
+onSessionVisible(loadData);
+
+async function loadData() {
+  try {
+    // Thêm timestamp để tránh browser cache — đảm bảo học phần mới luôn hiển thị
+    const response = await apiFetch(`/api/flashcard/data?_=${Date.now()}`);
+    if (!response.ok) throw new Error('Failed to load data');
+    
+    const result = await response.json();
+    APP_DATA.tabs = result.data;
+    
+    renderLibrary();
+    
+    if (APP_DATA.tabs.length > 0) {
+      // Nếu đang ở study mode và đã có tab được chọn → cập nhật lại tab bar
+      if (APP_DATA.currentView === 'study' && APP_DATA.currentTabId) {
+        renderTabs();
+        renderCards();
+        showCard(APP_DATA.currentCardIndex);
+      }
+      updateStats(result.stats);
+    }
+  } catch (error) {
+    console.error('Error loading data:', error);
+  }
+}
+
+function renderLibrary() {
+  const grid = document.getElementById('tabs-grid');
+  grid.innerHTML = '';
+  
+  APP_DATA.tabs.forEach((tab, index) => {
+    const cardCount = tab.cards.length;
+    const passedCount = tab.cards.filter(c => c.status === 'g').length;
+    const percentage = cardCount > 0 ? Math.round((passedCount / cardCount) * 100) : 0;
+    
+    const card = document.createElement('div');
+    card.className = 'tab-card';
+    
+    // Create tab-card-header
+    const header = document.createElement('div');
+    header.className = 'tab-card-header';
+    
+    // Create tab-card-name with HTML support
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'tab-card-name';
+    nameDiv.innerHTML = tab.name;
+    header.appendChild(nameDiv);
+    
+    // Create admin menu if needed
+    if (APP_DATA.role === 'admin') {
+      const menu = document.createElement('div');
+      menu.className = 'tab-card-menu';
+      menu.innerHTML = `
+        <button class="tab-card-btn" onclick="editTab('${tab.id}')" title="Sửa">✎</button>
+        <button class="tab-card-btn" onclick="deleteTab('${tab.id}')" title="Xóa">🗑</button>
+      `;
+      header.appendChild(menu);
+    }
+    
+    card.appendChild(header);
+    
+    // Create count div
+    const countDiv = document.createElement('div');
+    countDiv.className = 'tab-card-count';
+    countDiv.textContent = `📝 ${cardCount} thẻ • Tiến độ: ${percentage}%`;
+    card.appendChild(countDiv);
+    
+    // Create action div
+    const actionDiv = document.createElement('div');
+    actionDiv.className = 'tab-card-action';
+    actionDiv.innerHTML = `<button class="btn-study-tab" onclick="enterStudyMode('${tab.id}')">Vào Học</button>`;
+    card.appendChild(actionDiv);
+    
+    grid.appendChild(card);
+  });
+}
+
+function updateViewUI() {
+  const isStudyMode = APP_DATA.currentView === 'study';
+  document.getElementById('library-view').style.display = isStudyMode ? 'none' : 'flex';
+  document.getElementById('study-view').style.display = isStudyMode ? 'block' : 'none';
+  document.getElementById('tabs-container').style.display = isStudyMode ? 'flex' : 'none';
+  const btnBack = document.getElementById('btn-back-library');
+  if (btnBack) btnBack.style.display = isStudyMode ? 'inline-block' : 'none';
+}
+
+function enterStudyMode(tabId) {
+  APP_DATA.currentTabId = tabId;
+  APP_DATA.currentView = 'study';
+  APP_DATA.studyStarted = false;
+  APP_DATA.currentCardIndex = 0;
+  
+  updateViewUI();
+  
+  renderTabs();
+  renderCards();
+  showCard(0);
+  loadStats();
+}
+
+function exitStudyMode() {
+  APP_DATA.currentView = 'library';
+  APP_DATA.currentTabId = null;
+  APP_DATA.studyStarted = false;
+  
+  updateViewUI();
+  loadData();
+}
+
+function renderTabs() {
+  const container = document.getElementById('tabs-container');
+  container.innerHTML = '';
+  
+  APP_DATA.tabs.forEach(tab => {
+    const btn = document.createElement('button');
+    btn.className = 'tab' + (tab.id === APP_DATA.currentTabId ? ' active' : '');
+    btn.innerHTML = `<span class="tab-name" title="${tab.name.replace(/"/g, '&quot;')}">${shortTabLabel(tab.name)}</span> <span class="tab-count">${tab.cards.length}</span>`;
+    btn.onclick = () => selectTab(tab.id);
+    container.appendChild(btn);
+  });
+}
+
+// Rút gọn tên học phần, chỉ giữ phần "Khải X" hoặc "Khải X:Y-Z", bỏ phần mô tả theo sau
+function shortTabLabel(name) {
+  const plain = name.replace(/<[^>]*>/g, '').trim();
+  // Khớp "Khải <chương>" rồi tùy chọn ":<câu/khoảng câu>", dừng trước dấu ':' mô tả hoặc ' - '
+  const match = plain.match(/^(Khải\s*\d+)(:\s*\d+(?:[-–]\d+)?)?/i);
+  if (match) {
+    const chapter = match[1].replace(/\s+/g, ' ').trim();
+    const verse = match[2] ? match[2].replace(/\s+/g, '') : '';
+    return chapter + verse;
+  }
+  const dashIndex = plain.indexOf(' - ');
+  if (dashIndex !== -1) return plain.slice(0, dashIndex).trim();
+  return plain;
+}
+
+function selectTab(tabId) {
+  APP_DATA.currentTabId = tabId;
+  APP_DATA.currentCardIndex = 0;
+  APP_DATA.fullTabReported = false;
+  renderTabs();
+  renderCards();
+  showCard(0);
+}
+
+function renderCards() {
+  const currentTab = APP_DATA.tabs.find(t => t.id === APP_DATA.currentTabId);
+  if (!currentTab) return;
+  
+  const list = document.getElementById('card-list');
+  list.innerHTML = '';
+  
+  currentTab.cards.forEach((card, index) => {
+    const item = document.createElement('div');
+    item.className = 'list-item' + (index === APP_DATA.currentCardIndex ? ' active' : '');
+    item.innerHTML = `
+      <div class="list-dot ${card.status}"></div>
+      <span class="list-ref">${card.ref}</span>
+      <span class="list-title">${card.title}</span>
+      ${APP_DATA.role === 'admin' ? `<button class="list-btn" onclick="editCard('${card.id}')">✎</button>` : ''}
+    `;
+    item.onclick = () => showCard(index);
+    list.appendChild(item);
+  });
+  
+  const totalCount = document.getElementById('total-count');
+  totalCount.textContent = currentTab.cards.length;
+}
+
+function showCard(index) {
+  const currentTab = APP_DATA.tabs.find(t => t.id === APP_DATA.currentTabId);
+  if (!currentTab || index < 0 || index >= currentTab.cards.length) return;
+  
+  APP_DATA.currentCardIndex = index;
+  const card = currentTab.cards[index];
+  
+  // Update display
+  document.getElementById('card-ref').textContent = card.ref;
+  document.getElementById('card-title').textContent = card.title;
+  document.getElementById('card-verse').innerHTML = card.verse || '<span class="card-empty">Không có nội dung</span>';
+  document.getElementById('card-analysis').innerHTML = card.analysis || '<span class="card-empty">Không có nội dung</span>';
+  document.getElementById('card-speech').innerHTML = card.speech || '<span class="card-empty">Chưa có gợi ý speech</span>';
+  
+  // Reset flip
+  document.getElementById('card').className = 'card';
+  
+  // Update buttons
+  document.getElementById('btn-prev').disabled = index === 0;
+  document.getElementById('btn-next').disabled = index === currentTab.cards.length - 1;
+  document.getElementById('card-index').textContent = `${index + 1} / ${currentTab.cards.length}`;
+  
+  // Update status buttons
+  document.querySelectorAll('.btn-status').forEach(btn => btn.classList.remove('on'));
+  if (card.status) {
+    document.querySelector(`.btn-status[data-status="${card.status}"]`).classList.add('on');
+  }
+  
+  // Update progress
+  updateProgress();
+  
+  // Render list
+  renderCards();
+}
+
+function nextCard() {
+  const currentTab = APP_DATA.tabs.find(t => t.id === APP_DATA.currentTabId);
+  if (APP_DATA.currentCardIndex < currentTab.cards.length - 1) {
+    showCard(APP_DATA.currentCardIndex + 1);
+  }
+}
+
+function previousCard() {
+  if (APP_DATA.currentCardIndex > 0) {
+    showCard(APP_DATA.currentCardIndex - 1);
+  }
+}
+
+function setupEventListeners() {
+  // Card flip — xoay qua 4 mặt: face1 → face2 → face3 → face4 → face1
+  document.getElementById('card-container').addEventListener('click', () => {
+    const card = document.getElementById('card');
+    const faces = ['', 'face2', 'face3', 'face4'];
+    const currentClass = card.className.replace('card', '').trim();
+    const currentFace = faces.indexOf(currentClass);
+    const nextFace = (currentFace + 1) % 4;
+    card.className = 'card' + (faces[nextFace] ? ' ' + faces[nextFace] : '');
+  });
+
+  // Phím Tab / Shift+Tab để tăng/giảm cấp độ bullet ngay khi đang gõ nội dung thẻ
+  ['form-verse', 'form-analysis', 'form-speech'].forEach((id) => {
+    const field = document.getElementById(id);
+    if (!field) return;
+    field.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab' && isCaretInsideListItem()) {
+        e.preventDefault();
+        document.execCommand(e.shiftKey ? 'outdent' : 'indent', false, null);
+      }
+    });
+  });
+}
+
+async function setStatus(status) {
+  const currentTab = APP_DATA.tabs.find(t => t.id === APP_DATA.currentTabId);
+  const card = currentTab.cards[APP_DATA.currentCardIndex];
+  
+  try {
+    const response = await fetch(`/api/flashcard/cards/${card.id}/status`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status })
+    });
+    
+    if (!response.ok) throw new Error('Failed to update status');
+    
+    const data = await response.json();
+    card.status = status;
+    renderCards();
+    updateProgress();
+    loadStats();
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+function updateProgress() {
+  const currentTab = APP_DATA.tabs.find(t => t.id === APP_DATA.currentTabId);
+  if (!currentTab) return;
+  
+  const passed = currentTab.cards.filter(c => c.status === 'g').length;
+  const total = currentTab.cards.length;
+  const percentage = total > 0 ? Math.round((passed / total) * 100) : 0;
+  
+  document.getElementById('progress-fill').style.width = percentage + '%';
+  document.getElementById('progress-count').textContent = passed;
+}
+
+async function loadStats() {
+  try {
+    const response = await fetch('/api/flashcard/stats');
+    const stats = await response.json();
+    updateStats(stats);
+  } catch (error) {
+    console.error('Error loading stats:', error);
+  }
+}
+
+function updateStats(stats) {
+  document.getElementById('stat-passed').textContent = stats.passed;
+  document.getElementById('stat-review').textContent = stats.review;
+  document.getElementById('stat-percentage').textContent = stats.percentage + '%';
+}
+
+function showStats() {
+  loadStats().then(() => {
+    const currentTab = APP_DATA.tabs.find(t => t.id === APP_DATA.currentTabId);
+    if (!currentTab) return;
+    
+    const passed = currentTab.cards.filter(c => c.status === 'g').length;
+    const review = currentTab.cards.filter(c => c.status === 'r').length;
+    const hard = currentTab.cards.filter(c => c.status === 'h').length;
+    
+    fetch('/api/flashcard/stats').then(r => r.json()).then(stats => {
+      document.getElementById('modal-total').textContent = stats.total;
+      document.getElementById('modal-passed').textContent = stats.passed;
+      document.getElementById('modal-review').textContent = stats.review;
+      document.getElementById('modal-hard').textContent = stats.hard;
+      document.getElementById('stats-modal').classList.add('active');
+    });
+  });
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.remove('active');
+}
+
+function showCreateTabModal() {
+  document.getElementById('tab-modal-title').textContent = 'Thêm Học Phần Mới';
+  document.getElementById('form-tab-name').innerHTML = '';
+  document.getElementById('tab-form').dataset.tabId = '';
+  document.getElementById('tab-save-btn').disabled = false;
+  document.getElementById('tab-save-btn').textContent = 'Lưu Học Phần';
+  document.getElementById('tab-modal').classList.add('active');
+  document.getElementById('form-tab-name').focus();
+}
+
+function editTab(tabId) {
+  const tab = APP_DATA.tabs.find(t => t.id === tabId);
+  if (!tab) return;
+  
+  document.getElementById('tab-modal-title').textContent = 'Chỉnh Sửa Học Phần';
+  document.getElementById('form-tab-name').innerHTML = tab.name;
+  document.getElementById('tab-form').dataset.tabId = tabId;
+  document.getElementById('tab-save-btn').disabled = false;
+  document.getElementById('tab-save-btn').textContent = 'Lưu Học Phần';
+  document.getElementById('tab-modal').classList.add('active');
+  document.getElementById('form-tab-name').focus();
+}
+
+async function saveTab(event) {
+  event.preventDefault();
+  
+  const tabId = document.getElementById('tab-form').dataset.tabId;
+  const name = document.getElementById('form-tab-name').innerHTML.trim();
+  
+  if (!name) {
+    alert('Vui lòng nhập tên học phần');
+    return;
+  }
+  
+  const saveBtn = document.getElementById('tab-save-btn');
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Đang lưu...';
+  
+  try {
+    let url, method, body;
+    
+    if (tabId) {
+      url = `/api/flashcard/tabs/${tabId}`;
+      method = 'PUT';
+      body = JSON.stringify({ name });
+    } else {
+      url = '/api/flashcard/tabs';
+      method = 'POST';
+      body = JSON.stringify({ name });
+    }
+    
+    const response = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body
+    });
+    
+    if (!response.ok) {
+  const txt = await response.text();
+  console.log(txt);
+  throw new Error(txt);
+}
+    
+    closeModal('tab-modal');
+    await loadData();
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Lỗi lưu học phần: ' + error.message);
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'Lưu Học Phần';
+  }
+}
+
+async function deleteTab(tabId) {
+  if (!confirm('Bạn chắc chắn muốn xóa học phần này?')) return;
+  
+  try {
+    const response = await fetch(`/api/flashcard/tabs/${tabId}`, {
+      method: 'DELETE'
+    });
+    
+    if (!response.ok) {
+  const txt = await response.text();
+  console.log(txt);
+  throw new Error(txt);
+}
+    
+    await loadData();
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Lỗi xóa học phần: ' + error.message);
+  }
+}
+
+function applyFormat(command) {
+  document.execCommand(command, false, null);
+  document.getElementById('form-tab-name').focus();
+}
+
+function applyFormatTo(command, fieldId) {
+  document.getElementById(fieldId).focus();
+  document.execCommand(command, false, null);
+}
+
+function applyTextColor(color, fieldId) {
+  const field = document.getElementById(fieldId);
+  field.focus();
+  document.execCommand('styleWithCSS', false, true);
+  document.execCommand('foreColor', false, color);
+}
+
+// Kiểm tra con trỏ hiện có đang nằm trong một bullet list (thẻ <li>) hay không
+function isCaretInsideListItem() {
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0) return false;
+  let node = sel.getRangeAt(0).startContainer;
+  if (node.nodeType === 3) node = node.parentNode;
+  return !!(node && node.closest && node.closest('li'));
+}
+
+// Tăng/giảm cấp độ (lồng cấp) của bullet point đang chọn trong ô nội dung
+function applyListIndent(direction, fieldId) {
+  const field = document.getElementById(fieldId);
+  field.focus();
+  document.execCommand(direction === 'in' ? 'indent' : 'outdent', false, null);
+}
+
+function showAddCardModal() {
+  document.getElementById('modal-title').textContent = 'Thêm Thẻ Mới';
+  document.getElementById('form-ref').value = '';
+  document.getElementById('form-title').value = '';
+  document.getElementById('form-verse').innerHTML = '';
+  document.getElementById('form-analysis').innerHTML = '';
+  document.getElementById('form-speech').innerHTML = '';
+  document.getElementById('card-form').dataset.cardId = '';
+  document.getElementById('card-modal').classList.add('active');
+}
+
+function editCard(cardId) {
+  const currentTab = APP_DATA.tabs.find(t => t.id === APP_DATA.currentTabId);
+  const card = currentTab.cards.find(c => c.id === cardId);
+  if (!card) return;
+  
+  document.getElementById('modal-title').textContent = 'Chỉnh Sửa Thẻ';
+  document.getElementById('form-ref').value = card.ref;
+  document.getElementById('form-title').value = card.title;
+  document.getElementById('form-verse').innerHTML = card.verse || '';
+  document.getElementById('form-analysis').innerHTML = card.analysis || '';
+  document.getElementById('form-speech').innerHTML = card.speech || '';
+  document.getElementById('card-form').dataset.cardId = cardId;
+  document.getElementById('card-modal').classList.add('active');
+}
+
+async function saveCard(event) {
+  event.preventDefault();
+  
+  const cardId = document.getElementById('card-form').dataset.cardId;
+  const data = {
+    ref: document.getElementById('form-ref').value,
+    title: document.getElementById('form-title').value,
+    verse: document.getElementById('form-verse').innerHTML.trim(),
+    analysis: document.getElementById('form-analysis').innerHTML.trim(),
+    speech: document.getElementById('form-speech').innerHTML.trim()
+  };
+  
+  try {
+    let url, method;
+    
+    if (cardId) {
+      url = `/api/flashcard/cards/${cardId}`;
+      method = 'PUT';
+    } else {
+      url = '/api/flashcard/cards';
+      method = 'POST';
+      data.tab_id = APP_DATA.currentTabId;
+    }
+    
+    const response = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    
+    if (!response.ok) throw new Error('Failed to save card');
+    
+    closeModal('card-modal');
+    await loadData(); // loadData() đã gọi renderLibrary() bên trong
+    
+    // Re-render study view nếu đang ở chế độ học
+    if (APP_DATA.currentView === 'study' && APP_DATA.currentTabId) {
+      renderTabs();
+      renderCards();
+      showCard(APP_DATA.currentCardIndex);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Lỗi lưu thẻ: ' + error.message);
+  }
+}
+</script>
+
+<div id="installBanner" class="install-banner">
+
+    <img
+        src="/static/logo.png"
+        class="install-logo"
+        alt="App Logo">
+
+    <div class="install-content">
+        <div class="install-title">
+            Always Stay Hydrated
+        </div>
+
+        <div class="install-subtitle">
+            Cài ứng dụng để học nhanh hơn
+        </div>
+    </div>
+
+    <button id="installBtn" class="install-action">
+        Cài
+    </button>
+
+    <button id="closeInstall" class="install-close">
+        ✕
+    </button>
+
+</div>
+
+<script>
+let deferredPrompt;
+
+window.addEventListener(
+'beforeinstallprompt',
+(e)=>{
+
+    e.preventDefault();
+
+    deferredPrompt = e;
+
+    if(
+        !localStorage.getItem(
+            'hideInstallBanner'
+        )
+    ){
+
+        document
+        .getElementById(
+            'installBanner'
+        )
+        .style.display='flex';
+
+    }
+
+});
+
+window.addEventListener(
+'appinstalled',
+()=>{
+
+    document
+    .getElementById(
+        'installBanner'
+    )
+    .style.display='none';
+
+});
+
+document
+.getElementById('installBtn')
+.addEventListener(
+    'click',
+    async ()=>{
+
+        if(!deferredPrompt) return;
+
+        deferredPrompt.prompt();
+
+        await deferredPrompt.userChoice;
+
+        deferredPrompt = null;
+
+        document.getElementById(
+            'installBanner'
+        ).style.display='none';
+    }
+);
+
+document
+.getElementById('closeInstall')
+.addEventListener('click',()=>{
+
+    document
+    .getElementById('installBanner')
+    .style.display='none';
+
+    localStorage.setItem(
+        'hideInstallBanner',
+        'true'
+    );
+
+});
+</script>
+
+<nav class="bottom-nav" aria-label="Điều hướng chính">
+  <a href="{{ url_for('index') }}" class="nav-btn" data-page="home">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">Trang chủ</span>
+  </a>
+  <a href="{{ url_for('index') }}?tab=fill" class="nav-btn" data-page="fill">
+    <span class="nav-icon">📝</span>
+    <span class="nav-label">Điền</span>
+  </a>
+  <a href="{{ url_for('index') }}?tab=typing" class="nav-btn" data-page="typing">
+    <span class="nav-icon">⌨️</span>
+    <span class="nav-label">Gõ</span>
+  </a>
+  <a href="{{ url_for('flashcard_login') }}" class="nav-btn active" data-page="flashcard">
+    <span class="nav-icon">📖</span>
+    <span class="nav-label">Flashcard</span>
+  </a>
+  <a href="{{ url_for('exam_library') }}" class="nav-btn" data-page="exam">
+    <span class="nav-icon">✍️</span>
+    <span class="nav-label">Kiểm tra</span>
+  </a>
+  <a href="{{ url_for('multiplayer') }}" class="nav-btn" data-page="multiplayer">
+    <span class="nav-icon">🎮</span>
+    <span class="nav-label">Đấu trường</span>
+  </a>
+</nav>
+
+</body>
+</html>

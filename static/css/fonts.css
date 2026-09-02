@@ -1,0 +1,69 @@
+/* Self-hosted NeueHaasGroteskDisplay font definitions */
+
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-SemiLight.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Regular.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Medium.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Apply globally */
+:root { --font-stack: 'NeueHaasGroteskDisplay', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif }
+html, body { font-family: var(--font-stack); }

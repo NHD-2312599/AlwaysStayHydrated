@@ -1,0 +1,1902 @@
+  <!DOCTYPE html>
+  <html lang="vi">
+  <head>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#386641">
+    <meta charset="UTF-8" />
+  <link rel="stylesheet" href="/static/css/theme.css">
+
+  <style>
+    /* Tokens, fonts and base body/header styles now live in /static/css/theme.css */
+    *, *::before, *::after { margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Header ── */
+    header {
+      width: 100%;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .brand { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .brand-logo { height: 44px; width: auto; display: block; object-fit: contain; }
+
+    .logout-btn {
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 99px;
+      border: 1.5px solid var(--border-solid);
+      background: var(--surface);
+      color: var(--accent);
+      cursor: pointer;
+      transition: all 0.18s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .logout-btn:hover { background: var(--accent); color: #fff; }
+
+    .tab-btn {
+      padding: 7px 18px;
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--text-sec);
+      font-size: 0.85rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      border-radius: 99px;
+      transition: all 0.18s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Layout ── */
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      padding: 48px 32px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ── HOME: Hero ── */
+    .home-hero {
+      position: relative;
+      text-align: center;
+      padding: 64px 24px 36px;
+      overflow: hidden;
+      max-width: 860px;
+      margin: 0 auto 24px;
+    }
+    .home-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top center, rgba(82,183,136,0.18) 0%, transparent 42%),
+                  radial-gradient(circle at 20% 50%, rgba(91,192,235,0.10) 0%, transparent 28%);
+      pointer-events: none;
+      opacity: 0.95;
+      filter: blur(2px);
+    }
+    .home-hero-icon {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 28px;
+      z-index: 1;
+    }
+    .home-hero-icon img {
+      width: 120px;
+      height: 120px;
+      border-radius: 28px;
+      box-shadow: 0 20px 50px rgba(45,106,79,0.18), 0 2px 10px rgba(0,0,0,0.08);
+      animation: heroFloat 4s ease-in-out infinite;
+    }
+    @keyframes heroFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .home-hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--text-pri);
+      letter-spacing: -0.04em;
+      line-height: 1.08;
+      margin-bottom: 14px;
+      z-index: 1;
+      position: relative;
+    }
+    .home-hero h1 span {
+      background: linear-gradient(135deg, #338d75 0%, #74c69d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .home-hero p {
+      color: var(--text-sec);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      max-width: 540px;
+      margin: 0 auto;
+      z-index: 1;
+      position: relative;
+    }
+    .hero-status {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(140px, 1fr));
+      gap: 16px;
+      margin-top: 32px;
+      z-index: 1;
+      position: relative;
+    }
+    
+    .hero-status-card strong {
+      display: block;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #174c36;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    .hero-status-card span {
+      color: var(--text-ter);
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .hero-status-card .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: rgba(82,183,136,0.12);
+      color: #1f4d3d;
+      width: fit-content;
+    }
+
+   
+
+    /* ── HOME: Mode cards ── */
+    .mode-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .mode-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 22px;
+      padding: 34px 26px 30px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.22s cubic-bezier(.34,1.56,.64,1), box-shadow 0.22s ease, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .mode-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--card-accent, var(--accent));
+      border-radius: var(--radius) var(--radius) 0 0;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+    .mode-card:hover::after { transform: scaleX(1); }
+    .mode-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--card-accent, var(--accent));
+    }
+    .mode-card:nth-child(1) { --card-accent: var(--c1); }
+    .mode-card:nth-child(2) { --card-accent: var(--c2); }
+    .mode-card:nth-child(3) { --card-accent: var(--c3); }
+    .mode-card:nth-child(4) { --card-accent: var(--c4); }
+
+    .mode-card-icon {
+      width: 56px; height: 56px;
+      border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+    .mode-card:nth-child(1) .mode-card-icon { background: var(--c1-lt); }
+    .mode-card:nth-child(2) .mode-card-icon { background: var(--c2-lt); }
+    .mode-card:nth-child(3) .mode-card-icon { background: var(--c3-lt); }
+    .mode-card:nth-child(4) .mode-card-icon { background: var(--c4-lt); }
+
+    .mode-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-pri);
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+    .mode-card p {
+      font-size: 0.88rem;
+      color: var(--text-sec);
+      line-height: 1.6;
+      margin: 0;
+      flex: 1;
+    }
+    .mode-card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 20px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.1) 100%), var(--card-accent, var(--accent));
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.18s;
+      letter-spacing: 0.01em;
+      align-self: flex-start;
+      margin-top: 4px;
+      box-shadow: 
+        0 1px 0 rgba(255,255,255,0.4) inset,
+        0 -2px 0 rgba(0,0,0,0.15) inset,
+        0 12px 24px rgba(0,0,0,0.15),
+        0 4px 8px rgba(0,0,0,0.12);
+      transform: translateY(-1px);
+    }
+    .mode-card-btn:hover { opacity: 0.96; transform: translateY(-2px); box-shadow: 
+        0 1px 0 rgba(255,255,255,0.4) inset,
+        0 -2px 0 rgba(0,0,0,0.15) inset,
+        0 16px 32px rgba(0,0,0,0.18),
+        0 6px 12px rgba(0,0,0,0.14); }
+    .mode-card-btn:active { transform: translateY(2px); box-shadow: 
+        0 1px 0 rgba(255,255,255,0.2) inset,
+        0 -2px 0 rgba(0,0,0,0.15) inset,
+        0 4px 8px rgba(0,0,0,0.1); }
+
+    .mode-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .mode-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 24px 28px;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.22s cubic-bezier(.34,1.56,.64,1), box-shadow 0.22s ease, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .mode-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--card-accent, var(--accent));
+      border-radius: var(--radius) var(--radius) 0 0;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+    .mode-card:hover::after { transform: scaleX(1); }
+    .mode-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--card-accent, var(--accent));
+    }
+    .mode-card:nth-child(1) { --card-accent: var(--c1); }
+    .mode-card:nth-child(2) { --card-accent: var(--c2); }
+    .mode-card:nth-child(3) { --card-accent: var(--c3); }
+    .mode-card:nth-child(4) { --card-accent: var(--c4); }
+
+    .mode-card-icon {
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+    .mode-card:nth-child(1) .mode-card-icon { background: var(--c1-lt); }
+    .mode-card:nth-child(2) .mode-card-icon { background: var(--c2-lt); }
+    .mode-card:nth-child(3) .mode-card-icon { background: var(--c3-lt); }
+    .mode-card:nth-child(4) .mode-card-icon { background: var(--c4-lt); }
+
+    .mode-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-pri);
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+    .mode-card p {
+      font-size: 0.88rem;
+      color: var(--text-sec);
+      line-height: 1.6;
+      margin: 0;
+      flex: 1;
+    }
+    .mode-card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.1) 100%), var(--card-accent, var(--accent));
+      color: #fff;
+      border: none;
+      border-radius: 99px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.18s;
+      letter-spacing: 0.01em;
+      align-self: flex-start;
+      margin-top: 4px;
+      box-shadow: 
+        0 1px 0 rgba(255,255,255,0.4) inset,
+        0 -2px 0 rgba(0,0,0,0.15) inset,
+        0 12px 24px rgba(0,0,0,0.15),
+        0 4px 8px rgba(0,0,0,0.12);
+    }
+    .mode-card-btn:hover { opacity: 0.96; transform: translateX(3px); box-shadow: 
+        0 1px 0 rgba(255,255,255,0.4) inset,
+        0 -2px 0 rgba(0,0,0,0.15) inset,
+        0 16px 32px rgba(0,0,0,0.18),
+        0 6px 12px rgba(0,0,0,0.14); }
+
+    /* ── Back button ── */
+    .home-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+      padding: 9px 18px;
+      background: var(--surface);
+      color: var(--text-sec);
+      border: 1.5px solid var(--border);
+      border-radius: 99px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.18s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .home-back-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-lt); }
+
+    /* ── Controls bar ── */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 20px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    }
+    .controls label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-ter);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ── Level selector ── */
+    .level-selector { display: inline-flex; gap: 6px; align-items: center; }
+    .level-btn {
+      padding: 5px 14px;
+      border-radius: 99px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--text-sec);
+      font-size: 0.8rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .level-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .level-btn.active-lv1 { background: #DBEAFE; border-color: #3b82f6; color: #1d4ed8; }
+    .level-btn.active-lv2 { background: var(--amber-lt); border-color: #f59e0b; color: var(--amber); }
+    .level-btn.active-lv3 { background: var(--red-lt); border-color: #ef4444; color: var(--red); }
+
+    .level-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 99px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .level-badge.lv1 { background: #DBEAFE; color: #1d4ed8; }
+    .level-badge.lv2 { background: var(--amber-lt); color: var(--amber); }
+    .level-badge.lv3 { background: var(--red-lt); color: var(--red); }
+    .answer-row.full-input input[type="text"] { width: 100%; flex: none; }
+
+    .range-input-group { display: inline-flex; align-items: center; gap: 6px; }
+    .range-input-group input[type="number"] {
+      width: 60px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      color: var(--text-pri);
+      padding: 7px 6px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-family: inherit;
+      font-weight: 600;
+      text-align: center;
+      outline: none;
+    }
+    select {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      color: var(--text-pri);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.15s;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237EA98D' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 32px;
+    }
+    select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+    /* ── Score bar ── */
+    .score-bar {
+      display: flex;
+      gap: 0;
+      background: var(--surface);
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+    }
+    .score-item {
+      flex: 1; text-align: center;
+      padding: 16px 10px;
+      border-right: 1px solid var(--border);
+      transition: background 0.18s;
+    }
+    .score-item:last-child { border-right: none; }
+    .score-item .num {
+      font-size: 1.9rem; font-weight: 700;
+      letter-spacing: -0.04em; line-height: 1;
+    }
+    .score-item .lbl {
+      font-size: 0.68rem; font-weight: 700;
+      color: var(--text-ter); margin-top: 5px;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .score-item.correct .num { color: var(--green); }
+    .score-item.wrong   .num { color: var(--red); }
+    .score-item.streak  .num { color: var(--amber); }
+    .score-item.total   .num { color: var(--accent); }
+    .progress-wrap {
+      flex: 2; display: flex; flex-direction: column;
+      justify-content: center; gap: 8px;
+      padding: 16px 22px; border-right: 1px solid var(--border);
+    }
+    .progress-wrap .lbl { font-size: 0.75rem; font-weight: 600; color: var(--text-sec); }
+    .progress-bar {
+      height: 8px; background: var(--bg2);
+      border-radius: 99px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green) 0%, #52B788 100%);
+      border-radius: 99px;
+      transition: width 0.5s cubic-bezier(.34,1.56,.64,1);
+    }
+
+    /* ── Question card ── */
+    .card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px;
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+    .chapter-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.72rem; font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-lt);
+      padding: 5px 14px;
+      border-radius: 99px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+      border: 1px solid rgba(45,106,79,0.15);
+    }
+    .question-text {
+      font-family: 'NeueHaasGroteskDisplay', Arial, Helvetica, sans-serif;
+      font-size: 1.3rem; line-height: 1.8;
+      color: var(--text-pri); margin-bottom: 30px;
+    }
+    .blank {
+      display: inline-block; min-width: fit-content;
+      padding: 2px 10px; margin: 0 2px;
+      background: var(--accent-lt);
+      border-bottom: 2.5px solid var(--accent);
+      color: var(--accent); font-style: italic;
+      border-radius: 4px 4px 0 0;
+      white-space: nowrap;
+    }
+
+    /* ── Answer input ── */
+    .answer-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    input[type="text"] {
+      flex: 1; min-width: 200px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      color: var(--text-pri);
+      font-size: 0.95rem; font-family: inherit; font-weight: 500;
+      padding: 11px 16px; outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    input[type="text"]::placeholder { color: var(--text-ter); }
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-glow);
+    }
+    input[type="text"].correct { border-color: var(--green); background: var(--green-lt); box-shadow: none; }
+    input[type="text"].wrong   { border-color: var(--red); background: var(--red-lt); box-shadow: none; }
+
+    .btn {
+      padding: 11px 24px; border: none; border-radius: 99px;
+      font-size: 0.9rem; font-family: inherit; font-weight: 700;
+      cursor: pointer; transition: all 0.18s; white-space: nowrap; letter-spacing: 0.01em;
+      box-shadow: 0 12px 0 rgba(0,0,0,0.08);
+      transform: translateY(-1px);
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn:hover { transform: translateY(0); }
+    .btn:active { transform: translateY(2px); box-shadow: 0 6px 0 rgba(0,0,0,0.08); }
+    .btn-check { background: var(--accent); color: #fff; }
+    .btn-check:hover { background: var(--accent-dk); }
+    .btn-next {
+      background: var(--surface); color: var(--text-sec);
+      border: 1.5px solid var(--border);
+      box-shadow: 0 10px 0 rgba(0,0,0,0.05);
+      transform: translateY(0);
+    }
+    .btn-next:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-lt); }
+    .btn:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
+
+    /* "Câu tiếp theo" in controls */
+    .controls .btn-next {
+      margin-left: auto;
+      border-radius: 99px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+    }
+    .controls .btn-next:hover { background: var(--accent-dk); }
+
+    /* ── Feedback ── */
+    .feedback {
+      margin-top: 18px; padding: 16px 20px; border-radius: var(--radius-sm);
+      font-size: 0.9rem; font-weight: 500; line-height: 1.6; display: none;
+    }
+    .feedback.show { display: block; animation: fadeSlideUp 0.25s ease; }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .feedback.correct-fb { background: var(--green-lt); border: 1px solid rgba(26,122,74,0.25); color: var(--green); }
+    .feedback.wrong-fb   { background: var(--red-lt);   border: 1px solid rgba(185,28,28,0.2); color: var(--red); }
+    .answer-reveal { font-weight: 700; }
+
+    /* ── Divider ── */
+    .section-label {
+      font-size: 0.7rem; font-weight: 700; color: var(--text-ter);
+      text-transform: uppercase; letter-spacing: 0.1em;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::before, .section-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* ── History ── */
+    .history-list { display: flex; flex-direction: column; gap: 6px; max-height: 260px; overflow-y: auto; }
+    .history-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 16px; border-radius: 10px;
+      font-size: 0.85rem; background: var(--surface);
+      border: 1.5px solid var(--border);
+      transition: background 0.15s;
+    }
+    .history-item.h-correct { border-left: 3px solid var(--green); }
+    .history-item.h-wrong   { border-left: 3px solid var(--red); }
+    .h-icon { font-size: 0.95rem; }
+    .h-ref {
+      font-size: 0.72rem; font-weight: 700; color: var(--accent);
+      background: var(--accent-lt); padding: 3px 10px; border-radius: 99px;
+      white-space: nowrap; letter-spacing: 0.03em;
+    }
+    .h-text {
+      color: var(--text-sec); flex: 1;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.85rem;
+    }
+
+    /* ── Loading ── */
+    .loading { text-align: center; padding: 56px 20px; color: var(--text-ter); font-size: 0.9rem; }
+    .spinner {
+      display: inline-block; width: 30px; height: 30px;
+      border: 2.5px solid var(--bg2);
+      border-top-color: var(--accent); border-radius: 50%;
+      animation: spin 0.65s linear infinite; margin-bottom: 14px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Welcome (inside card) ── */
+    .welcome { text-align: center; padding: 56px 24px; }
+    .welcome-icon {
+      width: 72px; height: 72px;
+      background: var(--accent-lt);
+      border-radius: 20px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 34px; margin: 0 auto 24px;
+      box-shadow: 0 4px 16px rgba(45,106,79,0.15);
+    }
+    .welcome h2 {
+      font-size: 1.6rem; color: var(--text-pri);
+      margin-bottom: 12px; font-weight: 700; letter-spacing: -0.02em;
+    }
+    .welcome p {
+      color: var(--text-sec); line-height: 1.7;
+      max-width: 400px; margin: 0 auto 32px; font-size: 0.95rem;
+    }
+    .btn-start {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 36px; font-size: 0.95rem; font-family: inherit; font-weight: 700;
+      background: var(--accent); color: #fff; border: none;
+      border-radius: 99px; cursor: pointer;
+      transition: all 0.18s; letter-spacing: 0.01em;
+      box-shadow: 0 4px 16px rgba(45,106,79,0.3);
+    }
+    .btn-start:hover { background: var(--accent-dk); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,106,79,0.35); }
+
+    footer {
+      padding: 28px; text-align: center;
+      color: var(--text-ter); font-size: 0.78rem;
+      border-top: 1px solid var(--border); width: 100%; margin-top: auto;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Tab visibility ── */
+    #homeTab { display: block; }
+    #fillTab  { display: none; }
+    #typingTab { display: none; }
+
+    /* ── Typing source text ── */
+    .typing-source {
+      background: linear-gradient(135deg, #F0FBF4 0%, #E8F5EE 100%);
+      border: 1.5px solid rgba(45,106,79,0.2);
+      border-radius: var(--radius-sm);
+      padding: 24px 28px; margin-bottom: 24px;
+      font-size: 1.15rem; line-height: 1.85;
+      color: var(--accent-dk);
+      font-family: 'NeueHaasGroteskDisplay', Arial, Helvetica, sans-serif;
+      font-weight: 500;
+      position: relative;
+    }
+    .typing-source::before {
+      content: '"';
+      position: absolute; top: 8px; left: 14px;
+      font-size: 3rem; color: var(--accent-lt);
+      font-family: Georgia, serif; line-height: 1; font-style: normal;
+    }
+
+    /* ── Typing stats ── */
+    .typing-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 14px; margin-bottom: 22px;
+    }
+    .typing-stat {
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px 12px; text-align: center;
+      transition: transform 0.15s;
+    }
+    .typing-stat:hover { transform: translateY(-2px); }
+    .typing-stat-value { font-size: 1.75rem; font-weight: 700; color: var(--accent); letter-spacing: -0.03em; }
+    .typing-stat-label {
+      font-size: 0.68rem; color: var(--text-ter); margin-top: 4px;
+      text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700;
+    }
+
+    /* ── Typing input ── */
+    .typing-input-area { position: relative; }
+    .typing-input-area textarea {
+      width: 100%; min-height: 130px;
+      padding: 18px 20px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'NeueHaasGroteskDisplay', Arial, Helvetica, sans-serif;
+      font-size: 1rem; line-height: 1.65;
+      resize: vertical; outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s;
+      background: var(--surface);
+      color: var(--text-pri);
+    }
+    .typing-input-area textarea::placeholder { color: var(--text-ter); }
+    .typing-input-area textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-glow);
+    }
+    .typing-input-area textarea.typing-active { border-color: var(--accent); }
+    .typing-input-area textarea.typing-complete {
+      border-color: var(--green);
+      background: var(--green-lt);
+      box-shadow: 0 0 0 4px rgba(26,122,74,0.10);
+    }
+    .typing-input-area textarea.typing-error {
+      border-color: var(--red);
+      background: var(--red-lt);
+      box-shadow: 0 0 0 4px rgba(185,28,28,0.08);
+    }
+
+    /* ── Typing actions ── */
+    .typing-actions { display: flex; gap: 14px; margin-top: 18px; }
+    .btn-typing {
+      flex: 1; padding: 13px 20px;
+      background: var(--accent); color: #fff; border: none;
+      border-radius: 99px; font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; transition: all 0.18s; font-family: inherit;
+    }
+    .btn-typing:hover { background: var(--accent-dk); transform: translateY(-1px); }
+    .btn-typing:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+    .btn-typing-reset {
+      flex: 1; background: var(--surface);
+      color: var(--text-sec);
+      border: 1.5px solid var(--border);
+    }
+    .btn-typing-reset:hover { background: var(--accent-lt); border-color: var(--accent); color: var(--accent); }
+
+    /* ── Typing result ── */
+    .typing-result {
+      margin-top: 22px; padding: 20px 24px;
+      border-radius: var(--radius-sm); display: none;
+      background: var(--green-lt);
+      border: 1.5px solid rgba(26,122,74,0.25);
+      animation: fadeSlideUp 0.3s ease;
+    }
+    .typing-result.show { display: block; }
+    .typing-result.error { background: var(--red-lt); border-color: rgba(185,28,28,0.2); color: var(--red); }
+    .typing-result.success { background: var(--green-lt); border-color: rgba(26,122,74,0.25); color: var(--green); }
+
+    /* ── Range inputs ── */
+    .range-input-group.hidden { display: none !important; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      header { padding: 0 16px; }
+      .header-inner { height: 56px; }
+      .container { padding: 24px 16px 48px; }
+      .home-hero { padding: 40px 16px 32px; }
+      .home-hero h1 { font-size: 1.75rem; }
+      .mode-selector { grid-template-columns: 1fr; gap: 14px; }
+      .score-bar { flex-direction: column; }
+      .score-item, .progress-wrap { border-right: none !important; border-bottom: 1px solid var(--border); }
+      .card { padding: 20px; }
+      .answer-row { flex-direction: column; }
+      input[type="text"] { min-width: 100%; width: 100%; }
+      .btn { min-height: 44px; }
+      .question-text { font-size: 1.1rem; line-height: 1.65; }
+      .typing-stats { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      .controls { padding: 12px 14px; gap: 10px; }
+    }
+    @media (max-width: 480px) {
+      .container { padding: 12px 10px 32px; }
+      .card { padding: 16px; }
+      .question-text { font-size: 1rem; }
+      .home-hero-icon img { width: 90px; height: 90px; }
+      .typing-stats { gap: 8px; }
+      .typing-stat-value { font-size: 1.4rem; }
+    }
+    /* .bottom-nav / .nav-btn now come from theme.css; body gets padding via .has-bottom-nav */
+    #badgeToastContainer {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .badge-toast {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #2b2f3a, #1c1f27);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      padding: 12px 16px;
+      min-width: 240px;
+      max-width: 320px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .confetti-piece {
+      position: absolute;
+      width: 8px;
+      height: 14px;
+      background: red;
+      opacity: 0;
+      pointer-events: none;
+      animation: confettiFall 2.4s ease-out forwards;
+      border-radius: 2px;
+    }
+    .confetti-piece::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: inherit;
+      opacity: 0.85;
+      transform: rotate(45deg);
+    }
+    @keyframes confettiFall {
+      0% { opacity: 1; transform: translate3d(0,0,0) rotate(0deg); }
+      100% { opacity: 0; transform: translate3d(0, 180px, 0) rotate(480deg); }
+    }
+  .badge-toast.show {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .badge-toast .badge-toast-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .badge-toast .badge-toast-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.7;
+    margin: 0 0 2px 0;
+  }
+  .badge-toast .badge-toast-name {
+    font-weight: 700;
+    font-size: 15px;
+    margin: 0;
+  }
+  .badge-toast.rarity-rare { border-color: #4fa3ff; }
+  .badge-toast.rarity-epic { border-color: #b24fff; }
+  .badge-toast.rarity-legendary { border-color: #ffd24f; }
+  </style>
+  <link rel="stylesheet" href="/static/css/mobile-responsive.css">
+
+  <script src="/static/js/session-refresh.js"></script>
+  <script src="/static/js/sw-register.js"></script>
+  <script>
+  function showBadgeToasts(achievements) {
+    if (!achievements || !achievements.length) return;
+    let container = document.getElementById('badgeToastContainer');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'badgeToastContainer';
+      document.body.appendChild(container);
+    }
+
+    achievements.forEach((badge, i) => {
+      const toast = document.createElement('div');
+      toast.className = 'badge-toast' + (badge.rarity ? ' rarity-' + badge.rarity : '');
+      toast.innerHTML =
+        '<div class="badge-toast-icon">' + (badge.icon || '🏆') + '</div>' +
+        '<div>' +
+          '<p class="badge-toast-title">Đã đạt thành tích mới</p>' +
+          '<p class="badge-toast-name">' + (badge.name || '') + '</p>' +
+        '</div>';
+      container.appendChild(toast);
+
+      // Stagger hiệu ứng xuất hiện nếu unlock nhiều badge cùng lúc
+      setTimeout(() => toast.classList.add('show'), 50 + i * 150);
+
+      // Tự ẩn và xoá sau vài giây
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000 + i * 150);
+    });
+  }
+  </script>
+  </head>
+
+  <body class="has-bottom-nav">
+  <div id="badgeToastContainer"></div>
+
+
+  <header>
+    <div class="header-inner">
+      <!-- Icon đổi thành Logo chữ ASH, bọc sự kiện click về UI chính -->
+      <div class="brand" onclick="window.location.href='{{ url_for("index") }}'" style="cursor:pointer;">
+        <img src="{{ url_for('static', filename='pictures/Logo2.png') }}" alt="Always Stay Hydrated Logo"width="120">
+      </div>
+        
+      <div style="display:flex; gap:12px; align-items:center;">
+        {% if session.get('user') %}
+          <div style="color:var(--text-sec); font-weight:600;">Xin chào, {{ session.get('user') }}</div>
+          <a href="{{ url_for('logout') }}" class="logout-btn" onclick="clearAshCaches()">Đăng Xuất</a>
+        {% else %}
+          <a href="/login" class="tab-btn">Đăng nhập</a>
+          <a href="/register" class="tab-btn">Đăng ký</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- Tab Home: Mode Selection -->
+    <div id="homeTab">
+
+      <!-- Hero -->
+      <div class="home-hero">
+        <div class="home-hero-icon">
+          <img src="{{ url_for('static', filename='pictures/Icon.png') }}" alt="Always Stay Hydrated Logo">
+        </div>
+        <h1>Đóng Ấn <span>Ngôi Lời</span><br>Vào Trong Lòng</h1>
+        <p>Chọn cách học bạn muốn để ghi khắc sách Khải Huyền<br>Từng câu, từng chữ, từng ngày.</p>
+      </div>
+
+
+      <div class="mode-selector">
+        <!-- Mode 1: Điền chỗ trống -->
+        <div class="mode-card" onclick="selectMode('fill')">
+          <div class="mode-card-icon">📝</div>
+          <h3>Điền vào Chỗ Trống</h3>
+          <p>Hoàn thành câu Kinh thánh bằng cách điền từ hoặc cụm từ còn thiếu. Ghi khắc Ngôi lời trọn vẹn qua từng lần thực hành.</p>
+          <button class="mode-card-btn">Bắt đầu →</button>
+        </div>
+
+        <!-- Mode 2: Luyện gõ 10 ngón -->
+        <div class="mode-card" onclick="selectMode('typing')">
+          <div class="mode-card-icon">⌨️</div>
+          <h3>Luyện Gõ 10 Ngón</h3>
+          <p>Gõ lại câu Kinh thánh chính xác nhất. Đo tốc độ (WPM) và độ chính xác — vừa học Khải Huyền, vừa luyện đánh máy.</p>
+          <button class="mode-card-btn">Bắt đầu →</button>
+        </div>
+
+        <!-- Mode 3: Flashcard -->
+        <div class="mode-card" onclick="selectMode('flashcard')">
+          <div class="mode-card-icon">📖</div>
+          <h3>Flashcard — Thẻ Ghi Nhớ</h3>
+          <p>Học bằng thẻ 4 mặt: Tiêu đề, Trích đoạn, Giải nghĩa và Gợi ý Speech. Theo dõi tiến độ và đánh dấu những phần cần ôn tập.</p>
+          <button class="mode-card-btn">Bắt đầu →</button>
+        </div>
+
+        <!-- Mode 4: Kiểm tra đóng ấn -->
+        <div class="mode-card" onclick="window.location.href='/exam_library'">
+          <div class="mode-card-icon">✍🏻</div>
+          <h3>Kiểm Tra Đóng Ấn</h3>
+          <p>Kiểm tra kiến thức qua bài thi điền thông tin. Nộp bài để xem kết quả chi tiết từng câu và theo dõi tiến bộ.</p>
+          <button class="mode-card-btn">Vào Làm Bài →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 1: Fill in the blank -->
+    <div id="fillTab">
+      <button class="home-back-btn" onclick="switchTab('home')">← Quay lại</button>
+
+    <!-- Controls -->
+    <div class="controls">
+      <label>CHỌN ĐOẠN</label>
+      <select id="chapterSelect" onchange="toggleRangeInputs('fill')">
+        <option value="random">Ngẫu nhiên — tất cả 22 đoạn</option>
+      </select>
+      
+      <label>CHẾ ĐỘ</label>
+      <select id="fillModeSelect" onchange="handleFillModeChange()">
+        <option value="random">Ngẫu nhiên</option>
+        <option value="sequential">Tuần tự</option>
+      </select>
+      
+      <div id="fillRangeGroup" class="range-input-group hidden">
+        <label>Từ câu</label>
+        <input type="number" id="fillStartVerse" min="1" value="1">
+        <label>Đến câu</label>
+        <input type="number" id="fillEndVerse" min="1" value="10">
+      </div>
+
+      <!-- Level selector -->
+      <label>ĐỘ KHÓ</label>
+      <div class="level-selector">
+        <button class="level-btn active-lv1" id="lvBtn1" onclick="setFillLevel(1)" title="Ẩn 3–5 từ">Lv 1</button>
+        <button class="level-btn" id="lvBtn2" onclick="setFillLevel(2)" title="Ẩn 10–15 từ">Lv 2</button>
+        <button class="level-btn" id="lvBtn3" onclick="setFillLevel(3)" title="Điền cả câu">Lv 3</button>
+      </div>
+
+      <button class="btn btn-next" onclick="loadQuestion()" style="margin-left:auto;">
+        Câu tiếp theo →
+      </button>
+    </div>
+
+    <!-- Score bar -->
+    <div class="score-bar">
+      <div class="score-item correct">
+        <div class="num" id="scoreCorrect">0</div>
+        <div class="lbl">Đúng</div>
+      </div>
+      <div class="score-item wrong">
+        <div class="num" id="scoreWrong">0</div>
+        <div class="lbl">Sai</div>
+      </div>
+      <div class="score-item streak">
+        <div class="num" id="scoreStreak">0</div>
+        <div class="lbl">Liên tiếp</div>
+      </div>
+      <div class="progress-wrap">
+        <div class="lbl" id="accuracyLabel">Độ chính xác: —</div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="score-item total">
+        <div class="num" id="scoreTotal">0</div>
+        <div class="lbl">Tổng</div>
+      </div>
+    </div>
+
+    <!-- Question card -->
+    <div class="card" id="cardArea">
+      <div class="welcome">
+        <div class="welcome-icon">📖</div>
+        <h2>Ready to start?</h2>
+        <p>Chọn đoạn muốn ôn tập hoặc để chế độ <strong>Ngẫu nhiên</strong> để luyện toàn bộ 22 đoạn Khải Huyền.</p>
+        <button class="btn-start" onclick="loadQuestion()">Bắt đầu học ngay →</button>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div id="historySection" style="display:none">
+      <div class="section-label">Lịch sử câu hỏi</div>
+      <div style="height:12px"></div>
+      <div class="history-list" id="historyList"></div>
+    </div>
+    </div>
+
+    <!-- Tab 2: Typing practice -->
+    <div id="typingTab">
+      <button class="home-back-btn" onclick="switchTab('home')">← Quay lại</button>
+
+    <!-- Typing controls -->
+    <div class="controls">
+      <label>CHỌN ĐOẠN</label>
+      <select id="typingChapterSelect" onchange="toggleRangeInputs('typing')">
+        <option value="random">Ngẫu nhiên — tất cả 22 đoạn</option>
+      </select>
+
+      <label>CHẾ ĐỘ</label>
+      <select id="typingModeSelect" onchange="handleTypingModeChange()">
+        <option value="random">Ngẫu nhiên</option>
+        <option value="sequential">Tuần tự</option>
+      </select>
+
+      <div id="typingRangeGroup" class="range-input-group hidden">
+        <label>Từ câu</label>
+        <input type="number" id="typingStartVerse" min="1" value="1">
+        <label>Đến câu</label>
+        <input type="number" id="typingEndVerse" min="1" value="10">
+      </div>
+
+      <button class="btn btn-next" onclick="loadTypingQuestion()" style="margin-left:auto;">
+        Câu tiếp theo →
+      </button>
+    </div>
+
+    <!-- Typing card -->
+    <div class="card" id="typingCardArea">
+      <div class="welcome">
+        <div class="welcome-icon">⌨️</div>
+        <h2>Luyện tập gõ 10 ngón</h2>
+        <p>Gõ lại câu Kinh thánh một cách chính xác nhất. Hệ thống sẽ tính tốc độ (WPM) và độ chính xác (%).</p>
+        <button class="btn-start" onclick="loadTypingQuestion()">Bắt đầu luyện tập →</button>
+      </div>
+    </div>
+    </div>
+
+  </div>
+
+  </div>
+
+  <nav class="bottom-nav" aria-label="Điều hướng chính">
+    <button type="button" class="nav-btn active" data-page="home" onclick="switchTab('home')">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Trang chủ</span>
+    </button>
+    <button type="button" class="nav-btn" data-page="fill" onclick="switchTab('fill')">
+      <span class="nav-icon">📝</span>
+      <span class="nav-label">Điền</span>
+    </button>
+    <button type="button" class="nav-btn" data-page="typing" onclick="switchTab('typing')">
+      <span class="nav-icon">⌨️</span>
+      <span class="nav-label">Gõ</span>
+    </button>
+    <button type="button" class="nav-btn" data-page="flashcard" onclick="window.location.href='/flashcard/login'">
+      <span class="nav-icon">📖</span>
+      <span class="nav-label">Flashcard</span>
+    </button>
+    <button type="button" class="nav-btn" data-page="exam" onclick="window.location.href='/exam_library'">
+      <span class="nav-icon">✍️</span>
+      <span class="nav-label">Kiểm tra</span>
+    </button>
+    <button type="button" class="nav-btn" data-page="multiplayer" onclick="window.location.href='/multiplayer'">
+      <span class="nav-icon">🎮</span>
+      <span class="nav-label">Đấu trường</span>
+    </button>
+  </nav>
+
+
+  <script>
+    const state = {
+      correct: 0, wrong: 0, streak: 0, total: 0,
+      currentAnswer: null,
+      answered: false,
+      history: [],
+      mode: 'random', // 'random' or 'sequential'
+      sequentialQuestions: [], // Lưu tất cả câu hỏi cho chế độ tuần tự
+      currentQuestionIndex: 0, // Chỉ số câu hỏi hiện tại trong chế độ tuần tự
+      fillLevel: 1 // Level điền chỗ trống: 1 (3-5 từ), 2 (10-15 từ), 3 (cả câu)
+    };
+
+    const typingState = {
+      currentText: null,
+      currentChapter: null,
+      currentVerse: null,
+      started: false,
+      startTime: null,
+      timerInterval: null,
+      mode: 'random', // 'random' or 'sequential'
+      sequentialQuestions: [], // Lưu tất cả câu hỏi cho chế độ tuần tự
+      currentQuestionIndex: 0,     // Chỉ số câu hỏi hiện tại trong chế độ tuần tự
+      lastPerfectVerse: null,       // Câu vừa gõ hoàn hảo gần nhất (dạng "chapter:verse")
+      sameVersePerfectStreak: 0     // Số lần gõ hoàn hảo cùng 1 câu liên tiếp
+    };
+
+    // Lưu trữ thông tin số lượng câu tối đa của từng đoạn để thiết lập UI cho chuẩn
+    let chaptersInfo = {};
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // NAVIGATION & TAB SWITCHING
+    // ═══════════════════════════════════════════════════════════════════════════
+    function selectMode(mode) {
+      if (mode === 'flashcard') {
+        window.location.href = '/flashcard/login';
+      } else {
+        switchTab(mode);
+      }
+    }
+
+    function switchTab(tab) {
+      const homeTab = document.getElementById('homeTab');
+      const fillTab = document.getElementById('fillTab');
+      const typingTab = document.getElementById('typingTab');
+      const navButtons = document.querySelectorAll('.nav-btn');
+
+      homeTab.style.display = 'none';
+      fillTab.style.display = 'none';
+      typingTab.style.display = 'none';
+
+      navButtons.forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.nav-btn[data-page="${tab}"]`)?.classList.add('active');
+
+      if (tab === 'home') {
+        homeTab.style.display = 'block';
+      } else if (tab === 'fill') {
+        fillTab.style.display = 'block';
+      } else if (tab === 'typing') {
+        typingTab.style.display = 'block';
+      }
+
+      const url = new URL(window.location);
+      if (tab === 'home') { url.searchParams.delete('tab'); } else { url.searchParams.set('tab', tab); }
+      window.history.replaceState({}, '', url);
+    }
+
+    // Cho phép các trang khác liên kết thẳng tới /home?tab=fill hoặc /home?tab=typing
+    (function initTabFromUrl() {
+      const requested = new URLSearchParams(window.location.search).get('tab');
+      if (requested === 'fill' || requested === 'typing') {
+        switchTab(requested);
+      }
+    })();
+
+
+    function launchConfetti() {
+      const body = document.body;
+      const colors = ['#F59E0B', '#10B981', '#6366F1', '#EF4444', '#14B8A6'];
+      for (let i = 0; i < 24; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti-piece';
+        const size = Math.random() * 10 + 6;
+        confetti.style.width = `${Math.round(size)}px`;
+        confetti.style.height = `${Math.round(size * 1.4)}px`;
+        confetti.style.left = `${Math.random() * 100}%`;
+        confetti.style.top = `${Math.random() * 20}%`;
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = `${Math.random() * 0.35}s`;
+        confetti.style.opacity = '0';
+        body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 2600);
+      }
+    }
+
+    // Ẩn/Hiện nhóm nhập Từ câu -> Đến câu tùy thuộc vào việc chọn Đoạn cụ thể hay Ngẫu nhiên
+    function toggleRangeInputs(mode) {
+      if (mode === 'fill') {
+        const ch = document.getElementById('chapterSelect').value;
+        const group = document.getElementById('fillRangeGroup');
+        if (ch === 'random') {
+          group.classList.add('hidden');
+        } else {
+          group.classList.remove('hidden');
+          const maxCount = chaptersInfo[ch] ? chaptersInfo[ch].count : 50;
+          document.getElementById('fillEndVerse').value = maxCount;
+          document.getElementById('fillEndVerse').max = maxCount;
+        }
+      } else if (mode === 'typing') {
+        const ch = document.getElementById('typingChapterSelect').value;
+        const group = document.getElementById('typingRangeGroup');
+        if (ch === 'random') {
+          group.classList.add('hidden');
+        } else {
+          group.classList.remove('hidden');
+          const maxCount = chaptersInfo[ch] ? chaptersInfo[ch].count : 50;
+          document.getElementById('typingEndVerse').value = maxCount;
+          document.getElementById('typingEndVerse').max = maxCount;
+        }
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // FILL IN THE BLANK MODE
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    fetch('/api/chapters').then(r => r.json()).then(data => {
+      chaptersInfo = data;
+      const sel = document.getElementById('chapterSelect');
+      const tsel = document.getElementById('typingChapterSelect');
+      for (let ch = 1; ch <= 22; ch++) {
+        const info = data[ch] || {count: 0};
+        const opt = document.createElement('option');
+        opt.value = ch;
+        opt.textContent = `Đoạn ${ch}  (${info.count} câu)`;
+        sel.appendChild(opt);
+        const topt = opt.cloneNode(true);
+        tsel.appendChild(topt);
+      }
+    }).catch(err => {
+      console.error('Failed to load chapters:', err);
+      // Set default chapters if loading fails
+      const sel = document.getElementById('chapterSelect');
+      const tsel = document.getElementById('typingChapterSelect');
+      for (let ch = 1; ch <= 22; ch++) {
+        const opt = document.createElement('option');
+        opt.value = ch;
+        opt.textContent = `Đoạn ${ch}`;
+        sel.appendChild(opt);
+        const topt = opt.cloneNode(true);
+        tsel.appendChild(topt);
+      }
+    });
+
+    function handleFillModeChange() {
+      const mode = document.getElementById('fillModeSelect').value;
+      state.mode = mode;
+      if (mode === 'sequential') {
+        // Reset sequential state
+        state.sequentialQuestions = [];
+        state.currentQuestionIndex = 0;
+      }
+    }
+
+    function setFillLevel(level) {
+      state.fillLevel = level;
+      // Reset sequential cache vì level thay đổi thì câu hỏi phải reload
+      state.sequentialQuestions = [];
+      state.currentQuestionIndex = 0;
+
+      // Cập nhật UI buttons
+      [1, 2, 3].forEach(l => {
+        const btn = document.getElementById(`lvBtn${l}`);
+        btn.className = 'level-btn' + (l === level ? ` active-lv${l}` : '');
+      });
+
+      const labels = {
+        1: 'Lv 1 — Dễ (ẩn 3–5 từ)',
+        2: 'Lv 2 — Trung bình (ẩn 10–15 từ)',
+        3: 'Lv 3 — Khó (điền cả câu)'
+      };
+      // Nếu đang hiển thị câu hỏi thì load câu mới ngay
+      const cardArea = document.getElementById('cardArea');
+      if (cardArea && !cardArea.querySelector('.welcome')) {
+        loadQuestion();
+      }
+    }
+
+    function handleTypingModeChange() {
+      const mode = document.getElementById('typingModeSelect').value;
+      typingState.mode = mode;
+      if (mode === 'sequential') {
+        // Reset sequential state
+        typingState.sequentialQuestions = [];
+        typingState.currentQuestionIndex = 0;
+      }
+    }
+
+    function loadQuestion() {
+      const chapter = document.getElementById('chapterSelect').value;
+      const mode = state.mode;
+      const level = state.fillLevel || 1;
+      
+      // ─────── SEQUENTIAL MODE ───────
+      if (mode === 'sequential') {
+        // Nếu đã load tất cả câu, lấy câu kế tiếp từ danh sách
+        if (state.sequentialQuestions.length > 0) {
+          if (state.currentQuestionIndex < state.sequentialQuestions.length) {
+            const question = state.sequentialQuestions[state.currentQuestionIndex];
+            state.currentQuestionIndex++;
+            renderQuestion(question, state.currentQuestionIndex, state.sequentialQuestions.length);
+            return;
+          } else {
+            // Hết câu, reset và load lại
+            state.sequentialQuestions = [];
+            state.currentQuestionIndex = 0;
+          }
+        }
+
+        // Load tất cả câu cho lần đầu tiên
+        state.answered = false;
+        state.currentAnswer = null;
+
+        document.getElementById('cardArea').innerHTML = `
+          <div class="loading">
+            <div class="spinner"></div>
+            <div>Đang tải câu hỏi…</div>
+          </div>`;
+
+        let url = `/api/question?chapter=${chapter}&get_all=true&level=${level}`;
+        if (chapter !== 'random') {
+          const start = document.getElementById('fillStartVerse').value || 1;
+          const end = document.getElementById('fillEndVerse').value || 99;
+          url += `&start_verse=${start}&end_verse=${end}`;
+        }
+
+        fetch(url + `&_=${Date.now()}`)
+          .then(r => r.json())
+          .then(data => {
+            if (Array.isArray(data)) {
+              state.sequentialQuestions = data;
+              state.currentQuestionIndex = 0;
+              if (data.length > 0) {
+                const question = data[0];
+                state.currentQuestionIndex++;
+                renderQuestion(question, 1, data.length);
+              } else {
+                document.getElementById('cardArea').innerHTML =
+                  `<div class="loading">Không có câu hỏi nào trong khoảng đã chọn.</div>`;
+              }
+            }
+          })
+          .catch(() => {
+            document.getElementById('cardArea').innerHTML =
+              `<div class="loading">Lỗi tải câu hỏi (hoặc không tìm thấy câu trong khoảng đã chọn). Thử lại.</div>`;
+          });
+      }
+      // ─────── RANDOM MODE ───────
+      else {
+        // Mỗi lần luôn fetch một câu ngẫu nhiên mới
+        state.answered = false;
+        state.currentAnswer = null;
+
+        document.getElementById('cardArea').innerHTML = `
+          <div class="loading">
+            <div class="spinner"></div>
+            <div>Đang tải câu hỏi…</div>
+          </div>`;
+
+        let url = `/api/question?chapter=${chapter}&level=${level}`;
+        if (chapter !== 'random') {
+          const start = document.getElementById('fillStartVerse').value || 1;
+          const end = document.getElementById('fillEndVerse').value || 99;
+          url += `&start_verse=${start}&end_verse=${end}`;
+        }
+
+        fetch(url + `&_=${Date.now()}`)
+          .then(r => r.json())
+          .then(data => {
+            if (!Array.isArray(data)) {
+              renderQuestion(data, null, null);
+            }
+          })
+          .catch(() => {
+            document.getElementById('cardArea').innerHTML =
+              `<div class="loading">Lỗi tải câu hỏi (hoặc không tìm thấy câu trong khoảng đã chọn). Thử lại.</div>`;
+          });
+      }
+    }
+
+    function renderQuestion(data, currentIndex, totalQuestions) {
+      state.currentAnswer = data.answer;
+      state.answered = false;
+
+      const level = data.level || state.fillLevel || 1;
+
+      // Level badge
+      const levelLabels = { 1: '🟢 Lv 1 — Dễ', 2: '🟡 Lv 2 — Trung bình', 3: '🔴 Lv 3 — Khó' };
+      const levelBadge = `<span class="level-badge lv${level}">${levelLabels[level]}</span>`;
+
+      // Xây dựng nội dung câu hỏi theo level
+      let questionHTML;
+      if (level === 3) {
+        // Level 3: Không hiển thị câu — chỉ hiển thị tham chiếu, yêu cầu điền cả câu
+        questionHTML = `<div class="question-text" style="color:var(--text-sec);font-style:italic;">Hãy điền đúng toàn bộ câu Khải Huyền ${data.chapter}:${data.verse}</div>`;
+      } else {
+        const qText = data.question.replace('___________',
+          '<span class="blank">___________</span>');
+        questionHTML = `<div class="question-text">${qText}</div>`;
+      }
+
+      // Placeholder theo level
+      const placeholders = {
+        1: 'Điền vào chỗ trống (3–5 từ)…',
+        2: 'Điền vào chỗ trống (10–15 từ)…',
+        3: 'Điền toàn bộ câu…'
+      };
+
+      // Thêm indicator "Câu X / Y" nếu ở chế độ tuần tự
+      const indexIndicator = currentIndex && totalQuestions 
+        ? `<div style="font-size: 0.85rem; color: var(--text-ter); margin-bottom: 10px; text-align: center;">Câu ${currentIndex} / ${totalQuestions}</div>` 
+        : '';
+
+      // Level 3 dùng textarea để dễ gõ dài
+      const inputEl = level === 3
+        ? `<textarea id="answerInput" placeholder="${placeholders[3]}"
+            rows="3" autocomplete="off" spellcheck="false"
+            style="width:100%;resize:vertical;padding:10px;border-radius:8px;
+                    border:1.5px solid var(--border);background:var(--surface);
+                    color:var(--text-pri);font-size:1rem;font-family:inherit;
+                    outline:none;box-sizing:border-box;"></textarea>`
+        : `<input type="text" id="answerInput" placeholder="${placeholders[level]}"
+            autocomplete="off" spellcheck="false" />`;
+
+      const answerRowClass = level === 3 ? 'answer-row full-input' : 'answer-row';
+
+      document.getElementById('cardArea').innerHTML = `
+        <div class="chapter-badge">Khải Huyền ${data.chapter}:${data.verse}</div>
+        ${levelBadge}
+        ${indexIndicator}
+        ${questionHTML}
+        <div class="${answerRowClass}">
+          ${inputEl}
+          <button class="btn btn-check" id="checkBtn" onclick="checkAnswer()">Kiểm tra</button>
+          <button class="btn btn-next" onclick="loadQuestion()">Câu tiếp →</button>
+        </div>
+        <div class="feedback" id="feedback"></div>
+      `;
+
+      const inp = document.getElementById('answerInput');
+      inp.focus();
+      inp.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && (level !== 3 || e.ctrlKey)) {
+          // Level 3: Enter thường để xuống hàng; Ctrl+Enter để kiểm tra
+          // Level 1 & 2: Enter bình thường để kiểm tra
+          e.preventDefault();
+          if (!state.answered) checkAnswer();
+          else loadQuestion();
+        }
+      });
+    }
+
+    function normalize(str) {
+      return str.trim().toLowerCase()
+        .replace(/[.,;:!?"""'']/g, '')
+        .replace(/\s+/g, ' ');
+    }
+
+    function checkAnswer() {
+      if (state.answered) return;
+      const inp = document.getElementById('answerInput');
+      const userAns = inp.value.trim();
+      if (!userAns) { inp.focus(); return; }
+
+      state.answered = true;
+      state.total++;
+      document.getElementById('scoreTotal').textContent = state.total;
+
+      const correct = normalize(userAns) === normalize(state.currentAnswer);
+      const fb = document.getElementById('feedback');
+
+      if (correct) {
+        state.correct++;
+        state.streak++;
+        inp.classList.add('correct');
+        fb.className = 'feedback show correct-fb';
+        fb.innerHTML = `✓ <strong>Chính xác!</strong> Đáp án: <span class="answer-reveal">${state.currentAnswer}</span>`;
+        addHistory(true, userAns);
+        launchConfetti();
+      } else {
+        state.wrong++;
+        state.streak = 0;
+        inp.classList.add('wrong');
+        fb.className = 'feedback show wrong-fb';
+        fb.innerHTML = `✗ <strong>Chưa đúng.</strong> Đáp án: <span class="answer-reveal">${state.currentAnswer}</span>`;
+        addHistory(false, userAns);
+      }
+
+      document.getElementById('scoreCorrect').textContent = state.correct;
+      document.getElementById('scoreWrong').textContent = state.wrong;
+      document.getElementById('scoreStreak').textContent = state.streak;
+
+      const pct = Math.round(state.correct / state.total * 100);
+      document.getElementById('accuracyLabel').textContent = `Độ chính xác: ${pct}%`;
+      document.getElementById('progressFill').style.width = pct + '%';
+
+      document.getElementById('checkBtn').disabled = true;
+      inp.readOnly = true;
+    }
+
+    function addHistory(isCorrect, userAns) {
+      const badge = document.querySelector('.chapter-badge');
+      const ref = badge ? badge.textContent.trim() : '';
+      const questionEl = document.querySelector('.question-text');
+      const qText = questionEl ? questionEl.textContent.trim() : '';
+      state.history.unshift({ correct: isCorrect, ref, qText, userAns });
+      if (state.history.length > 20) state.history.pop();
+      renderHistory();
+    }
+
+    function renderHistory() {
+      document.getElementById('historySection').style.display = 'block';
+      document.getElementById('historyList').innerHTML = state.history.map(h => `
+        <div class="history-item ${h.correct ? 'h-correct' : 'h-wrong'}">
+          <span class="h-icon">${h.correct ? '✓' : '✗'}</span>
+          <span class="h-ref">${h.ref}</span>
+          <span class="h-text">${h.qText.replace('___________', `[${h.userAns}]`)}</span>
+        </div>
+      `).join('');
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // TYPING PRACTICE MODE
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    function loadTypingQuestion() {
+      const chapter = document.getElementById('typingChapterSelect').value;
+      const mode = typingState.mode;
+      
+      // ─────── SEQUENTIAL MODE ───────
+      if (mode === 'sequential') {
+        // Nếu đã load tất cả câu, lấy câu kế tiếp từ danh sách
+        if (typingState.sequentialQuestions.length > 0) {
+          if (typingState.currentQuestionIndex < typingState.sequentialQuestions.length) {
+            const question = typingState.sequentialQuestions[typingState.currentQuestionIndex];
+            typingState.currentQuestionIndex++;
+            renderTypingQuestion(question, typingState.currentQuestionIndex, typingState.sequentialQuestions.length);
+            return;
+          } else {
+            // Hết câu, reset và load lại
+            typingState.sequentialQuestions = [];
+            typingState.currentQuestionIndex = 0;
+          }
+        }
+
+        // Load tất cả câu cho lần đầu tiên
+        typingState.started = false;
+        typingState.currentText = null;
+
+        document.getElementById('typingCardArea').innerHTML = `
+          <div class="loading">
+            <div class="spinner"></div>
+            <div>Đang tải câu hỏi…</div>
+          </div>`;
+
+        let url = `/api/typing-question?chapter=${chapter}&get_all=true`;
+        if (chapter !== 'random') {
+          const start = document.getElementById('typingStartVerse').value || 1;
+          const end = document.getElementById('typingEndVerse').value || 99;
+          url += `&start_verse=${start}&end_verse=${end}`;
+        }
+
+        fetch(url + `&_=${Date.now()}`)
+          .then(r => r.json())
+          .then(data => {
+            if (Array.isArray(data)) {
+              typingState.sequentialQuestions = data;
+              typingState.currentQuestionIndex = 0;
+              if (data.length > 0) {
+                const question = data[0];
+                typingState.currentQuestionIndex++;
+                renderTypingQuestion(question, 1, data.length);
+              } else {
+                document.getElementById('typingCardArea').innerHTML =
+                  `<div class="loading">Không có câu hỏi nào trong khoảng đã chọn.</div>`;
+              }
+            }
+          })
+          .catch(() => {
+            document.getElementById('typingCardArea').innerHTML =
+              `<div class="loading">Lỗi tải câu hỏi (hoặc không tìm thấy câu trong khoảng đã chọn). Thử lại.</div>`;
+          });
+      }
+      // ─────── RANDOM MODE ───────
+      else {
+        // Mỗi lần luôn fetch một câu ngẫu nhiên mới
+        typingState.started = false;
+        typingState.currentText = null;
+
+        document.getElementById('typingCardArea').innerHTML = `
+          <div class="loading">
+            <div class="spinner"></div>
+            <div>Đang tải câu hỏi…</div>
+          </div>`;
+
+        let url = `/api/typing-question?chapter=${chapter}`;
+        if (chapter !== 'random') {
+          const start = document.getElementById('typingStartVerse').value || 1;
+          const end = document.getElementById('typingEndVerse').value || 99;
+          url += `&start_verse=${start}&end_verse=${end}`;
+        }
+
+        fetch(url + `&_=${Date.now()}`)
+          .then(r => r.json())
+          .then(data => {
+            if (!Array.isArray(data)) {
+              renderTypingQuestion(data, null, null);
+            }
+          })
+          .catch(() => {
+            document.getElementById('typingCardArea').innerHTML =
+              `<div class="loading">Lỗi tải câu hỏi (hoặc không tìm thấy câu trong khoảng đã chọn). Thử lại.</div>`;
+          });
+      }
+    }
+
+    function renderTypingQuestion(data, currentIndex, totalQuestions) {
+      typingState.currentText = data.text;
+      typingState.currentChapter = data.chapter;
+      typingState.currentVerse = data.verse;
+      typingState.started = false;
+
+      // Thêm indicator "Câu X / Y" nếu ở chế độ tuần tự
+      const indexIndicator = currentIndex && totalQuestions 
+        ? `<div style="font-size: 0.85rem; color: var(--text-ter); margin-bottom: 10px; text-align: center;">Câu ${currentIndex} / ${totalQuestions}</div>` 
+        : '';
+
+      document.getElementById('typingCardArea').innerHTML = `
+        <div class="chapter-badge">Khải Huyền ${data.chapter}:${data.verse}</div>
+        ${indexIndicator}
+        
+        <div class="typing-source">
+          ${data.text}
+        </div>
+
+        <div class="typing-stats">
+          <div class="typing-stat">
+            <div class="typing-stat-value" id="typingTime">0:00</div>
+            <div class="typing-stat-label">Thời gian</div>
+          </div>
+          <div class="typing-stat">
+            <div class="typing-stat-value" id="typingWPM">0</div>
+            <div class="typing-stat-label">WPM</div>
+          </div>
+          <div class="typing-stat">
+            <div class="typing-stat-value" id="typingAccuracy">0%</div>
+            <div class="typing-stat-label">Độ chính xác</div>
+          </div>
+        </div>
+
+        <div class="typing-input-area">
+          <textarea id="typingInput" placeholder="Gõ lại câu Kinh thánh ở đây…" 
+                    spellcheck="false"></textarea>
+        </div>
+
+        <div class="typing-actions">
+          <button class="btn btn-typing" id="typingSubmitBtn" onclick="submitTyping()">
+            Hoàn thành
+          </button>
+          <button class="btn btn-typing btn-typing-reset" onclick="loadTypingQuestion()">
+            Câu tiếp →
+          </button>
+        </div>
+
+        <div class="typing-result" id="typingResult"></div>
+      `;
+
+      const textarea = document.getElementById('typingInput');
+      textarea.focus();
+
+      textarea.addEventListener('input', () => {
+        if (!typingState.started && textarea.value.length > 0) {
+          typingState.started = true;
+          typingState.startTime = Date.now();
+          startTypingTimer();
+        }
+        if (typingState.started) {
+          updateTypingStats();
+        }
+      });
+    }
+
+    function startTypingTimer() {
+      typingState.timerInterval = setInterval(() => {
+        if (!typingState.started) {
+          clearInterval(typingState.timerInterval);
+          return;
+        }
+        const elapsed = Math.floor((Date.now() - typingState.startTime) / 1000);
+        const mins = Math.floor(elapsed / 60);
+        const secs = elapsed % 60;
+        document.getElementById('typingTime').textContent = 
+          `${mins}:${secs.toString().padStart(2, '0')}`;
+      }, 100);
+    }
+
+    function updateTypingStats() {
+      const textarea = document.getElementById('typingInput');
+      const typedText = textarea.value;
+      const originalText = typingState.currentText;
+      const elapsed = (Date.now() - typingState.startTime) / 1000;
+
+      let correctChars = 0;
+      const totalChars = Math.max(originalText.length, typedText.length);
+      for (let i = 0; i < Math.min(originalText.length, typedText.length); i++) {
+        if (originalText[i] === typedText[i]) correctChars++;
+      }
+      const accuracy = totalChars > 0 ? Math.round(correctChars / totalChars * 100) : 0;
+
+      const wordCount = originalText.split(/\s+/).length;
+      const minutes = Math.max(elapsed / 60, 0.01);
+      const wpm = Math.round(wordCount / minutes);
+
+      document.getElementById('typingWPM').textContent = wpm;
+      document.getElementById('typingAccuracy').textContent = accuracy + '%';
+
+      if (typedText.length > 0) {
+        if (typedText === originalText) {
+          textarea.classList.remove('typing-active', 'typing-error');
+          textarea.classList.add('typing-complete');
+        } else if (originalText.startsWith(typedText)) {
+          textarea.classList.remove('typing-complete', 'typing-error');
+          textarea.classList.add('typing-active');
+        } else {
+          textarea.classList.remove('typing-complete', 'typing-active');
+          textarea.classList.add('typing-error');
+        }
+      }
+    }
+
+    function submitTyping() {
+      const textarea = document.getElementById('typingInput');
+      const typedText = textarea.value;
+      const originalText = typingState.currentText;
+      const elapsed = Math.floor((Date.now() - typingState.startTime) / 1000);
+
+      if (!typingState.started || !typedText.trim()) {
+        alert('Vui lòng gõ câu trước khi kiểm tra!');
+        return;
+      }
+
+      fetch('/api/check-typing', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          original: originalText,
+          typed: typedText,
+          time_seconds: elapsed,
+          same_verse_perfect_streak: typingState.sameVersePerfectStreak
+        })
+      })
+        .then(r => r.json())
+        .then(result => {
+          clearInterval(typingState.timerInterval);
+          textarea.disabled = true;
+          document.getElementById('typingSubmitBtn').disabled = true;
+
+          // Cập nhật same_verse_perfect_streak
+          const verseKey = `${typingState.currentChapter}:${typingState.currentVerse}`;
+          if (result.is_perfect) {
+            if (typingState.lastPerfectVerse === verseKey) {
+              typingState.sameVersePerfectStreak++;
+            } else {
+              typingState.sameVersePerfectStreak = 1;
+              typingState.lastPerfectVerse = verseKey;
+            }
+          } else {
+            typingState.sameVersePerfectStreak = 0;
+            typingState.lastPerfectVerse = null;
+          }
+          const resultDiv = document.getElementById('typingResult');
+          resultDiv.classList.add('show');
+
+          if (result.is_perfect) {
+            resultDiv.classList.remove('error');
+            resultDiv.classList.add('success');
+            resultDiv.innerHTML = `
+              <strong style="font-size: 1.1rem;">🎉 Chúc mừng!</strong><br>
+              Bạn đã gõ <strong>100% chính xác</strong><br>
+              Tốc độ: <strong>${result.wpm} WPM</strong> · Thời gian: <strong>${result.time_seconds}s</strong>
+            `;
+            launchConfetti();
+          } else {
+            resultDiv.classList.remove('success');
+            resultDiv.classList.add('error');
+            resultDiv.innerHTML = `
+              <strong>Chưa hoàn hảo</strong><br>
+              Độ chính xác: <strong>${result.accuracy}%</strong> (${result.correct_chars}/${result.total_chars} ký tự)<br>
+              Tốc độ: <strong>${result.wpm} WPM</strong> · Thời gian: <strong>${result.time_seconds}s</strong>
+            `;
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          alert('Lỗi kiểm tra kết quả!');
+        });
+    }
+  </script>
+  <script src="/static/js/pwa-install.js"></script>
+  </body>
+  </html>

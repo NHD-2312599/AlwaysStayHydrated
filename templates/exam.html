@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#386641">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alway Stay Hydrated — Bài Thi</title>
+<style>
+  @font-face { font-family: 'NeueHaasGroteskDisplay'; src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Thin.ttf') format('truetype'); font-weight: 100; }
+  @font-face { font-family: 'NeueHaasGroteskDisplay'; src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-ExtraLight.ttf') format('truetype'); font-weight: 200; }
+  @font-face { font-family: 'NeueHaasGroteskDisplay'; src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Light.ttf') format('truetype'); font-weight: 300; }
+  @font-face { font-family: 'NeueHaasGroteskDisplay'; src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-SemiLight.ttf') format('truetype'); font-weight: 400; }
+  @font-face { font-family: 'NeueHaasGroteskDisplay'; src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Regular.ttf') format('truetype'); font-weight: 500; }
+  @font-face { font-family: 'NeueHaasGroteskDisplay'; src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Medium.ttf') format('truetype'); font-weight: 600; }
+  @font-face { font-family: 'NeueHaasGroteskDisplay'; src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Bold.ttf') format('truetype'); font-weight: 700; }
+  @font-face { font-family: 'NeueHaasGroteskDisplay'; src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Black.ttf') format('truetype'); font-weight: 900; }
+
+:root {
+  --bg:        #FEFAE0;
+  --surface:   #FFFFFF;
+  --surface2:  #C9F5D9;
+  --border:    #386641;
+  --border-lt: #d4ecdb;
+  --text-pri:  #0D2B1E;
+  --text-sec:  #3D6B55;
+  --text-ter:  #7AAD8E;
+  --accent:    #386641;
+  --accent-lt: #e8f5ec;
+  --accent-dk: #2a4f30;
+  --green:     #1A7A4A;
+  --green-lt:  #EAF6EF;
+  --green-bg:  #d1fae5;
+  --red:       #C0392B;
+  --red-lt:    #fff5f5;
+  --red-bg:    #fee2e2;
+  --amber:     #B45309;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  color: var(--text-pri);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── HEADER ── */
+.header {
+  width: 100%;
+  background: var(--surface);
+  padding: 0 32px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 2px 16px rgba(13,43,30,0.18);
+}
+
+.header-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 58px;
+}
+
+.brand { cursor: pointer; transition: opacity 0.15s; }
+.brand:hover { opacity: 0.85; }
+
+.exam-meta {
+  font-size: 0.83rem;
+  color: var(--accent);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.logout-btn {
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 99px;
+  border: 1.5px solid var(--accent);
+  background: var(--accent-lt);
+  color: var(--border);
+  cursor: pointer;
+  transition: all 0.18s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+.logout-btn:hover { background: var(--accent); color: #fff; }
+
+/* ── PROGRESS BAR ── */
+.progress-strip {
+  height: 5px;
+  background: rgba(56,102,65,0.12);
+  width: 100%;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #52c87a);
+  transition: width 0.5s cubic-bezier(.4,0,.2,1);
+  border-radius: 0 3px 3px 0;
+}
+
+/* ── MAIN ── */
+.main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 36px 24px 90px;
+  width: 100%;
+  flex: 1;
+}
+
+/* ── EXAM HEADER ── */
+.exam-header {
+  margin-bottom: 32px;
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 28px 32px;
+  border: 1px solid var(--border-lt);
+  box-shadow: 0 2px 12px rgba(56,102,65,0.06);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.exam-header-left { flex: 1; min-width: 0; }
+
+.exam-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-lt);
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.exam-title {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--text-pri);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+
+.exam-info-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.exam-info-chip {
+  font-size: 0.78rem;
+  color: var(--text-sec);
+  background: var(--bg);
+  border: 1px solid var(--border-lt);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Progress ring in header */
+.progress-ring-wrap {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.progress-ring-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-ter);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.progress-ring-text {
+  font-size: 0.9rem;
+  font-weight: 800;
+  fill: var(--accent);
+  dominant-baseline: middle;
+  text-anchor: middle;
+}
+
+/* ── QUESTION BLOCK ── */
+.questions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.question-block {
+  background: var(--surface);
+  border: 1.5px solid var(--border-lt);
+  border-radius: 16px;
+  padding: 0;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(56,102,65,0.05);
+}
+
+.question-block:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(56,102,65,0.1), 0 2px 12px rgba(56,102,65,0.08);
+}
+
+/* Result states */
+.question-block.correct {
+  border-color: var(--green);
+  box-shadow: 0 0 0 2px rgba(26,122,74,0.12);
+}
+
+.question-block.wrong {
+  border-color: var(--red);
+  box-shadow: 0 0 0 2px rgba(192,57,43,0.10);
+}
+
+/* Left accent stripe */
+.question-stripe {
+  width: 100%;
+  display: flex;
+  gap: 0;
+}
+
+.question-left-bar {
+  width: 5px;
+  flex-shrink: 0;
+  background: var(--border-lt);
+  border-radius: 0;
+  transition: background 0.2s;
+}
+
+.question-block:focus-within .question-left-bar { background: var(--accent); }
+.question-block.correct .question-left-bar { background: var(--green); }
+.question-block.wrong .question-left-bar { background: var(--red); }
+
+.question-inner {
+  flex: 1;
+  padding: 20px 22px 22px;
+  min-width: 0;
+}
+
+.question-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.question-num {
+  min-width: 30px;
+  height: 30px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  letter-spacing: -0.01em;
+  transition: background 0.2s;
+}
+
+.question-block.correct .question-num { background: var(--green); }
+.question-block.wrong .question-num { background: var(--red); }
+
+
+
+.question-title {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--text-pri);
+  line-height: 1.6;
+  flex: 1;
+}
+
+/* Fields */
+.field-label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-ter);
+  margin-bottom: 7px;
+}
+
+.text-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border-lt);
+  border-radius: 10px;
+  font-family: 'NeueHaasGroteskDisplay', inherit;
+  font-size: 0.95rem;
+  background: var(--bg);
+  color: var(--text-pri);
+  outline: none;
+  transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+.text-input:focus {
+  border-color: var(--accent);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(56,102,65,0.1);
+}
+.text-input:disabled { opacity: 0.85; background: transparent; cursor: default; }
+
+.text-input.correct-input {
+  border-color: var(--green);
+  background: var(--green-lt);
+  color: var(--green);
+  font-weight: 700;
+}
+
+.text-input.wrong-input {
+  border-color: var(--red);
+  background: var(--red-lt);
+  color: #9b1c1c;
+}
+
+/* Result feedback area */
+.result-feedback {
+  display: none;
+  margin-top: 12px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+.result-feedback.show { display: block; }
+
+.result-feedback.correct-fb {
+  background: var(--green-bg);
+  border: 1px solid rgba(26,122,74,0.25);
+}
+
+.result-feedback.wrong-fb {
+  background: #fff;
+  border: 1px solid rgba(192,57,43,0.2);
+}
+
+.fb-correct-label {
+  font-weight: 800;
+  color: #fff;
+  background: var(--green);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
+.fb-wrong-label {
+  font-weight: 800;
+  color: #fff;
+  background: var(--red);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
+.fb-answer-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(192,57,43,0.1);
+}
+
+.fb-answer-item {
+  padding: 10px 14px;
+  background: #fff;
+}
+
+.fb-answer-key {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-ter);
+  margin-bottom: 3px;
+}
+
+.fb-answer-val {
+  font-size: 0.9rem;
+  color: #9b1c1c;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.fb-correct-answer {
+  font-weight: 700;
+  color: var(--green);
+}
+
+/* ── SUBMIT AREA ── */
+.submit-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 24px;
+  background: var(--surface);
+  border-radius: 20px;
+  border: 1px solid var(--border-lt);
+  box-shadow: 0 2px 12px rgba(56,102,65,0.06);
+}
+
+.submit-note {
+  font-size: 0.87rem;
+  color: var(--text-ter);
+  text-align: center;
+  font-weight: 500;
+}
+
+.btn-submit {
+  padding: 15px 52px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-family: 'NeueHaasGroteskDisplay', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.12s, box-shadow 0.18s;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 18px rgba(56,102,65,0.28);
+}
+.btn-submit:hover { background: var(--accent-dk); box-shadow: 0 6px 24px rgba(56,102,65,0.38); transform: translateY(-1px); }
+.btn-submit:active { transform: scale(0.98) translateY(0); }
+.btn-submit:disabled { opacity: 0.5; cursor: default; transform: none; box-shadow: none; }
+
+/* ── RESULT SUMMARY ── */
+.result-summary {
+  display: none;
+  background: var(--accent);
+  border-radius: 20px;
+  padding: 32px 32px 28px;
+  margin-bottom: 28px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(56,102,65,0.22);
+  position: relative;
+  overflow: hidden;
+}
+
+.result-summary::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 50%;
+}
+
+.result-summary.show { display: block; }
+
+.result-summary-score {
+  font-size: 3.8rem;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.result-summary-label {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 24px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.result-stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 24px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.result-stat {
+  flex: 1;
+  padding: 14px 20px;
+  border-right: 1px solid rgba(255,255,255,0.12);
+}
+.result-stat:last-child { border-right: none; }
+
+.result-stat-val {
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: #fff;
+  line-height: 1;
+}
+
+.result-stat-val.g { color: #7eedb4; }
+.result-stat-val.r { color: #fca5a5; }
+.result-stat-val.w { color: #ffffff; }
+
+.result-stat-key {
+  font-size: 0.68rem;
+  color: var(--accent-lt);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0em;
+  margin-top: 4px;
+}
+
+.btn-retry {
+  padding: 11px 30px;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.35);
+  border-radius: 10px;
+  font-family: 'NeueHaasGroteskDisplay', inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+  letter-spacing: 0.02em;
+}
+.btn-retry:hover { background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.6); }
+
+/* Loading */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 100px 20px;
+  color: var(--text-ter);
+  font-size: 0.9rem;
+}
+
+.spinner {
+  width: 22px;
+  height: 22px;
+  border: 2.5px solid var(--border-lt);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Question number indicator row */
+.q-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.q-nav-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: var(--surface);
+  border: 1.5px solid var(--border-lt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-ter);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.q-nav-dot:hover { border-color: var(--accent); color: var(--accent); }
+.q-nav-dot.filled { background: var(--accent); border-color: var(--accent); color: #fff; }
+.q-nav-dot.correct { background: var(--green); border-color: var(--green); color: #fff; }
+.q-nav-dot.wrong { background: var(--red); border-color: var(--red); color: #fff; }
+
+.question-block.special .field-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.question-block.special .field-hint {
+  font-size: 0.72rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.blank-guide {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #f8fcf5 0%, #edf7e8 100%);
+  border: 1px solid rgba(56,102,65,0.16);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  color: var(--text-sec);
+  line-height: 1.9;
+  word-break: break-word;
+}
+
+.blank-guide .blank-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 86px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 2px solid rgba(56,102,65,0.2);
+  box-shadow: inset 0 -2px 0 rgba(56,102,65,0.08);
+  color: var(--accent);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  font-family: 'Courier New', monospace;
+}
+
+.special-answer-hint {
+  margin-bottom: 10px;
+  font-size: 0.78rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.question-block.special .text-input {
+  min-height: 180px;
+  line-height: 1.8;
+  border: 1px solid rgba(56,102,65,0.16);
+  border-radius: 14px;
+  padding: 16px 18px 18px;
+  background-color: #fcfdf9;
+  background-image: linear-gradient(to bottom, transparent 0%, transparent 96%, rgba(56,102,65,0.08) 96%, rgba(56,102,65,0.08) 100%);
+  background-size: 100% 29px;
+  box-shadow: inset 0 1px 0 rgba(56,102,65,0.06);
+}
+
+.question-block.special .text-input::placeholder {
+  color: rgba(61,107,85,0.72);
+  font-style: italic;
+}
+
+.question-block.special .text-input:focus {
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(56,102,65,0.12);
+}
+
+@media (max-width: 640px) {
+  .header { padding: 0 16px; }
+  .main { padding: 20px 14px 100px; }
+  .question-inner { padding: 16px 16px 18px; }
+  .exam-header { padding: 20px 20px; border-radius: 16px; }
+  .exam-title { font-size: 1.3rem; }
+  .result-summary { padding: 24px 20px; border-radius: 16px; }
+  .result-summary-score { font-size: 2.8rem; }
+  .fb-answer-row { grid-template-columns: 1fr; }
+  .progress-ring-wrap { display: none; }
+  .q-nav { display: none; }
+}
+
+</style>
+<script src="/static/js/session-refresh.js"></script>
+<script src="/static/js/sw-register.js"></script>
+</head>
+
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-inner">
+    <a href="{{ url_for('index') }}" class="brand" style="cursor:pointer;">
+      <img src="{{ url_for('static', filename='pictures/Logo2.png') }}" alt="Always Stay Hydrated Logo" width="110">
+    </a>
+    <div class="exam-meta" id="header-meta"></div>
+    <a href="{{ url_for('exam_library') }}" class="logout-btn">← Thư Viện</a>
+  </div>
+</div>
+
+<!-- Progress strip -->
+<div class="progress-strip">
+  <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+</div>
+
+<!-- Main -->
+<div class="main">
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    Đang tải bài thi...
+  </div>
+
+  <div id="exam-content" style="display:none;">
+    <!-- Exam header -->
+    <div class="exam-header">
+      <div class="exam-header-left">
+        <div class="exam-eyebrow">📖 Bài Kiểm Tra Đóng Ấn</div>
+        <div class="exam-title" id="exam-title">—</div>
+        <div class="exam-info-row">
+          <div class="exam-info-chip" id="chip-count">0 câu hỏi</div>
+          <div class="exam-info-chip">✏️ Điền đầy đủ thông tin</div>
+          <div class="exam-info-chip">📤 Nộp để xem kết quả</div>
+        </div>
+      </div>
+      <div class="progress-ring-wrap">
+        <svg width="64" height="64" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="26" fill="none" stroke="var(--border-lt)" stroke-width="5"/>
+          <circle id="ring-circle" cx="32" cy="32" r="26" fill="none" stroke="var(--accent)" stroke-width="5"
+            stroke-dasharray="163.4" stroke-dashoffset="163.4"
+            stroke-linecap="round"
+            transform="rotate(-90 32 32)"
+            style="transition: stroke-dashoffset 0.5s cubic-bezier(.4,0,.2,1)"/>
+          <text x="32" y="32" class="progress-ring-text" id="ring-pct" style="font-family:inherit;font-size:13px;font-weight:800;fill:var(--accent);dominant-baseline:middle;text-anchor:middle;">0%</text>
+        </svg>
+        <div class="progress-ring-label">Tiến độ</div>
+      </div>
+    </div>
+
+    <!-- Result Summary (hidden until submitted) -->
+    <div class="result-summary" id="result-summary">
+      <div class="result-summary-score" id="summary-score">—</div>
+      <div class="result-summary-label">Điểm số của bạn</div>
+      <div class="result-stats-row">
+        <div class="result-stat">
+          <div class="result-stat-val g" id="summary-correct">0</div>
+          <div class="result-stat-key">✓ Đúng</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-val r" id="summary-wrong">0</div>
+          <div class="result-stat-key">✗ Sai</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-val" id="summary-total" style="color:var(--green-bg)">0</div>
+          <div class="result-stat-key">Tổng Câu</div>
+        </div>
+      </div>
+      <button class="btn-retry" onclick="resetExam()">↺ Làm Lại</button>
+    </div>
+
+    <!-- Question navigator -->
+    <div class="q-nav" id="q-nav"></div>
+
+    <!-- Questions -->
+    <div class="questions-list" id="questions-list"></div>
+
+    <!-- Submit -->
+    <div class="submit-area" id="submit-area">
+      <div class="submit-note" id="submit-note">Hoàn thành tất cả câu hỏi rồi bấm nộp bài.</div>
+      <button class="btn-submit" id="btn-submit" onclick="submitExam()">
+        Nộp Bài &amp; Xem Kết Quả
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Tab ID được inject từ Flask (server-side)
+const TAB_ID = "{{ tab_id }}";
+const EXAM_MODE = "{{ exam_mode }}";
+const EXAM_STORAGE_KEY = `exam_progress_${TAB_ID}`;
+
+let EXAM_CARDS = [];
+let SUBMITTED = false;
+let EXAM_STARTED_AT = null;
+let IS_SPECIAL_EXAM = false;
+let IS_BLANK_MODE = EXAM_MODE === 'blank';
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadExam();
+});
+onSessionVisible(() => {
+  if (!EXAM_CARDS.length) {
+    loadExam();
+  }
+});
+
+async function loadExam() {
+  try {
+    const res = await apiFetch(`/api/exam/tabs/${TAB_ID}/cards?_=${Date.now()}`);
+    if (!res.ok) throw new Error('Failed');
+    const result = await res.json();
+
+    EXAM_CARDS = result.cards;
+    EXAM_STARTED_AT = Date.now();
+    IS_SPECIAL_EXAM = (TAB_ID === 'tab1') || (result.name || '').toLowerCase().includes('tốt nghiệp');
+
+    document.getElementById('exam-title').textContent = result.name.replace(/<[^>]*>/g, '');
+    document.getElementById('chip-count').textContent = `${EXAM_CARDS.length} câu hỏi`;
+    document.getElementById('header-meta').textContent = result.name.replace(/<[^>]*>/g, '');
+
+    renderQuestions();
+
+    const saved = loadSavedProgress();
+    if (saved) {
+      restoreProgress(saved);
+    }
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('exam-content').style.display = 'block';
+  } catch(e) {
+    document.getElementById('loading').innerHTML =
+      '<span style="color:var(--red)">Lỗi tải bài thi. Vui lòng thử lại.</span>';
+  }
+}
+
+function loadSavedProgress() {
+  try {
+    const raw = localStorage.getItem(EXAM_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (err) {
+    console.warn('Failed to load exam progress', err);
+    return null;
+  }
+}
+
+function saveProgress() {
+  const answers = {};
+  EXAM_CARDS.forEach((card) => {
+    const inp = document.getElementById(`inp-${card.id}`);
+    if (inp) {
+      answers[card.id] = inp.value;
+    }
+  });
+  localStorage.setItem(EXAM_STORAGE_KEY, JSON.stringify({ answers, startedAt: EXAM_STARTED_AT }));
+}
+
+function restoreProgress(saved) {
+  if (!saved?.answers) return;
+  EXAM_CARDS.forEach((card) => {
+    const inp = document.getElementById(`inp-${card.id}`);
+    if (inp && typeof saved.answers[card.id] === 'string') {
+      inp.value = saved.answers[card.id];
+    }
+  });
+  if (saved.startedAt) {
+    EXAM_STARTED_AT = saved.startedAt;
+  }
+  updateProgress();
+}
+
+function renderSpecialBlankGuide(card) {
+  if (!card?.blank) return '';
+  const escaped = escapeHtml(card.blank);
+  const parts = escaped.split(/_{3,}/);
+  const rendered = parts.map((part, index) => {
+    const content = part.replace(/\n/g, '<br>');
+    return `${content}${index < parts.length - 1 ? '<span class="blank-chip">____</span>' : ''}`;
+  }).join('');
+  return `<div class="blank-guide">${rendered}</div>`;
+}
+
+function renderQuestions() {
+  const list = document.getElementById('questions-list');
+  const nav = document.getElementById('q-nav');
+  list.innerHTML = '';
+  nav.innerHTML = '';
+
+  EXAM_CARDS.forEach((card, idx) => {
+    // Nav dot
+    const dot = document.createElement('div');
+    dot.className = 'q-nav-dot';
+    dot.id = `nav-${card.id}`;
+    dot.textContent = idx + 1;
+    dot.onclick = () => document.getElementById(`q-${card.id}`).scrollIntoView({ behavior: 'smooth', block: 'center' });
+    nav.appendChild(dot);
+
+    // Question block
+    const block = document.createElement('div');
+    block.className = `question-block${IS_SPECIAL_EXAM ? ' special' : ''}`;
+    block.id = `q-${card.id}`;
+
+    const blankDisplay = IS_BLANK_MODE ? renderSpecialBlankGuide(card) : '';
+
+    block.innerHTML = `
+      <div class="question-stripe">
+        <div class="question-left-bar"></div>
+        <div class="question-inner">
+          <div class="question-header">
+            <div class="question-num">${idx + 1}</div>
+            <div class="question-title">${card.question}</div>
+          </div>
+          ${blankDisplay}
+          <div class="field-label">
+            <span>Câu trả lời <span style="color:var(--red)">*</span></span>
+          </div>
+          <textarea
+            class="text-input"
+            id="inp-${card.id}"
+            placeholder="${IS_BLANK_MODE ? 'Nhập đáp án cho từng chỗ trống, mỗi dòng một đáp án...' : 'Nhập đầy đủ câu trả lời...'}"
+            rows="${IS_BLANK_MODE ? 6 : 8}"
+            oninput="updateProgress(); saveProgress();"
+          ></textarea>
+          <div class="result-feedback" id="fb-${card.id}"></div>
+        </div>
+      </div>
+    `;
+
+    list.appendChild(block);
+  });
+
+  updateProgress();
+}
+
+function updateProgress() {
+  if (SUBMITTED) return;
+
+  let filled = 0;
+  EXAM_CARDS.forEach(card => {
+    const val = (document.getElementById(`inp-${card.id}`)?.value || '').trim();
+    const dot = document.getElementById(`nav-${card.id}`);
+    if (val) {
+      filled++;
+      if (dot) dot.classList.add('filled');
+    } else {
+      if (dot) dot.classList.remove('filled');
+    }
+  });
+
+  const total = EXAM_CARDS.length;
+  const pct = total > 0 ? Math.round((filled / total) * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  // Update ring
+  const circle = document.getElementById('ring-circle');
+  const ringPct = document.getElementById('ring-pct');
+  if (circle) {
+    const circumference = 163.4;
+    circle.style.strokeDashoffset = circumference - (circumference * pct / 100);
+  }
+  if (ringPct) ringPct.textContent = pct + '%';
+
+  const note = document.getElementById('submit-note');
+  if (filled === total && total > 0) {
+    note.textContent = '✅ Đã điền đầy đủ — sẵn sàng nộp bài!';
+    note.style.color = 'var(--green)';
+  } else {
+    note.textContent = `Đã điền ${filled}/${total} câu.`;
+    note.style.color = 'var(--text-ter)';
+  }
+}
+
+function normalizeText(str) {
+  if (!str) return '';
+  const tmp = document.createElement('div');
+  tmp.innerHTML = str;
+  return tmp.textContent
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .replace(/["']/g, '')
+    .replace(/[-–—]/g, ' ')
+    .replace(/[.,;:!?()]/g, '');
+}
+
+function extractBlankAnswers(card) {
+  const blank = card.blank || '';
+  const answer = card.answer || '';
+  if (!blank || !answer) return [];
+
+  const parts = blank.split(/_{3,}/).map(part => part.trim()).filter(Boolean);
+  if (parts.length < 2) return [];
+
+  const expected = [];
+  let searchIndex = 0;
+
+  for (let i = 0; i < parts.length - 1; i++) {
+    const leftPart = parts[i];
+    const rightPart = parts[i + 1];
+    if (!leftPart || !rightPart) continue;
+
+    const leftPos = answer.indexOf(leftPart, searchIndex);
+    const rightPos = answer.indexOf(rightPart, leftPos >= 0 ? leftPos + leftPart.length : searchIndex);
+    if (leftPos >= 0 && rightPos > leftPos + leftPart.length) {
+      const value = answer.slice(leftPos + leftPart.length, rightPos).trim();
+      if (value) expected.push(value);
+      searchIndex = rightPos;
+    }
+  }
+
+  return expected;
+}
+
+function parseUserBlankEntries(text) {
+  if (!text) return [];
+  return text
+    .split(/\r?\n|[;|]|•|,\s+/)
+    .map(entry => entry.replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+}
+
+function isBlankAnswerCorrect(expected, submitted) {
+  const expectedNorm = normalizeText(expected);
+  const submittedNorm = normalizeText(submitted);
+  if (!expectedNorm || !submittedNorm) return false;
+  if (expectedNorm === submittedNorm) return true;
+  if (submittedNorm.includes(expectedNorm) || expectedNorm.includes(submittedNorm)) return true;
+
+  const expectedWords = expectedNorm.split(' ').filter(Boolean);
+  const submittedWords = submittedNorm.split(' ').filter(Boolean);
+  if (!expectedWords.length || !submittedWords.length) return false;
+
+  if (expectedWords.length === 1 || submittedWords.length === 1) {
+    return expectedWords.some(word => submittedWords.includes(word));
+  }
+
+  return expectedWords.every(word => submittedWords.includes(word)) || submittedWords.every(word => expectedWords.includes(word));
+}
+
+function submitExam() {
+  if (SUBMITTED) return;
+
+  // Check tất cả đã điền chưa
+  let allFilled = true;
+  EXAM_CARDS.forEach(card => {
+    const inp = document.getElementById(`inp-${card.id}`);
+    if (!inp.value.trim()) {
+      allFilled = false;
+      inp.style.borderColor = 'var(--red)';
+    }
+  });
+
+  if (!allFilled) {
+    const note = document.getElementById('submit-note');
+    note.textContent = '⚠️ Vui lòng điền đầy đủ tất cả câu trước khi nộp.';
+    note.style.color = 'var(--red)';
+    const firstEmpty = document.querySelector('.text-input[style*="border-color"]');
+    if (firstEmpty) firstEmpty.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  SUBMITTED = true;
+  document.querySelectorAll('.text-input').forEach(inp => inp.disabled = true);
+  document.getElementById('btn-submit').disabled = true;
+  document.getElementById('btn-submit').textContent = 'Đã Nộp ✓';
+
+  let correctCount = 0;
+  let wrongCount = 0;
+
+  EXAM_CARDS.forEach(card => {
+    const block = document.getElementById(`q-${card.id}`);
+    const fb = document.getElementById(`fb-${card.id}`);
+    const inp = document.getElementById(`inp-${card.id}`);
+
+    const userVal = inp ? inp.value.trim() : '';
+    const correctVal = card.answer || '';
+
+    if (IS_BLANK_MODE) {
+      const expectedBlanks = extractBlankAnswers(card);
+      const userEntries = parseUserBlankEntries(userVal);
+      const matched = expectedBlanks.filter(expected => userEntries.some(entry => isBlankAnswerCorrect(expected, entry))).length;
+      const isCorrect = expectedBlanks.length > 0 && matched === expectedBlanks.length;
+
+      if (isCorrect) {
+        inp.className = 'text-input correct-input';
+        block.classList.add('correct');
+        block.querySelector('.question-num').textContent = '✓';
+        correctCount++;
+        fb.className = 'result-feedback correct-fb show';
+        fb.innerHTML = `<div class="fb-correct-label">✓ Đúng!</div>`;
+        const dot = document.getElementById(`nav-${card.id}`);
+        if (dot) { dot.classList.remove('filled'); dot.classList.add('correct'); dot.textContent = '✓'; }
+      } else {
+        inp.className = 'text-input wrong-input';
+        block.classList.add('wrong');
+        block.querySelector('.question-num').textContent = '✗';
+        wrongCount++;
+        fb.className = 'result-feedback wrong-fb show';
+        fb.innerHTML = `
+          <div class="fb-wrong-label">✗ Chưa đúng</div>
+          <div class="fb-answer-row">
+            <div class="fb-answer-item">
+              <div class="fb-answer-key">Bạn điền</div>
+              <div class="fb-answer-val">✗ ${escapeHtml(userVal || '(bỏ trống)')}</div>
+            </div>
+            <div class="fb-answer-item">
+              <div class="fb-answer-key">Phần cần điền</div>
+              <div class="fb-answer-val fb-correct-answer">✓ ${escapeHtml(expectedBlanks.join(' | '))}</div>
+            </div>
+          </div>
+        `;
+        const dot = document.getElementById(`nav-${card.id}`);
+        if (dot) { dot.classList.remove('filled'); dot.classList.add('wrong'); dot.textContent = '✗'; }
+      }
+      return;
+    }
+
+    const userNorm = normalizeText(userVal);
+    const correctNorm = normalizeText(correctVal);
+
+    if (userNorm === correctNorm) {
+      inp.className = 'text-input correct-input';
+      block.classList.add('correct');
+      block.querySelector('.question-num').textContent = '✓';
+      correctCount++;
+      fb.className = 'result-feedback correct-fb show';
+      fb.innerHTML = `<div class="fb-correct-label">✓ Đúng!</div>`;
+      const dot = document.getElementById(`nav-${card.id}`);
+      if (dot) { dot.classList.remove('filled'); dot.classList.add('correct'); dot.textContent = '✓'; }
+    } else {
+      inp.className = 'text-input wrong-input';
+      block.classList.add('wrong');
+      block.querySelector('.question-num').textContent = '✗';
+      wrongCount++;
+      fb.className = 'result-feedback wrong-fb show';
+      fb.innerHTML = `
+        <div class="fb-wrong-label">✗ Chưa đúng</div>
+        <div class="fb-answer-row">
+          <div class="fb-answer-item">
+            <div class="fb-answer-key">Bạn trả lời</div>
+            <div class="fb-answer-val">✗ ${escapeHtml(userVal || '(bỏ trống)')}</div>
+          </div>
+          <div class="fb-answer-item">
+            <div class="fb-answer-key">Đáp án đúng</div>
+            <div class="fb-answer-val fb-correct-answer">✓ ${escapeHtml(correctVal)}</div>
+          </div>
+        </div>
+      `;
+      const dot = document.getElementById(`nav-${card.id}`);
+      if (dot) { dot.classList.remove('filled'); dot.classList.add('wrong'); dot.textContent = '✗'; }
+    }
+  });
+
+  const total = EXAM_CARDS.length;
+  const score = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+
+  document.getElementById('summary-score').textContent = score + '%';
+  document.getElementById('summary-correct').textContent = correctCount;
+  document.getElementById('summary-wrong').textContent = wrongCount;
+  document.getElementById('summary-total').textContent = total;
+  document.getElementById('result-summary').classList.add('show');
+  document.getElementById('progress-fill').style.width = '100%';
+
+  const note = document.getElementById('submit-note');
+  note.textContent = `Điểm của bạn: ${score}% — ${correctCount}/${total} câu đúng`;
+  note.style.color = score >= 80 ? 'var(--green)' : score >= 50 ? 'var(--amber)' : 'var(--red)';
+
+  document.getElementById('result-summary').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  submitExamResultToServer({
+    tab_id: TAB_ID,
+    score: score / 100,
+    time_sec: EXAM_STARTED_AT ? Math.max(1, Math.round((Date.now() - EXAM_STARTED_AT) / 1000)) : 0,
+    used_hint: false,
+  });
+}
+
+async function submitExamResultToServer(payload) {
+  try {
+    const res = await apiFetch('/api/exam/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      console.error('submit exam failed', data);
+      return;
+    }
+  } catch (error) {
+    console.error('submit exam error', error);
+  }
+}
+
+function resetExam() {
+  SUBMITTED = false;
+
+  EXAM_CARDS.forEach((card, idx) => {
+    const inp = document.getElementById(`inp-${card.id}`);
+    if (inp) {
+      inp.value = '';
+      inp.disabled = false;
+      inp.className = 'text-input';
+      inp.style.borderColor = '';
+    }
+
+    const block = document.getElementById(`q-${card.id}`);
+    if (block) {
+      block.classList.remove('correct', 'wrong');
+      const num = block.querySelector('.question-num');
+      if (num) num.textContent = idx + 1;
+    }
+
+    const fb = document.getElementById(`fb-${card.id}`);
+    if (fb) fb.className = 'result-feedback';
+
+    const dot = document.getElementById(`nav-${card.id}`);
+    if (dot) { dot.className = 'q-nav-dot'; dot.textContent = idx + 1; }
+  });
+
+  document.getElementById('result-summary').classList.remove('show');
+  document.getElementById('progress-fill').style.width = '0%';
+  const circle = document.getElementById('ring-circle');
+  if (circle) circle.style.strokeDashoffset = '163.4';
+  const ringPct = document.getElementById('ring-pct');
+  if (ringPct) ringPct.textContent = '0%';
+  document.getElementById('btn-submit').disabled = false;
+  document.getElementById('btn-submit').textContent = 'Nộp Bài & Xem Kết Quả';
+
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+/* ==========================================================================
+   Always Stay Hydrated — Shared Design System
+   One token set + one header + one bottom-nav, used on every page so the
+   app feels like a single product instead of a stack of separate screens.
+   ========================================================================== */
+
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Light.ttf') format('truetype');
+  font-weight: 300;
+}
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-SemiLight.ttf') format('truetype');
+  font-weight: 400;
+}
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Regular.ttf') format('truetype');
+  font-weight: 500;
+}
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Medium.ttf') format('truetype');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Bold.ttf') format('truetype');
+  font-weight: 700;
+}
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Black.ttf') format('truetype');
+  font-weight: 900;
+}
+
+:root {
+  /* -- Surfaces & text (parchment + deep leaf) -- */
+  --bg:            #F7F3E8;
+  --bg2:           #EDE8D8;
+  --surface:       #FFFFFF;
+  --surface2:      #F0FBF4;
+  --border:        rgba(56, 102, 65, 0.16);
+  --border-solid:  #386641;
+  --text-pri:      #0D2B1E;
+  --text-sec:      #3D6B55;
+  --text-ter:      #7EA98D;
+
+  /* -- Primary accent: leaf green -- */
+  --accent:        #2D6A4F;
+  --accent-lt:     #D8F3DC;
+  --accent-dk:     #1B4332;
+  --accent-glow:   rgba(45, 106, 79, 0.15);
+
+  /* -- Secondary accent: water blue (the "hydrated" signature) -- */
+  --water:         #1D6FA5;
+  --water-lt:      #D9EEF9;
+  --water-dk:      #124867;
+  --water-glow:    rgba(29, 111, 165, 0.16);
+
+  /* -- Status colors -- */
+  --green:         #1A7A4A;
+  --green-lt:      #D8F3DC;
+  --red:           #B91C1C;
+  --red-lt:        #FEE2E2;
+  --amber:         #B45309;
+  --amber-lt:      #FEF3C7;
+  --gold:          #D4A017;
+  --gold-lt:       #FDF3D8;
+
+  /* -- Module accent colors (fill / typing / flashcard / exam) -- */
+  --c1: #2D6A4F; --c1-lt: #D8F3DC;
+  --c2: #1D6FA5; --c2-lt: #D9EEF9;
+  --c3: #7C3AED; --c3-lt: #EDE9FE;
+  --c4: #B45309; --c4-lt: #FEF3C7;
+
+  /* -- Shape & elevation -- */
+  --radius:       16px;
+  --radius-sm:    10px;
+  --radius-lg:    22px;
+  --shadow:       0 4px 24px rgba(0,0,0,0.07);
+  --shadow-hover: 0 12px 40px rgba(0,0,0,0.13);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: 'NeueHaasGroteskDisplay', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text-pri);
+}
+
+/* ── Shared top header ───────────────────────────────────────────────── */
+.site-header {
+  width: 100%;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.site-header .header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  gap: 12px;
+}
+.site-header .brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--text-pri);
+}
+.site-header .brand-logo { height: 40px; width: auto; display: block; object-fit: contain; }
+.site-header .brand-name { font-weight: 800; font-size: 1.02rem; letter-spacing: -0.01em; }
+.site-header .header-right { display: flex; align-items: center; gap: 10px; }
+
+.btn-pill {
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 99px;
+  border: 1.5px solid var(--border-solid);
+  background: var(--surface);
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.btn-pill:hover { background: var(--accent); color: #fff; transform: translateY(-1px); box-shadow: 0 4px 12px var(--accent-glow); }
+.btn-pill.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn-pill.primary:hover { background: var(--accent-dk); border-color: var(--accent-dk); }
+
+/* ── Shared bottom navigation ────────────────────────────────────────── */
+body.has-bottom-nav { padding-bottom: 112px; }
+
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+  padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
+  z-index: 999;
+  box-shadow: 0 -8px 24px rgba(0,0,0,0.06);
+}
+.nav-btn {
+  flex: 1;
+  min-width: 0;
+  max-width: 96px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 9px 6px;
+  border-radius: 16px;
+  border: 1.5px solid transparent;
+  background: transparent;
+  color: var(--text-sec);
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: inherit;
+  text-decoration: none;
+  transition: all 0.18s ease;
+  cursor: pointer;
+}
+.nav-btn .nav-icon { font-size: 1.25rem; line-height: 1; display: block; }
+.nav-btn .nav-label { white-space: nowrap; }
+.nav-btn:hover { background: var(--surface2); transform: translateY(-1px); }
+.nav-btn.active {
+  background: linear-gradient(180deg, var(--accent), #52b788);
+  color: #fff;
+  border-color: rgba(45,106,79,0.22);
+  box-shadow: 0 12px 26px var(--accent-glow);
+}
+.nav-btn.active:hover { background: linear-gradient(180deg, var(--accent), #52b788); }
+
+@media (max-width: 420px) {
+  .nav-btn { font-size: 0.66rem; padding: 8px 4px; }
+  .nav-btn .nav-icon { font-size: 1.15rem; }
+}
+
+/* ── Shared card / panel primitives ──────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.card:hover { box-shadow: var(--shadow-hover); }
+
+::selection { background: var(--accent-lt); color: var(--accent-dk); }
+
+:focus-visible {
+  outline: 2.5px solid var(--water);
+  outline-offset: 2px;
+}

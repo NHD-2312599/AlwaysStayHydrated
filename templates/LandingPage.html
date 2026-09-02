@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#386641">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+  <link rel="stylesheet" href="/static/css/mobile-responsive.css">
+  <title>Always Stay Hydrated</title>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(() => console.log('SW Registered'))
+        .catch(err => console.error(err));
+    }
+  </script>
+
+  <style>
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Thin.ttf') format('truetype');
+      font-weight: 100;
+    }
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-ExtraLight.ttf') format('truetype');
+      font-weight: 200;
+    }
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Light.ttf') format('truetype');
+      font-weight: 300;
+    }
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-SemiLight.ttf') format('truetype');
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Regular.ttf') format('truetype');
+      font-weight: 500;
+    }
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Medium.ttf') format('truetype');
+      font-weight: 600;
+    }
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Bold.ttf') format('truetype');
+      font-weight: 700;
+    }
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay Black.ttf') format('truetype');
+      font-weight: 900;
+    }
+    @font-face {
+      font-family: 'Recoleta';
+      src: url('/static/fonts/SVN-Recoleta Regular.ttf') format('truetype');
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: 'Recoleta';
+      src: url('/static/fonts/SVN-Recoleta Medium.ttf') format('truetype');
+      font-weight: 500;
+    }
+    @font-face {
+      font-family: 'Recoleta';
+      src: url('/static/fonts/SVN-Recoleta SemiBold.ttf') format('truetype');
+      font-weight: 600;
+    }
+    @font-face {
+      font-family: 'Recoleta';
+      src: url('/static/fonts/SVN-Recoleta Bold.ttf') format('truetype');
+      font-weight: 700;
+    }
+
+    /* ===== RESET ===== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --green:        #2D6A4F;
+      --green-dark:   #1B4332;
+      --green-deeper: #0D2B1E;
+      --cream:        #F7F3E8;
+      --cream-dark:   #EDE8D8;
+      --text:         #0D2B1E;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'NeueHaasGroteskDisplay', Arial, Helvetica, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 100px;
+      background: var(--cream);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(56,102,65,0.10);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 40px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .nav-logo-text {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--green-dark);
+      line-height: 1.25;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 500;
+      transition: color .18s;
+    }
+
+    .nav-links a:hover { color: var(--green); }
+
+    .btn-login {
+      background: var(--green-dark);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 22px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .18s;
+    }
+
+    .btn-login:hover { background: var(--green); }
+
+    /* ===== HERO ===== */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 52px 24px 44px;
+    }
+
+    .hero-badge {
+      width: 160px;
+      height: 160px;
+      object-fit: contain;
+      margin-bottom: 25px;
+    }
+
+    .hero h1 {
+      font-family: 'Recoleta', Helvetica, sans-serif;
+      font-size: clamp(36px, 5.5vw, 62px);
+      font-weight: 700;
+      color: var(--green-dark);
+      letter-spacing: -0.5px;
+      line-height: 1.08;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--text);
+      max-width: 460px;
+      margin-bottom: 34px;
+      line-height: 1.5;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-solid {
+      background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, rgba(0,0,0,0.08) 100%), var(--green-dark);
+      color: #fff;
+      border: 2px solid var(--green-dark);
+      border-radius: 8px;
+      padding: 12px 28px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .18s;
+      box-shadow: 
+        0 1px 0 rgba(255,255,255,0.35) inset,
+        0 -1px 0 rgba(0,0,0,0.2) inset,
+        0 8px 16px rgba(0,0,0,0.12);
+    }
+
+    .btn-solid:hover {
+      transform: translateY(-2px);
+      box-shadow: 
+        0 1px 0 rgba(255,255,255,0.35) inset,
+        0 -1px 0 rgba(0,0,0,0.2) inset,
+        0 12px 24px rgba(0,0,0,0.16);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--green-dark);
+      border: 2px solid var(--green-dark);
+      border-radius: 8px;
+      padding: 12px 28px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .18s;
+      box-shadow: 0 0 0 rgba(0,0,0,0);
+    }
+
+    .btn-ghost:hover {
+      background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.05) 100%), var(--green-dark);
+      color: #fff;
+      box-shadow: 
+        0 1px 0 rgba(255,255,255,0.3) inset,
+        0 -1px 0 rgba(0,0,0,0.15) inset,
+        0 8px 16px rgba(0,0,0,0.12);
+      transform: translateY(-2px);
+    }
+
+    /* ===== MOCKUP IMAGE ===== */
+    .mockup-section {
+      display: flex;
+      justify-content: center;
+      padding: 12px 24px 72px;
+    }
+
+    .mockup-img {
+      width: 100%;
+      max-width: 820px;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 20px 48px rgba(0,0,0,0.18));
+    }
+
+    /* ===== ABOUT ===== */
+    .about-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 52px;
+      padding: 80px 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .about-text { flex: 1; max-width: 520px; }
+
+    .about-text h2 {
+      font-family: 'Recoleta', serif;
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-bottom: 22px;
+      line-height: 1.05;
+    }
+
+    .about-text p {
+      font-size: 22px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .about-icon-wrap { flex-shrink: 0; }
+
+    .about-icon {
+      width: 210px;
+      height: 210px;
+      border-radius: 36px;
+      overflow: hidden;
+      box-shadow: 0 16px 48px rgba(56,102,65,.28);
+    }
+
+    .about-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ===== FEEDBACK ===== */
+    .feedback-section {
+      padding: 80px 24px 96px;
+      text-align: center;
+    }
+
+    .feedback-section h2 {
+      font-family: 'Recoleta', serif;
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-bottom: 38px;
+    }
+
+    .feedback-wrap {
+      max-width: 540px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .feedback-textarea {
+      width: 100%;
+      background: #fff;
+      border: 1.5px solid #d6d2be;
+      border-radius: 12px;
+      padding: 18px 130px 18px 18px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--text);
+      resize: vertical;
+      min-height: 108px;
+      outline: none;
+      transition: border-color .18s;
+    }
+
+    .feedback-textarea::placeholder { color: #bbb; }
+    .feedback-textarea:focus { border-color: var(--green); }
+
+    .feedback-send {
+      position: absolute;
+      right: 14px;
+      top: 14px;
+      background: var(--green-dark);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: background .18s;
+    }
+
+    .feedback-send:hover { background: var(--green); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--green-dark);
+      color: #fff;
+      padding: 56px 80px 32px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 48px;
+      flex-wrap: wrap;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .footer-logo-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .footer-col h4 {
+      font-family: 'Recoleta', serif;
+      font-size: 30px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: #fff;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .footer-col ul li a {
+      text-decoration: none;
+      color: rgba(255,255,255,.75);
+      font-size: 14px;
+      font-weight: 400;
+      transition: color .18s;
+    }
+
+    .footer-col ul li a:hover { color: #fff; }
+
+    .footer-copy {
+      text-align: center;
+      padding-top: 36px;
+      font-size: 12.5px;
+      color: rgba(255,255,255,.5);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 780px) {
+      nav { padding: 12px 20px; }
+      .nav-links { display: none; }
+
+      .about-section {
+        flex-direction: column;
+        padding: 52px 24px;
+      }
+
+      .about-icon { width: 150px; height: 150px; }
+
+      footer { padding: 40px 24px 28px; }
+      .footer-inner { flex-direction: column; gap: 28px; }
+    }
+
+    /* ===== TOAST NOTIFICATION ===== */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 36px;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--green-dark);
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-size: 14.5px;
+      font-weight: 500;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.22);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease, transform .25s ease;
+      max-width: 90vw;
+      text-align: center;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+
+    .toast-icon {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav>
+    <a class="nav-logo" href="#">
+      <img src="{{ url_for('static', filename='pictures/Logo2.png') }}" alt="logo" />
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+    </ul>
+
+    <a href="{{ url_for('login') }}" class="btn-login">Đăng nhập</a>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <img class="hero-badge"
+      src="{{ url_for('static', filename='pictures/Logo.png') }}"
+      alt="Always Stay Hydrated badge" />
+
+    <h1>Always Stay Hydrated</h1>
+
+    <p>Bạn đã vất vả rồi, hãy tiếp tục hành trình trọn vẹn trong lịch sử này thông qua đóng ấn Ngôi lời của Chúa nhé!</p>
+
+    <div class="hero-btns">
+      <a href="{{ url_for('login') }}" class="btn-solid">Tham gia ngay</a>
+      <a href="{{ url_for('download_page') }}" class="btn-ghost">Tải xuống cho Android</a>
+    </div>
+  </section>
+
+  <!-- ===== MOCKUP IMAGE ===== -->
+  <section class="mockup-section">
+    <img
+      class="mockup-img"
+      src="{{ url_for('static', filename='pictures/Device - Macbook Pro.png') }}"
+      alt="Always Stay Hydrated app trên MacBook Pro"
+    />
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section class="about-section" id="about">
+    <div class="about-text">
+      <h2>About us</h2>
+      <p>
+        "Always Stay Hydrated" – ý nghĩa của từ này có nghĩa là "Hãy luôn uống nước đều đặn"
+        – thì đây là nghĩa đen nhưng mà trong Ngôi lời của Chúa, Nước có ý nghĩa là Ngôi lời
+        nên đó là lý do em đặt tên cho web học Khải là "Always Stay Hydrated" –
+        "hãy cùng nhau đồng ăn Ngôi lời đều đặn"
+      </p>
+    </div>
+
+    <div class="about-icon-wrap">
+      <div class="about-icon">
+        <img src="{{ url_for('static', filename='pictures/3d.png') }}" alt="App icon" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FEEDBACK ===== -->
+  <section class="feedback-section" id="feedback">
+    <h2>Give Feedback</h2>
+
+    <div class="feedback-wrap">
+      <textarea
+        id="feedbackText"
+        class="feedback-textarea"
+        placeholder="Hãy ghi cảm nhận của bạn về dự án này"
+        rows="4"
+      ></textarea>
+      <button class="feedback-send" type="button" onclick="sendFeedback()">Sent &nbsp;→</button>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo-col">
+        <img src="{{ url_for('static', filename='pictures/Logo.png') }}"
+             alt="Always Stay Hydrated Logo"
+             width="150" />
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#feedback">Feedback</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#">Features</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">How it works</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-copy">©2026 AlwaysStayHydrated. All right reserved</div>
+  </footer>
+
+  <!-- ===== TOAST ===== -->
+  <div class="toast" id="feedbackToast">
+    <svg class="toast-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="2"/>
+      <path d="M8 12.5l2.5 2.5L16 9.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span id="feedbackToastMsg">Cảm ơn bạn đã gửi phản hồi!</span>
+  </div>
+
+  <script>
+    let feedbackToastTimer = null;
+    function showFeedbackToast(message) {
+      const toast = document.getElementById('feedbackToast');
+      document.getElementById('feedbackToastMsg').textContent = message;
+      toast.classList.add('show');
+      clearTimeout(feedbackToastTimer);
+      feedbackToastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    async function sendFeedback() {
+      const textarea = document.getElementById('feedbackText');
+      const message = textarea.value.trim();
+
+      if (!message) {
+        showFeedbackToast('Vui lòng nhập nội dung trước khi gửi nhé!');
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message })
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          showFeedbackToast('Cảm ơn bạn đã gửi phản hồi!');
+          textarea.value = '';
+        } else {
+          showFeedbackToast(data.error || 'Có lỗi xảy ra, vui lòng thử lại.');
+        }
+      } catch (err) {
+        showFeedbackToast('Không thể kết nối tới máy chủ. Vui lòng thử lại.');
+      }
+    }
+  </script>
+
+</body>
+</html>

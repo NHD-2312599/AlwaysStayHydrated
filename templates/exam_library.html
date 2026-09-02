@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#386641">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alway Stay Hydrated — Kiểm Tra</title>
+<link rel="stylesheet" href="/static/css/theme.css">
+<style>
+:root {
+  /* Page-specific extras not covered by theme.css */
+  --card-shadow: var(--shadow);
+  --card-shadow-hover: var(--shadow-hover);
+}
+
+* { margin: 0; padding: 0; }
+
+body {
+  font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  color: var(--text-pri);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── ANIMATED BG DOTS ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(46,125,79,0.07) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(200,146,26,0.05) 0%, transparent 50%),
+    radial-gradient(circle at 60% 30%, rgba(46,125,79,0.05) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── HEADER ── */
+.header {
+  width: 100%;
+  background: rgba(255,255,255,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; cursor: pointer; transition: opacity 0.15s; }
+.brand:hover { opacity: 0.75; }
+
+.header-right { display: flex; align-items: center; gap: 10px; }
+
+.header-btn {
+  font-family: 'NeueHaasGroteskDisplay', inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 50px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-sec);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.01em;
+}
+
+.header-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: translateY(-1px); box-shadow: 0 4px 12px var(--accent-glow); }
+
+.header-btn.primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.header-btn.primary:hover { background: var(--accent-dk); border-color: var(--accent-dk); }
+
+/* ── HERO BANNER ── */
+.hero-banner {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(135deg, var(--accent) 0%, #1b5c1a 60%, #0d3d13 100%);
+  padding: 52px 32px 48px;
+  overflow: hidden;
+}
+
+.hero-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+
+.hero-inner {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.hero-text { flex: 1; }
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 14px;
+  background: rgba(255,255,255,0.1);
+  padding: 5px 14px;
+  border-radius: 50px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.hero-title {
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 0em;
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+
+.hero-sub {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.6;
+  max-width: 480px;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 28px;
+  flex-shrink: 0;
+}
+
+.hero-stat {
+  text-align: center;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 16px;
+  padding: 20px 28px;
+  backdrop-filter: blur(8px);
+}
+
+.hero-stat-num {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.hero-stat-label {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.6);
+  font-weight: 600;
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+}
+
+/* ── MAIN ── */
+.main {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+  width: 100%;
+  flex: 1;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.section-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-ter);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-label::before {
+  content: '';
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* ── EXAM CARDS GRID ── */
+.exam-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 22px;
+}
+
+.exam-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--card-shadow);
+  cursor: pointer;
+  position: relative;
+}
+
+.exam-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  transition: border-color 0.25s;
+  pointer-events: none;
+}
+
+.exam-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--card-shadow-hover);
+  border-color: var(--accent);
+}
+
+.exam-card:hover::after {
+  border-color: var(--accent-lt);
+}
+
+/* Card color accent strip */
+.exam-card-strip {
+  height: 5px;
+  background: linear-gradient(90deg, var(--accent) 0%, #5aad7a 100%);
+}
+
+.exam-card-body {
+  padding: 26px 26px 20px;
+  flex: 1;
+}
+
+.exam-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.exam-card-icon {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, var(--accent-lt) 0%, var(--surface2) 100%);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 2px 8px rgba(46,125,79,0.12);
+  transition: transform 0.2s;
+}
+
+.exam-card:hover .exam-card-icon {
+  transform: scale(1.1) rotate(-3deg);
+}
+
+.exam-card-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: var(--gold-lt);
+  padding: 3px 10px;
+  border-radius: 50px;
+  border: 1px solid rgba(200,146,26,0.2);
+}
+
+.exam-card-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-pri);
+  margin-bottom: 10px;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.exam-card-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.exam-card-meta {
+  font-size: 0.8rem;
+  color: var(--text-ter);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.exam-card-meta-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.exam-card-footer {
+  padding: 16px 26px 22px;
+}
+
+.btn-start-exam {
+  width: 100%;
+  padding: 13px 0;
+  background: linear-gradient(135deg, var(--accent) 0%, #1a5c36 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-family: 'NeueHaasGroteskDisplay', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(46,125,79,0.3);
+}
+
+.btn-start-exam:hover {
+  background: linear-gradient(135deg, var(--accent-dk) 0%, #0d3322 100%);
+  box-shadow: 0 6px 20px rgba(46,125,79,0.4);
+  transform: translateY(-1px);
+}
+
+.btn-start-exam .btn-icon {
+  width: 22px;
+  height: 22px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: transform 0.2s;
+}
+
+.btn-start-exam:hover .btn-icon {
+  transform: scale(1.15);
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 100px 20px;
+}
+.empty-state-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  filter: grayscale(0.3);
+}
+.empty-state-title { font-size: 1.2rem; font-weight: 700; color: var(--text-sec); margin-bottom: 8px; }
+.empty-state-sub { font-size: 0.9rem; color: var(--text-ter); }
+
+/* Loading */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  padding: 100px;
+  color: var(--text-ter);
+  font-size: 0.9rem;
+}
+
+.loading-ring {
+  width: 44px;
+  height: 44px;
+  border: 3px solid var(--bg);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── PASSWORD MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 30, 20, 0.55);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+.modal-box {
+  background: var(--surface);
+  border-radius: 24px;
+  padding: 40px 36px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: 0 24px 64px rgba(10,30,20,0.28), 0 4px 12px rgba(10,30,20,0.12);
+  animation: slideUp 0.25s cubic-bezier(0.34, 1.4, 0.64, 1);
+  border: 1.5px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), #5aad7a);
+}
+
+.modal-box-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--accent-lt), var(--surface2));
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 14px rgba(46,125,79,0.15);
+}
+
+.modal-box-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-pri);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.modal-box-sub {
+  font-size: 0.88rem;
+  color: var(--text-sec);
+  margin-bottom: 22px;
+  line-height: 1.6;
+}
+
+.modal-subject-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, var(--accent-lt), var(--surface2));
+  color: var(--accent-dk);
+  font-weight: 700;
+  font-size: 0.83rem;
+  padding: 6px 14px;
+  border-radius: 50px;
+  margin-bottom: 24px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border: 1px solid rgba(46,125,79,0.15);
+}
+
+.modal-subject-badge::before {
+  content: '📖';
+  font-size: 14px;
+}
+
+.pw-input-wrap { position: relative; margin-bottom: 14px; }
+
+.pw-input {
+  width: 100%;
+  padding: 13px 48px 13px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  font-family: 'NeueHaasGroteskDisplay', inherit;
+  font-size: 1rem;
+  background: var(--bg);
+  color: var(--text-pri);
+  outline: none;
+  transition: all 0.2s;
+  letter-spacing: 0.1em;
+}
+
+.pw-input:focus {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(46,125,79,0.12);
+}
+.pw-input.error {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.1);
+}
+
+.pw-toggle {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-ter);
+  font-size: 1rem;
+  transition: color 0.15s;
+  padding: 4px;
+}
+.pw-toggle:hover { color: var(--text-sec); }
+
+.pw-error {
+  font-size: 0.82rem;
+  color: var(--red);
+  margin-bottom: 16px;
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.modal-btn-row {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-cancel {
+  flex: 1;
+  padding: 12px 0;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-sec);
+  border-radius: 12px;
+  font-family: 'NeueHaasGroteskDisplay', inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-cancel:hover { background: var(--bg2); border-color: var(--accent); color: var(--accent); }
+
+.btn-enter {
+  flex: 2;
+  padding: 12px 0;
+  background: linear-gradient(135deg, var(--accent) 0%, #1a5c36 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-family: 'NeueHaasGroteskDisplay', inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(46,125,79,0.3);
+  letter-spacing: 0.01em;
+}
+.btn-enter:hover { background: linear-gradient(135deg, var(--accent-dk), #0d3322); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(46,125,79,0.35); }
+.btn-enter:disabled { opacity: 0.6; cursor: default; transform: none; box-shadow: none; }
+
+.exam-mode-choice {
+  display: none;
+}
+
+.exam-mode-choice.show {
+  display: block;
+}
+
+.exam-mode-choice-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-pri);
+  margin-bottom: 6px;
+}
+
+.exam-mode-choice-sub {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-sec);
+  margin-bottom: 16px;
+}
+
+.exam-mode-options {
+  display: grid;
+  gap: 10px;
+}
+
+.exam-mode-btn {
+  width: 100%;
+  padding: 13px 15px;
+  text-align: left;
+  border: 1.5px solid var(--border-lt);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text-pri);
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, transform 0.18s;
+}
+
+.exam-mode-btn:hover {
+  border-color: var(--accent);
+  background: var(--accent-lt);
+  transform: translateY(-1px);
+}
+
+.exam-mode-btn strong,
+.exam-mode-btn span {
+  display: block;
+}
+
+.exam-mode-btn strong { font-size: 0.92rem; margin-bottom: 3px; }
+.exam-mode-btn span { font-size: 0.78rem; color: var(--text-sec); }
+
+/* Card enter animation */
+@keyframes cardAppear {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.exam-card {
+  animation: cardAppear 0.35s ease both;
+}
+
+.exam-card:nth-child(1) { animation-delay: 0.05s; }
+.exam-card:nth-child(2) { animation-delay: 0.1s; }
+.exam-card:nth-child(3) { animation-delay: 0.15s; }
+.exam-card:nth-child(4) { animation-delay: 0.2s; }
+.exam-card:nth-child(5) { animation-delay: 0.25s; }
+.exam-card:nth-child(6) { animation-delay: 0.3s; }
+
+@media (max-width: 768px) {
+  .hero-banner { padding: 36px 20px 32px; }
+  .hero-title { font-size: 1.8rem; }
+  .hero-stats { display: none; }
+  .main { padding: 28px 16px 100px; }
+  .header { padding: 0 16px; }
+  .exam-grid { grid-template-columns: 1fr; }
+  .modal-box { padding: 32px 24px; }
+}
+
+/* .bottom-nav / .nav-btn styles now come from theme.css */
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+</style>
+<script src="/static/js/session-refresh.js"></script>
+<script src="/static/js/sw-register.js"></script>
+</head>
+
+<body class="has-bottom-nav">
+
+<!-- Header -->
+<div class="header">
+  <div class="header-inner">
+    <a href="{{ url_for('index') }}" class="brand" style="cursor:pointer;">
+      <img src="{{ url_for('static', filename='pictures/Logo2.png') }}" alt="Always Stay Hydrated Logo" width="120">
+    </a>
+    <div class="header-right">
+      <a href="{{ url_for('index') }}" class="header-btn">← Quay Lại</a>
+      <a href="{{ url_for('logout') }}" class="header-btn primary" onclick="clearAshCaches()">Đăng Xuất</a>
+    </div>
+  </div>
+</div>
+
+<!-- Hero Banner -->
+<div class="hero-banner">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">📋 Kiểm Tra Đóng Ấn</div>
+      <div class="hero-title">Thư Viện Bài Thi</div>
+      <div class="hero-sub">Chọn một học phần để vào làm bài kiểm tra.<br>Bạn sẽ cần nhập mật khẩu trước khi bắt đầu.</br></div>
+    </div>
+    <div class="hero-stats" id="hero-stats" style="display:none;">
+      <div class="hero-stat">
+        <div class="hero-stat-num" id="stat-exams">—</div>
+        <div class="hero-stat-label">Học phần</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+  <div class="section-header">
+    <div class="section-label">Danh Sách Học Phần</div>
+  </div>
+
+  <div id="loading" class="loading">
+    <div class="loading-ring"></div>
+    Đang tải học phần...
+  </div>
+
+  <div id="exam-grid" class="exam-grid" style="display:none;"></div>
+
+  <div id="empty-state" class="empty-state" style="display:none;">
+    <div class="empty-state-icon">📭</div>
+    <div class="empty-state-title">Chưa có học phần nào</div>
+    <div class="empty-state-sub">Admin chưa thêm học phần. Hãy quay lại sau nhé!</div>
+  </div>
+</div>
+
+<!-- Password Modal -->
+<div class="modal-overlay" id="pw-modal">
+  <div class="modal-box">
+    <div class="modal-box-icon">🔒</div>
+    <div class="modal-box-title">Nhập Mật Khẩu Bài Thi</div>
+    <div class="modal-box-sub">Bài thi này được bảo vệ. Nhập mật khẩu do admin cung cấp để bắt đầu.</div>
+    <div class="modal-subject-badge" id="modal-subject-name">—</div>
+
+    <div id="password-step">
+      <div class="pw-input-wrap">
+      <input
+        type="password"
+        id="pw-input"
+        class="pw-input"
+        placeholder="Nhập mật khẩu..."
+        autocomplete="off"
+        onkeydown="if(event.key==='Enter') attemptEnter()"
+      >
+      <button class="pw-toggle" onclick="togglePwVisibility()" id="pw-toggle-btn" title="Hiện/ẩn mật khẩu">👁</button>
+      </div>
+
+      <div class="pw-error" id="pw-error"></div>
+
+      <div class="modal-btn-row">
+        <button class="btn-cancel" onclick="closeModal()">Huỷ</button>
+        <button class="btn-enter" id="btn-enter" onclick="attemptEnter()">Vào Làm Bài →</button>
+      </div>
+    </div>
+
+    <div class="exam-mode-choice" id="exam-mode-choice">
+      <div class="exam-mode-choice-title">Chọn cách làm bài</div>
+      <div class="exam-mode-choice-sub">Bạn có thể chọn một trong hai hình thức cho bài thi tốt nghiệp này.</div>
+      <div class="exam-mode-options">
+        <button class="exam-mode-btn" onclick="startExam('full')">
+          <strong>1. Điền cả câu</strong>
+          <span>Viết đầy đủ nội dung đáp án.</span>
+        </button>
+        <button class="exam-mode-btn" onclick="startExam('blank')">
+          <strong>2. Điền chỗ trống</strong>
+          <span>Điền các phần trống theo phần màu đỏ.</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let TABS = [];
+let PENDING_TAB_ID = null;
+
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadTabs();
+});
+onSessionVisible(loadTabs);
+
+async function loadTabs() {
+  try {
+    const res = await apiFetch(`/api/exam/tabs?_=${Date.now()}`);
+    if (!res.ok) throw new Error('Failed');
+    const result = await res.json();
+    TABS = result.data;
+
+    document.getElementById('loading').style.display = 'none';
+
+    if (TABS.length === 0) {
+      document.getElementById('empty-state').style.display = 'block';
+      return;
+    }
+
+    // Update hero stat
+    document.getElementById('stat-exams').textContent = TABS.length;
+    document.getElementById('hero-stats').style.display = 'flex';
+
+    renderGrid();
+    document.getElementById('exam-grid').style.display = 'grid';
+  } catch (e) {
+    document.getElementById('loading').innerHTML = '<span style="color:var(--red)">⚠ Lỗi tải dữ liệu. Vui lòng thử lại.</span>';
+  }
+}
+
+function renderGrid() {
+  const grid = document.getElementById('exam-grid');
+  grid.innerHTML = '';
+
+  TABS.forEach((tab, idx) => {
+    const cardCount = tab.card_count;
+    const card = document.createElement('div');
+    card.className = 'exam-card';
+
+    // Assign different icons/badges based on index for visual variety
+    const icons = ['📖', '✍️', '📚', '🧠', '📝', '🎯'];
+    const icon = icons[idx % icons.length];
+
+    card.innerHTML = `
+      <div class="exam-card-strip"></div>
+      <div class="exam-card-body">
+        <div class="exam-card-top">
+          <div class="exam-card-icon">${icon}</div>
+          <div class="exam-card-badge">Đóng Ấn</div>
+        </div>
+        <div class="exam-card-name">${tab.name}</div>
+        <div class="exam-card-meta-row">
+          <div class="exam-card-meta">📝 ${cardCount} câu hỏi</div>
+          <div class="exam-card-meta-dot"></div>
+          <div class="exam-card-meta">🔐 Có mật khẩu</div>
+        </div>
+      </div>
+      <div class="exam-card-footer">
+        <button class="btn-start-exam" onclick="promptPassword('${tab.id}')">
+          <span class="btn-icon">🔐</span>
+          Vào Làm Bài
+        </button>
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+function promptPassword(tabId) {
+  PENDING_TAB_ID = tabId;
+  const tab = TABS.find(t => t.id === tabId);
+  if (!tab) return;
+
+  document.getElementById('modal-subject-name').textContent = tab.name.replace(/<[^>]*>/g, '');
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-input').className = 'pw-input';
+  document.getElementById('pw-error').textContent = '';
+  document.getElementById('btn-enter').disabled = false;
+  document.getElementById('btn-enter').textContent = 'Vào Làm Bài →';
+  document.getElementById('password-step').style.display = 'block';
+  document.getElementById('exam-mode-choice').classList.remove('show');
+  document.getElementById('pw-modal').classList.add('active');
+  setTimeout(() => document.getElementById('pw-input').focus(), 100);
+}
+
+function closeModal() {
+  document.getElementById('pw-modal').classList.remove('active');
+  PENDING_TAB_ID = null;
+}
+
+function startExam(mode) {
+  window.location.href = `/exam/${PENDING_TAB_ID}?mode=${mode}`;
+}
+
+function togglePwVisibility() {
+  const input = document.getElementById('pw-input');
+  const btn = document.getElementById('pw-toggle-btn');
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    btn.textContent = '👁';
+  }
+}
+
+async function attemptEnter() {
+  const input = document.getElementById('pw-input');
+  const entered = input.value.trim();
+  const errorEl = document.getElementById('pw-error');
+  const btn = document.getElementById('btn-enter');
+
+  if (!entered) {
+    errorEl.textContent = '⚠ Vui lòng nhập mật khẩu.';
+    input.className = 'pw-input error';
+    input.focus();
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Đang kiểm tra...';
+  errorEl.textContent = '';
+
+  try {
+    const res = await fetch('/api/exam/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tab_id: PENDING_TAB_ID, password: entered })
+    });
+
+    const data = await res.json();
+
+    if (data.ok) {
+      const isGraduationExam = PENDING_TAB_ID === 'tab1';
+      if (isGraduationExam) {
+        document.getElementById('password-step').style.display = 'none';
+        document.getElementById('exam-mode-choice').classList.add('show');
+      } else {
+        btn.textContent = '✓ Đang chuyển...';
+        startExam('full');
+      }
+    } else {
+      errorEl.textContent = '✕ Mật khẩu không đúng. Hãy thử lại.';
+      input.className = 'pw-input error';
+      input.value = '';
+      input.focus();
+      btn.disabled = false;
+      btn.textContent = 'Vào Làm Bài →';
+    }
+  } catch (e) {
+    errorEl.textContent = '⚠ Lỗi kết nối. Vui lòng thử lại.';
+    btn.disabled = false;
+    btn.textContent = 'Vào Làm Bài →';
+  }
+}
+
+document.getElementById('pw-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// Navigation bar active state
+function updateNavActive() {
+  const path = window.location.pathname;
+  const navItems = document.querySelectorAll('.bottom-nav .nav-btn');
+  navItems.forEach(item => {
+    item.classList.remove('active');
+    const page = item.getAttribute('data-page');
+    if ((page === 'exam' && path.startsWith('/exam'))) {
+      item.classList.add('active');
+    }
+  });
+}
+window.addEventListener('load', updateNavActive);
+updateNavActive();
+</script>
+
+<!-- Bottom Navigation Bar -->
+<nav class="bottom-nav" aria-label="Điều hướng chính">
+  <a href="/home" class="nav-btn" data-page="home">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">Trang chủ</span>
+  </a>
+  <a href="/home?tab=fill" class="nav-btn" data-page="fill">
+    <span class="nav-icon">📝</span>
+    <span class="nav-label">Điền</span>
+  </a>
+  <a href="/home?tab=typing" class="nav-btn" data-page="typing">
+    <span class="nav-icon">⌨️</span>
+    <span class="nav-label">Gõ</span>
+  </a>
+  <a href="/flashcard/login" class="nav-btn" data-page="flashcard">
+    <span class="nav-icon">📖</span>
+    <span class="nav-label">Flashcard</span>
+  </a>
+  <a href="/exam_library" class="nav-btn active" data-page="exam">
+    <span class="nav-icon">✍️</span>
+    <span class="nav-label">Kiểm tra</span>
+  </a>
+  <a href="/multiplayer" class="nav-btn" data-page="multiplayer">
+    <span class="nav-icon">🎮</span>
+    <span class="nav-label">Đấu trường</span>
+  </a>
+</nav>
+
+</body>
+</html>
+

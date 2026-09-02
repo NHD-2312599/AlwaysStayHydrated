@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đấu Trường Khải Huyền</title>
+<link rel="stylesheet" href="/static/css/fonts.css">
+<link rel="stylesheet" href="/static/css/theme.css">
+<style>
+:root{
+  --duo-green:#2D6A4F; --duo-green-sh:#1B4332; --duo-green-bg:#D8F3DC;
+  --duo-blue:#1D6FA5;  --duo-blue-sh:#124867;  --duo-blue-bg:#D9EEF9;
+  --duo-gold:#D4A017;  --duo-gold-sh:#B08312;  --duo-gold-bg:#FDF3D8;
+  --duo-red:#B91C1C;   --duo-red-sh:#8f1616;   --duo-red-bg:#FEE2E2;
+  --duo-purple:#7C3AED;--duo-purple-sh:#6025c4;--duo-purple-bg:#EDE9FE;
+  --panel:var(--surface2); --text:var(--text-pri); --text-soft:var(--text-sec);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; background:var(--bg); color:var(--text);
+  padding:18px 16px 100px;
+}
+.wrap{max-width:600px; margin:0 auto}
+.hidden{display:none !important}
+.center-msg{ text-align:center; margin-top:30vh; color:var(--text-soft); font-weight:700; }
+
+/* ── Mascot ── */
+.mascot-zone{text-align:center; margin-bottom:8px}
+.mascot-zone svg{width:110px; height:110px; transition:transform .2s}
+.mascot-zone.bounce svg{animation:bounce .6s ease infinite}
+.mascot-zone.flap svg{animation:flap .35s ease infinite}
+.mascot-zone.shake svg{animation:shake .4s ease}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes flap{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.speech{
+  display:inline-block; background:var(--panel); border:2px solid var(--border);
+  border-radius:16px; padding:9px 16px; font-weight:700; font-size:.9rem; margin-top:2px;
+}
+
+/* ── Lobby ── */
+.code-panel{
+  background:var(--duo-blue-bg); border:2px solid var(--duo-blue); border-radius:20px;
+  padding:22px; text-align:center; margin-bottom:18px;
+}
+.code-panel .label{color:var(--duo-blue-sh); font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em}
+.code-panel .code{font-size:2.6rem; font-weight:800; letter-spacing:.15em; color:var(--duo-blue-sh); margin:4px 0}
+.code-panel .hint{color:var(--text-soft); font-size:.82rem; font-weight:600}
+
+.players-card{ background:var(--bg); border:2px solid var(--border); border-radius:18px; padding:16px; margin-bottom:18px; }
+.players-card h3{margin:0 0 12px; font-size:.95rem; font-weight:800; color:var(--text-soft); text-transform:uppercase; letter-spacing:.03em}
+.player-grid{display:flex; flex-wrap:wrap; gap:10px}
+.avatar-chip{ display:flex; flex-direction:column; align-items:center; gap:5px; width:64px }
+.avatar-circle{
+  width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-weight:800; color:#fff; font-size:1.1rem; border:3px solid rgba(0,0,0,.06);
+}
+.avatar-chip .name{font-size:.72rem; font-weight:700; color:var(--text-soft); text-align:center; max-width:64px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+
+.waiting-note{text-align:center; color:var(--text-soft); font-weight:700; margin-top:14px}
+.dots span{animation:blink 1.4s infinite}
+.dots span:nth-child(2){animation-delay:.2s}
+.dots span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
+
+/* ── Sticky action bar (kiểu Duolingo "Continue") ── */
+.action-bar{
+  position:fixed; left:0; right:0; bottom:0; background:#fff; border-top:2px solid var(--border);
+  padding:14px 16px calc(14px + env(safe-area-inset-bottom)); z-index:50;
+}
+.action-bar .inner{max-width:600px; margin:0 auto}
+.btn-duo{
+  width:100%; padding:15px; border-radius:16px; cursor:pointer;
+  font-family:inherit; font-size:1.05rem; font-weight:800; color:#fff;
+  border:none; border-bottom:4px solid var(--shadow, var(--duo-green-sh));
+  background:var(--face, var(--duo-green));
+  transition:transform .04s, border-bottom-width .04s;
+  text-transform:uppercase; letter-spacing:.02em;
+}
+.btn-duo:active{ transform:translateY(3px); border-bottom-width:1px; }
+.btn-duo:disabled{ opacity:.45; cursor:not-allowed; transform:none !important; }
+
+/* ── Gameplay ── */
+.hud{display:flex; align-items:center; gap:10px; margin-bottom:14px}
+.progress-track{ flex:1; display:flex; gap:4px; }
+.progress-seg{ flex:1; height:10px; border-radius:6px; background:var(--border); }
+.progress-seg.done{ background:var(--duo-green); }
+.progress-seg.current{ background:var(--duo-blue); }
+.streak-badge{
+  display:flex; align-items:center; gap:3px; background:var(--duo-gold-bg); color:var(--duo-gold-sh);
+  padding:5px 10px; border-radius:20px; font-weight:800; font-size:.85rem; white-space:nowrap;
+}
+.timer-ring{
+  width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:1.15rem; border:4px solid var(--duo-blue); color:var(--duo-blue); flex-shrink:0;
+}
+.timer-ring.urgent{ border-color:var(--duo-red); color:var(--duo-red); }
+
+.ref{color:var(--text-soft); font-size:.82rem; font-weight:700; text-align:center; margin-bottom:8px}
+.question-card{
+  background:var(--panel); border:2px solid var(--border); border-radius:20px;
+  padding:26px 20px; margin-bottom:18px; font-size:1.15rem; font-weight:700; line-height:1.6;
+  text-align:center; min-height:90px; display:flex; align-items:center; justify-content:center;
+}
+.fill-wrap{display:flex; flex-direction:column; gap:14px}
+.answer-input{
+  width:100%; padding:16px 18px; border-radius:16px; border:2px solid var(--border); border-bottom-width:4px;
+  font-size:1.05rem; font-weight:700; font-family:inherit; color:var(--text); text-align:center;
+  background:#fff; transition:border-color .1s;
+}
+.answer-input:focus{ outline:none; border-color:var(--duo-blue); }
+.answer-input:disabled{ cursor:default; opacity:.85 }
+.answer-input.correct{ border-color:var(--duo-green); background:var(--duo-green-bg); color:var(--duo-green-sh); }
+.answer-input.wrong{ border-color:var(--duo-red); background:var(--duo-red-bg); color:var(--duo-red-sh); }
+.submit-answer-btn{ width:100% }
+.correct-answer-hint{
+  text-align:center; margin-top:6px; color:var(--duo-green-sh); font-weight:700; font-size:.9rem;
+}
+.answered-note{ text-align:center; margin-top:16px; color:var(--text-soft); font-weight:700 }
+
+/* ── Reveal ── */
+.result-banner{
+  text-align:center; font-size:1.25rem; font-weight:800; margin-bottom:16px;
+  padding:14px; border-radius:16px;
+}
+.result-banner.ok{ background:var(--duo-green-bg); color:var(--duo-green-sh); }
+.result-banner.bad{ background:var(--duo-red-bg); color:var(--duo-red-sh); }
+.leaderboard{ background:var(--bg); border:2px solid var(--border); border-radius:18px; padding:8px; margin-top:10px }
+.lb-row{ display:flex; align-items:center; gap:10px; padding:10px 10px; border-radius:12px; }
+.lb-row:nth-child(odd){ background:var(--panel); }
+.lb-rank{ font-weight:800; color:var(--text-soft); width:22px; text-align:center; font-size:.95rem}
+.lb-avatar{ width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; color:#fff; font-size:.85rem; flex-shrink:0}
+.lb-name{ flex:1; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.lb-streak{ color:var(--duo-gold-sh); font-size:.78rem; font-weight:800; margin-right:4px}
+.lb-score{ font-weight:800; color:var(--duo-green-sh); white-space:nowrap }
+.next-hint{ text-align:center; color:var(--text-soft); font-weight:700; margin-top:14px; font-size:.88rem }
+
+/* ── Final ── */
+.final{ text-align:center; position:relative }
+.trophy{ font-size:3.4rem; margin-bottom:4px }
+.final h2{ font-size:1.4rem; font-weight:800; margin:0 0 4px }
+.final .sub{ color:var(--text-soft); font-weight:600; margin-bottom:18px }
+.podium{ display:flex; align-items:flex-end; justify-content:center; gap:10px; margin-bottom:20px }
+.podium-item{ display:flex; flex-direction:column; align-items:center; gap:6px }
+.podium-bar{ width:74px; border-radius:12px 12px 0 0; display:flex; align-items:flex-start; justify-content:center; padding-top:8px; font-weight:800; color:#fff }
+.podium-item.p1 .podium-bar{ height:100px; background:var(--duo-gold); }
+.podium-item.p2 .podium-bar{ height:72px; background:var(--duo-blue); }
+.podium-item.p3 .podium-bar{ height:52px; background:var(--duo-purple); }
+.podium-item .lb-avatar{ width:44px; height:44px; font-size:1rem }
+.podium-item .pname{ font-size:.78rem; font-weight:700; max-width:74px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.footer-link{ display:inline-block; margin-top:18px; color:var(--duo-blue); text-decoration:none; font-weight:800 }
+
+.confetti-piece{
+  position:fixed; top:-20px; width:9px; height:14px; opacity:.9; z-index:5;
+  animation:fall linear forwards;
+}
+@keyframes fall{ to{ transform:translateY(110vh) rotate(540deg); opacity:.4 } }
+
+.error-view{ text-align:center; margin-top:25vh }
+.error-view .mascot-zone svg{width:100px;height:100px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div id="connectingMsg" class="center-msg">Đang kết nối tới phòng...</div>
+
+  <!-- LOBBY -->
+  <div id="lobbyView" class="hidden">
+    <div class="mascot-zone" id="lobbyMascot"><svg viewBox="0 0 140 140"><use href="#dove-idle"/></svg></div>
+    <div class="code-panel">
+      <div class="label">Mã phòng</div>
+      <div class="code" id="roomCodeDisplay">------</div>
+      <div class="hint">Gửi mã này cho bạn bè để cùng tham gia</div>
+    </div>
+    <div class="players-card">
+      <h3>Người chơi (<span id="playerCount">0</span>)</h3>
+      <div class="player-grid" id="playerChips"></div>
+    </div>
+    <div class="waiting-note" id="waitingNote">Đang chờ chủ phòng bắt đầu<span class="dots"><span>.</span><span>.</span><span>.</span></span></div>
+  </div>
+
+  <!-- QUESTION -->
+  <div id="questionView" class="hidden">
+    <div class="hud">
+      <div class="timer-ring" id="timerDisplay">20</div>
+      <div class="progress-track" id="progressTrack"></div>
+      <div class="streak-badge hidden" id="streakBadge">🔥 <span id="streakCount">0</span></div>
+    </div>
+    <div class="ref" id="qRef"></div>
+    <div class="question-card" id="qText"></div>
+    <div class="fill-wrap" id="fillWrap">
+      <input type="text" id="answerInput" class="answer-input" placeholder="Nhập câu trả lời..." autocomplete="off" autocapitalize="off">
+      <button class="btn-duo submit-answer-btn" id="submitAnswerBtn">Trả lời</button>
+    </div>
+    <div class="correct-answer-hint hidden" id="correctAnswerHint"></div>
+    <div class="answered-note hidden" id="answeredNote">✅ Đã ghi nhận — chờ mọi người trả lời...</div>
+  </div>
+
+  <!-- REVEAL -->
+  <div id="revealView" class="hidden">
+    <div class="mascot-zone" id="revealMascot"><svg viewBox="0 0 140 140"><use href="#dove-idle"/></svg></div>
+    <div class="result-banner" id="resultBanner"></div>
+    <div class="leaderboard" id="revealLeaderboard"></div>
+    <div class="next-hint">Câu tiếp theo sắp bắt đầu...</div>
+  </div>
+
+  <!-- FINAL -->
+  <div id="finalView" class="hidden final">
+    <div class="trophy">🏆</div>
+    <h2>Kết thúc trận đấu!</h2>
+    <div class="sub">Đây là bảng xếp hạng chung cuộc</div>
+    <div class="podium" id="podium"></div>
+    <div class="leaderboard" id="finalLeaderboard"></div>
+    <a class="footer-link" href="/multiplayer">← Chơi ván khác</a>
+  </div>
+
+  <div id="errorMsg" class="error-view hidden">
+    <div class="mascot-zone"><svg viewBox="0 0 140 140"><use href="#dove-sad"/></svg></div>
+    <div class="speech" id="errorText"></div>
+  </div>
+</div>
+
+<!-- Thanh hành động cố định dưới cùng (chỉ dùng ở sảnh chờ cho chủ phòng) -->
+<div class="action-bar hidden" id="actionBar">
+  <div class="inner">
+    <button class="btn-duo" id="startBtn">Bắt đầu chơi 🚀</button>
+  </div>
+</div>
+
+<!-- Linh vật bồ câu gốc, 3 trạng thái cảm xúc -->
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="dove-idle" viewBox="0 0 140 140">
+    <circle cx="70" cy="60" r="34" fill="none" stroke="#D4A017" stroke-width="3" opacity=".55"/>
+    <ellipse cx="70" cy="78" rx="30" ry="26" fill="#FFFFFF" stroke="#D8F3DC" stroke-width="2.5"/>
+    <path d="M40 75 Q18 65 22 42 Q40 48 46 68 Z" fill="#2D6A4F"/>
+    <path d="M100 75 Q122 65 118 42 Q100 48 94 68 Z" fill="#2D6A4F"/>
+    <circle cx="70" cy="52" r="20" fill="#FFFFFF" stroke="#D8F3DC" stroke-width="2.5"/>
+    <circle cx="63" cy="50" r="3.4" fill="#0D2B1E"/>
+    <circle cx="77" cy="50" r="3.4" fill="#0D2B1E"/>
+    <path d="M67 58 Q70 61 73 58" stroke="#0D2B1E" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M70 56 L78 60 L70 62 Z" fill="#D4A017"/>
+  </symbol>
+  <symbol id="dove-happy" viewBox="0 0 140 140">
+    <circle cx="70" cy="60" r="36" fill="none" stroke="#D4A017" stroke-width="3"/>
+    <ellipse cx="70" cy="78" rx="30" ry="26" fill="#FFFFFF" stroke="#D8F3DC" stroke-width="2.5"/>
+    <path d="M40 70 Q10 48 18 20 Q42 32 48 62 Z" fill="#2D6A4F"/>
+    <path d="M100 70 Q130 48 122 20 Q98 32 92 62 Z" fill="#2D6A4F"/>
+    <circle cx="70" cy="52" r="20" fill="#FFFFFF" stroke="#D8F3DC" stroke-width="2.5"/>
+    <path d="M59 48 Q63 44 67 48" stroke="#0D2B1E" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M73 48 Q77 44 81 48" stroke="#0D2B1E" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M64 57 Q70 64 76 57" stroke="#0D2B1E" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M70 56 L78 60 L70 62 Z" fill="#D4A017"/>
+    <circle cx="30" cy="30" r="2.5" fill="#D4A017"/>
+    <circle cx="112" cy="26" r="2" fill="#1D6FA5"/>
+    <circle cx="118" cy="42" r="2.5" fill="#7C3AED"/>
+  </symbol>
+  <symbol id="dove-sad" viewBox="0 0 140 140">
+    <ellipse cx="70" cy="82" rx="30" ry="24" fill="#FFFFFF" stroke="#D8F3DC" stroke-width="2.5"/>
+    <path d="M42 82 Q24 88 24 70 Q40 68 48 78 Z" fill="#7EA98D"/>
+    <path d="M98 82 Q116 88 116 70 Q100 68 92 78 Z" fill="#7EA98D"/>
+    <circle cx="70" cy="56" r="20" fill="#FFFFFF" stroke="#D8F3DC" stroke-width="2.5"/>
+    <path d="M60 52 Q63 55 66 52" stroke="#0D2B1E" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M74 52 Q77 55 80 52" stroke="#0D2B1E" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M65 66 Q70 62 75 66" stroke="#0D2B1E" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M70 60 L78 64 L70 66 Z" fill="#D4A017"/>
+  </symbol>
+</svg>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+const ROOM_CODE_FROM_URL = {{ room_code|tojson }};  // null nếu là host đang tạo phòng
+const role = sessionStorage.getItem('mp_role') || 'player';
+const username = sessionStorage.getItem('mp_username') || {{ username|tojson }};
+let currentCode = ROOM_CODE_FROM_URL;
+let timerInterval = null;
+let hasAnswered = false;
+let myStreak = 0;
+
+const AVATAR_COLORS = ['#2D6A4F', '#1D6FA5', '#D4A017', '#B91C1C', '#7C3AED', '#FF9600'];
+function colorFor(name) {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) % AVATAR_COLORS.length;
+  return AVATAR_COLORS[h];
+}
+function initialFor(name) { return (name || '?').trim().charAt(0).toUpperCase(); }
+function escapeHtml(s) { return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function show(id) {
+  ['connectingMsg','lobbyView','questionView','revealView','finalView','errorMsg']
+    .forEach(x => document.getElementById(x).classList.toggle('hidden', x !== id));
+  document.getElementById('actionBar').classList.toggle('hidden', id !== 'lobbyView' || role !== 'host');
+}
+
+function setMascot(zoneId, symbolId, animClass) {
+  const zone = document.getElementById(zoneId);
+  zone.querySelector('use').setAttribute('href', '#' + symbolId);
+  zone.className = 'mascot-zone' + (animClass ? ' ' + animClass : '');
+}
+
+function showError(msg) {
+  document.getElementById('errorText').textContent = msg;
+  show('errorMsg');
+}
+
+if (!username) { window.location.href = '/multiplayer'; }
+
+const socket = io(window.location.origin, {
+  path: '/socket.io',
+  transports: ['polling'],
+  upgrade: false,
+  reconnection: true,
+  reconnectionAttempts: 8,
+  timeout: 10000,
+});
+
+socket.on('connect_error', () => {
+  showError('Không kết nối được tới máy chủ. Vui lòng tải lại trang.');
+});
+
+socket.on('connect', () => {
+  if (role === 'host' && !currentCode) {
+    const settings = JSON.parse(sessionStorage.getItem('mp_settings') || '{}');
+    settings.username = username;
+    socket.emit('mp_create_room', settings);
+  } else if (currentCode) {
+    socket.emit('mp_join_room', { code: currentCode, username });
+  }
+});
+
+socket.on('mp_room_created', (data) => {
+  currentCode = data.code;
+  history.replaceState(null, '', '/multiplayer/room/' + currentCode);
+  document.getElementById('roomCodeDisplay').textContent = currentCode;
+  document.getElementById('waitingNote').textContent = 'Bạn là chủ phòng — bấm "Bắt đầu chơi" khi mọi người đã vào!';
+  show('lobbyView');
+});
+
+socket.on('mp_joined', (data) => {
+  currentCode = data.code;
+  document.getElementById('roomCodeDisplay').textContent = currentCode;
+  show('lobbyView');
+});
+
+socket.on('mp_players_update', (data) => {
+  document.getElementById('playerCount').textContent = data.players.length;
+  const wrap = document.getElementById('playerChips');
+  wrap.innerHTML = '';
+  data.players.forEach(p => {
+    const chip = document.createElement('div');
+    chip.className = 'avatar-chip';
+    chip.innerHTML = `
+      <div class="avatar-circle" style="background:${colorFor(p.name)}">${initialFor(p.name)}</div>
+      <div class="name">${escapeHtml(p.name)}</div>`;
+    wrap.appendChild(chip);
+  });
+});
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  document.getElementById('startBtn').disabled = true;
+  socket.emit('mp_start_game', { code: currentCode });
+});
+
+let questionDeadlineClientTime = 0;
+
+socket.on('mp_question', (data) => {
+  clearInterval(timerInterval);
+  hasAnswered = false;
+
+  document.getElementById('qRef').textContent = `📖 Khải Huyền ${data.chapter}:${data.verse}`;
+  document.getElementById('qText').textContent = data.question || 'Điền đúng toàn bộ câu';
+  document.getElementById('answeredNote').classList.add('hidden');
+  document.getElementById('correctAnswerHint').classList.add('hidden');
+
+  // Thanh tiến trình dạng các đoạn (kiểu Duolingo)
+  const track = document.getElementById('progressTrack');
+  track.innerHTML = '';
+  for (let i = 0; i < data.total; i++) {
+    const seg = document.createElement('div');
+    seg.className = 'progress-seg' + (i < data.index ? ' done' : (i === data.index ? ' current' : ''));
+    track.appendChild(seg);
+  }
+
+  const streakBadge = document.getElementById('streakBadge');
+  if (myStreak >= 2) {
+    document.getElementById('streakCount').textContent = myStreak;
+    streakBadge.classList.remove('hidden');
+  } else {
+    streakBadge.classList.add('hidden');
+  }
+
+  const answerInput = document.getElementById('answerInput');
+  answerInput.value = '';
+  answerInput.disabled = false;
+  answerInput.classList.remove('correct', 'wrong');
+  document.getElementById('submitAnswerBtn').disabled = false;
+
+  questionDeadlineClientTime = Date.now() + data.time_limit * 1000;
+  const timerEl = document.getElementById('timerDisplay');
+  timerEl.classList.remove('urgent');
+  updateTimer();
+  timerInterval = setInterval(updateTimer, 200);
+
+  show('questionView');
+  setTimeout(() => answerInput.focus(), 50);
+});
+
+function updateTimer() {
+  const remaining = Math.max(0, Math.ceil((questionDeadlineClientTime - Date.now()) / 1000));
+  const timerEl = document.getElementById('timerDisplay');
+  timerEl.textContent = remaining;
+  if (remaining <= 5) timerEl.classList.add('urgent');
+  if (remaining <= 0) {
+    clearInterval(timerInterval);
+    if (!hasAnswered) {
+      submitAnswer(true);
+    }
+  }
+}
+
+function submitAnswer(isTimeout = false) {
+  if (hasAnswered) return;
+  const input = document.getElementById('answerInput');
+  const value = input.value.trim();
+  if (!value && !isTimeout) { input.focus(); return; }
+  hasAnswered = true;
+  input.disabled = true;
+  document.getElementById('submitAnswerBtn').disabled = true;
+  socket.emit('mp_submit_answer', { code: currentCode, text: value });
+  document.getElementById('answeredNote').classList.remove('hidden');
+}
+
+document.getElementById('submitAnswerBtn').addEventListener('click', submitAnswer);
+document.getElementById('answerInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { e.preventDefault(); submitAnswer(); }
+});
+
+socket.on('mp_answer_ack', (data) => { myStreak = data.streak || 0; });
+
+socket.on('mp_question_result', (data) => {
+  clearInterval(timerInterval);
+  hasAnswered = false;
+
+  const mine = data.results.find(r => r.name === username);
+  const banner = document.getElementById('resultBanner');
+
+  if (mine && mine.correct) {
+    const streakTxt = mine.streak >= 2 ? ` · 🔥 chuỗi ${mine.streak}` : '';
+    banner.textContent = `🎉 Chính xác! +${mine.points_earned} điểm${streakTxt}`;
+    banner.className = 'result-banner ok';
+    setMascot('revealMascot', 'dove-happy', 'bounce');
+  } else if (mine && mine.answered) {
+    banner.textContent = '❌ Sai rồi — cố lên câu sau nhé!';
+    banner.className = 'result-banner bad';
+    setMascot('revealMascot', 'dove-sad', 'shake');
+  } else {
+    banner.textContent = '⏱️ Bạn chưa trả lời kịp';
+    banner.className = 'result-banner bad';
+    setMascot('revealMascot', 'dove-sad', '');
+  }
+
+  const answerInput = document.getElementById('answerInput');
+  answerInput.disabled = true;
+  document.getElementById('submitAnswerBtn').disabled = true;
+  if (mine && mine.correct) {
+    answerInput.classList.add('correct');
+  } else {
+    answerInput.classList.add('wrong');
+    const hint = document.getElementById('correctAnswerHint');
+    hint.textContent = `✓ Đáp án đúng: ${data.correct_answer}`;
+    hint.classList.remove('hidden');
+  }
+
+  renderLeaderboard('revealLeaderboard', data.leaderboard);
+  show('revealView');
+});
+
+socket.on('mp_game_over', (data) => {
+  renderPodium(data.leaderboard);
+  renderLeaderboard('finalLeaderboard', data.leaderboard, true);
+  launchConfetti();
+  show('finalView');
+});
+
+function renderLeaderboard(containerId, leaderboard, skipTopThree) {
+  const wrap = document.getElementById(containerId);
+  wrap.innerHTML = '';
+  const list = skipTopThree ? leaderboard.slice(3) : leaderboard;
+  const offset = skipTopThree ? 3 : 0;
+  list.forEach((p, i) => {
+    const rank = i + offset + 1;
+    const row = document.createElement('div');
+    row.className = 'lb-row';
+    row.innerHTML = `
+      <span class="lb-rank">${rank}</span>
+      <span class="lb-avatar" style="background:${colorFor(p.name)}">${initialFor(p.name)}</span>
+      <span class="lb-name">${escapeHtml(p.name)}</span>
+      ${p.streak >= 2 ? `<span class="lb-streak">🔥${p.streak}</span>` : ''}
+      <span class="lb-score">${p.score} đ</span>
+    `;
+    wrap.appendChild(row);
+  });
+}
+
+function renderPodium(leaderboard) {
+  const podium = document.getElementById('podium');
+  podium.innerHTML = '';
+  const order = [1, 0, 2]; // hiển thị: nhì - nhất - ba
+  order.forEach(i => {
+    const p = leaderboard[i];
+    if (!p) return;
+    const cls = i === 0 ? 'p1' : (i === 1 ? 'p2' : 'p3');
+    const item = document.createElement('div');
+    item.className = 'podium-item ' + cls;
+    item.innerHTML = `
+      <span class="lb-avatar" style="background:${colorFor(p.name)}">${initialFor(p.name)}</span>
+      <div class="pname">${escapeHtml(p.name)}</div>
+      <div class="podium-bar">${i === 0 ? '🥇' : (i === 1 ? '🥈' : '🥉')}</div>
+    `;
+    podium.appendChild(item);
+  });
+}
+
+function launchConfetti() {
+  const colors = ['#2D6A4F', '#1D6FA5', '#D4A017', '#B91C1C', '#7C3AED'];
+  for (let i = 0; i < 60; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDuration = (2.5 + Math.random() * 2) + 's';
+    piece.style.animationDelay = (Math.random() * 0.6) + 's';
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 5000);
+  }
+}
+
+socket.on('mp_error', (data) => showError(data.message));
+socket.on('mp_room_closed', (data) => showError(data.message));
+</script>
+</body>
+</html>

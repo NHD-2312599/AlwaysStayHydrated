@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#386641">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Đăng nhập — Always Stay Hydrated</title>
+  <link rel="preload" href="{{ url_for('static', filename='fonts/BDLifelessGrotesk-Regular.woff2') }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ url_for('static', filename='fonts/BDLifelessGrotesk-Bold.woff2') }}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+  <style>
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Thin.ttf') format('truetype');
+      font-weight: 100;
+    }
+
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-ExtraLight.ttf') format('truetype');
+      font-weight: 200;
+    }
+
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Light.ttf') format('truetype');
+      font-weight: 300;
+    }
+
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-SemiLight.ttf') format('truetype');
+      font-weight: 400;
+    }
+
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Regular.ttf') format('truetype');
+      font-weight: 500;
+    }
+
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Medium.ttf') format('truetype');
+      font-weight: 600;
+    }
+
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Bold.ttf') format('truetype');
+      font-weight: 700;
+    }
+
+    @font-face {
+      font-family: 'NeueHaasGroteskDisplay';
+      src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Black.ttf') format('truetype');
+      font-weight: 900;
+    }
+
+    :root {
+      --bg: #F7F3E8;
+      --panel: #ffffff;
+      --accent: #2D6A4F;
+      --accent-deep: #1B4332;
+      --accent-light: #52b788;
+      --cream: #FFFBEA;
+      --ink: #16241a;
+      --text: #1C262B;
+      --muted: #6b7d70;
+      --field-bg: #f3faf2;
+      --field-border: #d7ead7;
+    }
+    * {
+      box-sizing: border-box;
+    }
+
+    
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
+      background: radial-gradient(circle at 15% 8%, #fffdf5 0%, var(--bg) 45%, #ede8d8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .page {
+      width: min(1040px, 100%);
+      border-radius: 28px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      background: var(--panel);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,0.6) inset,
+        0 40px 80px -20px rgba(20, 50, 30, 0.28),
+        0 8px 24px -6px rgba(20, 50, 30, 0.12);
+      border: 1px solid rgba(56,102,65,0.08);
+    }
+    .hero {
+     position: relative;
+     background:
+        radial-gradient(circle at 78% 14%, rgba(255,255,255,0.10) 0%, transparent 38%),
+        linear-gradient(160deg, var(--accent-deep) 0%, var(--accent) 55%, #2f7038 100%);
+     padding: 56px 64px;
+     display: flex;
+     flex-direction: column;
+      justify-content: center;
+      gap: 18px;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,0.55) 1.5px, transparent 1.6px);
+      background-size: 26px 26px;
+      opacity: 0.05;
+      z-index: 0;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      right: -120px;
+      bottom: -140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.10) 0%, transparent 70%);
+      z-index: 0;
+    }
+    .hero > * { position: relative; z-index: 1; }
+    .hero h1 {
+    margin: 0;
+    font-size: clamp(2.2rem, 4vw, 2.85rem);
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    }
+    .hero p {
+      margin: 0;
+      max-width: 380px;
+      line-height: 1.7;
+      color: rgba(255, 251, 234, 0.82);
+      font-size: 1rem;
+    }
+    .hero-foot {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--bg);
+      font-size: 0.88rem;
+      flex-wrap: wrap;
+    }
+    .hero-foot a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .hero-tagline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: fit-content;
+      padding: 7px 14px 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: var(--cream);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 4px;
+    }
+    .hero-tagline .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #9fe6ab;
+      box-shadow: 0 0 0 3px rgba(159,230,171,0.25);
+    }
+    .panel {
+      background: var(--panel);
+      padding: 56px 56px 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 100%;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .brand-dot {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: var(--accent);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 800;
+    }
+    .form-title {
+      margin: 0 0 6px;
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .form-sub {
+      margin: 0 0 30px;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.6;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent-deep);
+     text-transform: uppercase;
+     letter-spacing: 0.06em;
+    }
+    .input-wrap {
+      position: relative;
+    }
+    .input-wrap svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--accent-light);
+      pointer-events: none;
+      transition: color 0.15s ease;
+    }
+    .input-wrap:focus-within svg {
+      color: var(--accent);
+    }
+    input {
+      width: 100%;
+      padding: 13px 16px 13px 42px;
+      border-radius: 12px;
+      border: 1.5px solid var(--field-border);
+      background: var(--field-bg);
+      color: var(--text);
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    input::placeholder { color: #9bb09e; }
+    input:focus {
+      border-color: var(--accent);
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(56, 102, 65, 0.10);
+    }
+    .field-group {
+      display: grid;
+      gap: 18px;
+    }
+    .options {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 18px;
+      gap: 16px;
+    }
+    .checkbox-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+      font-size: 0.87rem;
+      cursor: pointer;
+    }
+    .checkbox-label input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent);
+      margin: 0;
+      cursor: pointer;
+    }
+    .forgot {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.87rem;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+      font: inherit;
+      transition: color 0.15s ease;
+    }
+    .forgot:hover {
+      color: var(--accent-deep);
+      text-decoration: underline;
+    }
+    .msg {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 13px 16px;
+      border-radius: 13px;
+      margin-bottom: 22px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+    .msg.success {
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #86efac;
+    }
+    input.error {
+      border-color: #ef4444 !important;
+      background: #fef2f2 !important;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 35, 22, 0.55);
+      backdrop-filter: blur(3px);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.show {
+      display: flex;
+      animation: fadeIn 0.18s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .modal-content {
+      background: var(--panel);
+      border-radius: 22px;
+      padding: 36px;
+      width: min(440px, 90%);
+      box-shadow: 0 30px 70px -10px rgba(20, 50, 30, 0.35);
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 1px solid rgba(56,102,65,0.08);
+      animation: slideUp 0.22s ease;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+    .modal-header h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .modal-close {
+      background: var(--field-bg);
+      border: none;
+      font-size: 20px;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .modal-close:hover {
+      background: #e6f3e8;
+      color: var(--accent-deep);
+    }
+    .btn-primary {
+      width: 100%;
+      padding: 14px 16px;
+      border: none;
+      border-radius: 13px;
+      background: linear-gradient(155deg, var(--accent) 0%, var(--accent-deep) 100%);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.97rem;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 26px;
+      box-shadow: 0 14px 30px -8px rgba(35, 77, 44, 0.45);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 34px -8px rgba(35, 77, 44, 0.5);
+      filter: brightness(1.04);
+    }
+    .btn-primary:active {
+      transform: translateY(0);
+      filter: brightness(0.98);
+    }
+    .btn-secondary {
+      width: 100%;
+      padding: 12px 16px;
+      margin-top: 14px;
+      border-radius: 13px;
+      border: 1.5px solid var(--field-border);
+      background: #fff;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-family: inherit;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent-light);
+      background: var(--field-bg);
+    }
+    .btn-secondary img {
+      width: 18px;
+      height: 18px;
+    }
+    .form-footer {
+      margin-top: 22px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.89rem;
+    }
+    .form-footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 700;
+      transition: color 0.15s ease;
+    }
+    .form-footer a:hover {
+      color: var(--accent-deep);
+      text-decoration: underline;
+    }
+    @media (max-width: 960px) {
+      .page {grid-template-columns: 1fr;}
+      .hero {padding: 40px 32px;}
+      .panel {padding: 40px 32px;}
+    }
+    @media (max-width: 600px) {
+      body {padding: 16px;}
+      .page {border-radius: 22px;}
+      .hero {padding: 32px 24px 28px;}
+      .panel {padding: 32px 24px 28px;}
+      .hero h1 {font-size: 1.9rem;}
+      .hero-logo {width: 120px; height: 120px; margin-bottom: 4px;}
+    }
+
+    
+.hero-logo {
+    width: 168px;
+    height: 168px;
+    margin-bottom: 4px;
+}
+    .hero-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 20px rgba(0,0,0,0.22));
+    }
+    .hero-verse {
+      margin: 0;
+      padding: 14px 18px;
+      border-left: 3px solid rgba(159, 230, 171, 0.6);
+      background: rgba(255,255,255,0.06);
+      border-radius: 0 8px 8px 0;
+    }
+    .hero-verse p {
+      margin: 0 0 10px;
+      font-size: 0.88rem;
+      font-style: italic;
+      line-height: 1.7;
+      color: rgba(255, 251, 234, 0.82);
+    }
+    .hero-verse cite {
+      display: block;
+      font-size: 0.80rem;
+      font-style: normal;
+      font-weight: 700;
+      color: #9fe6ab;
+      letter-spacing: 0.01em;
+    }
+  </style>
+<link rel="stylesheet" href="/static/css/mobile-responsive.css">
+<script src="/static/js/session-refresh.js"></script>
+<script src="/static/js/sw-register.js"></script>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <div class="hero-logo">
+        <img src="{{ url_for('static', filename='pictures/Logo.png') }}" alt="Always Stay Hydrated Logo">
+        </div>
+      <div class="hero-tagline"><span class="dot"></span>Always Stay Hydrated</div>
+      <h1>Welcome back</h1>
+      <blockquote class="hero-verse">
+        <p>Tôi ngỏ cho kẻ nào nghe lời tiên-tri trong sách này: Nếu ai thêm vào sách tiên-tri nầy điều gì, thì Đức Chúa Trời sẽ thêm cho người ấy tai-nạn đã ghi-chép trong sách nầy. Và kẻ nào bớt điều gì trong những lời ở sách tiên-tri nầy, thì Đức Chúa Trời sẽ cất lấy phần họ về cây sự sống và thành thánh, mà đã chép ra trong sách nầy.</p>
+        <cite>— Khải-huyền 22:18-19</cite>
+      </blockquote>
+    </section>
+    <section class="panel">
+      <h2 class="form-title">Đăng nhập</h2>
+      {% if msg %}<div class="msg {% if success %}success{% endif %}">{{ msg }}</div>{% endif %}
+      <form method="post" action="/login" id="loginForm">
+        <div class="field-group">
+          <div>
+            <label for="username">Tên đăng nhập</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M4 20.5c0-3.59 3.58-6.5 8-6.5s8 2.91 8 6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <input id="username" name="username" placeholder="Nhập tên đăng nhập của bạn" autocomplete="username" type="text" required />
+            </div>
+          </div>
+          <div>
+            <label for="password">Mật khẩu</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="10.5" width="14" height="9.5" rx="2.2" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <circle cx="12" cy="15" r="1.3" fill="currentColor"/>
+              </svg>
+              <input id="password" name="password" placeholder="Nhập mật khẩu của bạn" autocomplete="current-password" type="password" required />
+            </div>
+          </div>
+        </div>
+        <div class="options">
+          <label class="checkbox-label"><input type="checkbox" id="rememberMe" /> Lưu mật khẩu</label>
+          <button type="button" class="forgot" onclick="openForgotModal()">Quên mật khẩu?</button>
+        </div>
+        <button class="btn-primary" type="submit">Đăng nhập</button>
+      </form>
+      <div class="form-footer">Bạn chưa có tài khoản? <a href="/register">Đăng ký</a></div>
+    </section>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div id="forgotModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Đặt lại mật khẩu</h2>
+        <button class="modal-close" onclick="closeForgotModal()">&times;</button>
+      </div>
+      <form method="post" action="/forgot-password" id="forgotForm">
+        <div class="field-group">
+          <div>
+            <label for="forgotUsername">Tên đăng nhập</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M4 20.5c0-3.59 3.58-6.5 8-6.5s8 2.91 8 6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <input id="forgotUsername" name="username" placeholder="Nhập tên đăng nhập của bạn" type="text" required />
+            </div>
+          </div>
+          <div>
+            <label for="newPassword">Mật khẩu mới</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="10.5" width="14" height="9.5" rx="2.2" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <circle cx="12" cy="15" r="1.3" fill="currentColor"/>
+              </svg>
+              <input id="newPassword" name="new_password" placeholder="Nhập mật khẩu mới (tối thiểu 6 ký tự)" type="password" required />
+            </div>
+          </div>
+          <div>
+            <label for="confirmPassword">Xác nhận mật khẩu</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="10.5" width="14" height="9.5" rx="2.2" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <circle cx="12" cy="15" r="1.3" fill="currentColor"/>
+              </svg>
+              <input id="confirmPassword" name="confirm_password" placeholder="Xác nhận mật khẩu mới" type="password" required />
+            </div>
+          </div>
+        </div>
+        <button class="btn-primary" type="submit">Cập nhật mật khẩu</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Forgot Password Modal Functions
+    function openForgotModal() {
+      document.getElementById('forgotModal').classList.add('show');
+      document.getElementById('forgotUsername').focus();
+    }
+
+    function closeForgotModal() {
+      document.getElementById('forgotModal').classList.remove('show');
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('forgotModal');
+      if (event.target === modal) {
+        closeForgotModal();
+      }
+    }
+
+    // Remember Me Functionality
+    function loadRememberedCredentials() {
+      const remembered = localStorage.getItem('rememberedCredentials');
+      if (remembered) {
+        try {
+          const { username, password } = JSON.parse(remembered);
+          document.getElementById('username').value = username;
+          document.getElementById('password').value = password;
+          document.getElementById('rememberMe').checked = true;
+        } catch (e) {
+          console.log('Error loading remembered credentials');
+        }
+      }
+    }
+
+    function saveCredentialsIfChecked() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const rememberMe = document.getElementById('rememberMe').checked;
+      
+      if (rememberMe) {
+        localStorage.setItem('rememberedCredentials', JSON.stringify({ username, password }));
+      } else {
+        localStorage.removeItem('rememberedCredentials');
+      }
+    }
+
+    // Clear error styling when user starts typing
+    function clearErrorStyle() {
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+      if (usernameInput.classList.contains('error')) {
+        usernameInput.classList.remove('error');
+      }
+      if (passwordInput.classList.contains('error')) {
+        passwordInput.classList.remove('error');
+      }
+    }
+
+    document.getElementById('username').addEventListener('input', clearErrorStyle);
+    document.getElementById('password').addEventListener('input', clearErrorStyle);
+
+    // Handle login error - add red styling to both fields
+    function handleLoginError() {
+      const msgDiv = document.querySelector('.msg:not(.success)');
+      if (msgDiv && msgDiv.textContent.includes('không đúng')) {
+        document.getElementById('username').classList.add('error');
+        document.getElementById('password').classList.add('error');
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+        document.getElementById('username').focus();
+      }
+    }
+
+    // Load remembered credentials on page load
+    window.addEventListener('load', function() {
+      loadRememberedCredentials();
+      handleLoginError();
+    });
+
+    // Save credentials before form submission
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      saveCredentialsIfChecked();
+    });
+
+    // Sau đăng xuất: xóa cache PWA để tài khoản mới không thấy dữ liệu cũ
+    if (new URLSearchParams(location.search).get('fresh') === '1') {
+      clearAshCaches().then(() => history.replaceState({}, '', '/login'));
+    }
+  </script>
+<script src="/static/js/sw-register.js"></script>
+<script src="/static/js/pwa-install.js"></script>
+</body>
+</html>

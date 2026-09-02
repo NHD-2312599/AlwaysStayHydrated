@@ -1,0 +1,290 @@
+{
+  "tabs": [
+    {
+      "id": "tab1",
+      "name": "Bài thi tốt nghiệp",
+      "cards": [
+        {
+          "id": "c1",
+          "question": "1. Tôi là ai được nói đến trong Kinh thánh? Hãy viết ra cùng đoạn Kinh thánh liên quan.",
+          "ref": "Khải huyền 14; 7",
+          "answer": "Tôi là thực thể của trái đầu mùa của Khải đoạn 14 thuộc 12 chi phái trong Khải đoạn 7 bởi được sinh ra bằng hạt giống của Đức Chúa Trời, được gặt và đóng ấn vào thời ứng nghiệm sách Khải huyền.",
+          "blank": "Tôi là thực thể của _______ của Khải đoạn _______ thuộc _______ trong Khải đoạn _______ bởi được sinh ra bằng _______, được _______ và đóng _______ vào thời _______."
+        },
+        {
+          "id": "c2",
+          "question": "2. Chứng cớ về việc tôi thật sự đã được sáng tạo đúng theo Kinh thánh này là gì?",
+          "ref": "Khải huyền 7",
+          "answer": "Thuộc 12 chi phái trong Khải đoạn 7 bởi được gặt và đóng ấn.",
+          "blank": "Thuộc _______ trong Khải đoạn _______ bởi được _______ và đóng _______."
+        },
+        {
+          "id": "c3",
+          "question": "3. Trong Kinh thánh có cây sự sống và cây biết điều thiện và điều ác. Ngày hôm nay, ① trái của cây sự sống và ② trái của cây thiện ác là gì? Hãy viết ra lần lượt.",
+          "ref": "Khải huyền",
+          "answer": "① Ngôi lời của hiện thực của sách Khải huyền. ② Giáo lý dối Chuseok - sách giải kinh của kẻ chăn chiên giả.",
+          "blank": "① _______ của sách Khải huyền. ② _______ _______ của kẻ chăn chiên giả."
+        },
+        {
+          "id": "c4",
+          "question": "4. Hai loại khải thị được Đức Chúa Trời ban ① là gì? Trong đó, khải thị mà các tôi tớ của Đức Chúa Trời phải nhận vào thời ứng nghiệm sách Khải huyền ② là gì? Hãy viết ③ quá trình truyền đạt khải thị này.",
+          "ref": "Khải huyền 1",
+          "answer": "① Khải thị của sự hiện thấy mang tính tiên tri, khải thị của hiện thực. ② Khải thị của hiện thực. ③ Đức Chúa Trời → Chúa Jesus → thiên sứ → Giăng mới → các tôi tớ.",
+          "blank": "① Khải thị của sự _______ mang tính tiên tri, khải thị của _______. ② Khải thị của _______. ③ _______ → _______ → _______ → _______ → _______."
+        },
+        {
+          "id": "c5",
+          "question": "5. Trong Khải 1:3 ①'kẻ đọc' và ②'những kẻ nghe' và ③'những kẻ giữ' lần lượt là ai? Hãy viết ra lần lượt cùng đoạn (câu) Kinh thánh tương ứng của sách Khải huyền.",
+          "ref": "Khải huyền 1:3",
+          "answer": "① Giăng mới nhận và ăn quyển sách mở ra, Khải đoạn 10. ② Các dân, các nước, các tiếng, các vua học từ Giăng mới, Khải 10:11. ③ 12 chi phái 144.000 bao gồm Giăng mới và đoàn dân áo trắng, Khải đoạn 7.",
+          "blank": "① _______ nhận và ăn _______, Khải đoạn _______. ② _______, _______, _______, _______ học từ _______, Khải _______:11. ③ _______ chi phái _______ bao gồm _______ và _______, Khải đoạn _______."
+        },
+        {
+          "id": "c6",
+          "question": "6. Việc ứng nghiệm sách Khải huyền được bắt đầu bởi sự xuất hiện của ① ai? Hãy viết ra cùng với đoạn Kinh thánh liên quan. Hãy viết rõ công việc đã được bắt đầu để ứng nghiệm sách Khải huyền đã được ứng nghiệm bằng hiện thực vào ② lúc nào? ③ Ở đâu?",
+          "ref": "Khải huyền 1-3",
+          "answer": "① Chúa Jesus tái lâm, Khải đoạn 1, 2, 3. ② Năm 1966. ③ Đền tạm dưới núi Cheonggye thuộc địa phận Gwacheon.",
+          "blank": "① _______, Khải đoạn _______, _______, _______. ② Năm _______. ③ _______ dưới núi Cheonggye thuộc địa phận _______."
+        },
+        {
+          "id": "c7",
+          "question": "7. Nội dung thư được gửi trong Khải đoạn 2~3 ① gồm mấy điều, là gì? Hãy viết rõ ② ba đối tượng là nhân vật xuất hiện trong Khải đoạn 2~3 theo thứ tự xuất hiện. Hãy viết ③ công việc đã làm của mỗi người trong số họ.",
+          "ref": "Khải huyền 2-3",
+          "answer": "① Ba điều: Sự đã thấy, việc nay hiện có, việc sau sẽ đến. ② Bảy thiên sứ, đảng Ni-cô-la, Giăng. ③ Bảy thiên sứ: Lịch sử của đèn dọn đường. Đảng Ni-cô-la: Của cúng của hình tượng và giáo huấn, tà dâm. Giăng: thư về Ngôi lời của giao ước và điều phải ăn năn hối cải.",
+          "blank": "① _______ điều: _______, _______, _______. ② _______, _______, _______. ③ _______ thiên sứ: Lịch sử của đèn _______. Đảng _______: _______ của _______ và _______, _______. _______: _______ về Ngôi lời của _______ và điều phải _______."
+        },
+        {
+          "id": "c8",
+          "question": "8. Ba điều bí mật của sách Khải huyền là gì? Hãy viết ra cùng câu Kinh thánh liên quan.",
+          "ref": "Khải huyền 1:20; 17:5-7; 10:7",
+          "answer": "① Bí mật của bảy ngôi sao và bảy chân đèn vàng, Khải 1:20. ② Bí mật của Ba-by-lôn mẹ kẻ tà dâm và con thú có bảy đầu và mười sừng, Khải 17:5~7. ③ Bí mật của loa thứ bảy cuối cùng, Khải 10:7.",
+          "blank": "① Bí mật của _______ và _______, Khải _______:_______. ② Bí mật của Ba-by-lôn _______ và _______ và _______, Khải _______:_______~7. ③ Bí mật của _______ cuối cùng, Khải _______:_______."
+        },
+        {
+          "id": "c9",
+          "question": "9. Hãy viết ①phước đã được hứa sẽ ban cho người chiến thắng trong Khải đoạn 2~3. Ngoài phước này, ②còn có 1 phước mà người chiến thắng nhận được. Hãy viết điều đó cùng với câu Kinh thánh làm chứng.",
+          "ref": "Khải huyền 2-3; 21:7",
+          "answer": "① Trái cây sự sống, mão triều thiên của sự sống, chẳng bị hại gì về lần chết thứ hai, ma-na đã giấu kín, hòn sỏi trắng, gậy sắt, sao mai, mặc áo trắng, viết tên trong sách sự sống, làm trụ trong đền Đức Chúa Trời, lấy danh Đức Chúa Trời ta, danh của thành thánh Giê-ru-sa-lem mới, cùng danh mới của Chúa Jesus, mà viết lên trên người, cho ngồi cùng trên ngôi của Chúa Jesus. ② Trở thành con trai nhận cơ nghiệp, Khải 21:7.",
+          "blank": "① Trái _______, _______ của sự sống, chẳng bị hại gì về _______, _______ đã giấu kín, _______ trắng, _______, _______ mai, mặc _______, viết tên trong _______, làm _______ trong đền Đức Chúa Trời, lấy _______ _______ ta, danh của _______, cùng _______ của Chúa Jesus, mà viết lên trên người, cho ngồi cùng trên _______. ② Trở thành _______ nhận _______, Khải _______:_______."
+        },
+        {
+          "id": "c10",
+          "question": "10. Ý nghĩa của giao ước 'lấy danh Đức Chúa Trời ta, danh của thành thánh Giê-ru-sa-lem mới, cùng danh mới của Chúa Jesus viết lên người chiến thắng' ①là gì? Phước đã được Chúa Jesus hứa trong Khải đoạn 2~3 sẽ được nhận bởi ②ai?",
+          "ref": "Khải huyền 2-3",
+          "answer": "① Đức Chúa Trời, nước thiên đàng và Chúa Jesus đến ở cùng người chiến thắng. ② Người chiến đấu và chiến thắng đảng Ni-cô-la của Satan.",
+          "blank": "① Đức Chúa Trời, nước thiên đàng và Chúa Jesus _______ _______. ② _______ đảng _______ của Satan."
+        },
+        {
+          "id": "c11",
+          "question": "11. Trong Khải 4:8 Chúa đã phán rằng sau này ngôi của Đức Chúa Trời sẽ đến ở cùng đất này. Ngôi của Đức Chúa Trời đến ①ở đâu trong đoạn mấy của sách Khải huyền? Thực thể của nơi đó ②là ở đâu?",
+          "ref": "Khải huyền 4:8; 14",
+          "answer": "① Núi Si-ôn có 144.000 người được đóng ấn thuộc 12 chi phái trong Khải đoạn 14. ② Đền tạm chứng cớ nhà thờ Chúa Jesus Shincheonji.",
+          "blank": "① _______ có _______ người được đóng _______ thuộc _______ chi phái trong Khải đoạn _______. ② _______ nhà thờ Chúa Jesus _______."
+        },
+        {
+          "id": "c12",
+          "question": "12. 'Quyển sách bị đóng bằng bảy ấn' có trong tay hữu của Đức Chúa Trời trong Khải đoạn 5 là sách Khải huyền Giăng. Lý do trong thời gian qua, dầu trên trời, dưới đất, bên dưới đất không ai biết được nội dung của quyển sách đã bị đóng ấn ①là gì? Nội dung của quyển sách đã bị đóng ấn ②là gì?",
+          "ref": "Khải huyền 5",
+          "answer": "① Bởi vì hiện thực chưa xuất hiện. ② Bí mật của Đức Chúa Trời phải ứng nghiệm.",
+          "blank": "① Bởi vì _______ chưa xuất hiện. ② _______ của Đức Chúa Trời _______."
+        },
+        {
+          "id": "c13",
+          "question": "13. 'Huyết và thịt của Chúa Jesus' đã được hứa bằng lời giao ước mới trong Lu 22:14~20 được ăn ①khi nào, ②ở đâu, ③bởi ai? Hãy viết ra cùng 3 câu Kinh thánh làm chứng.",
+          "ref": "Lu 22:14-20; Khải 1:5-6; 5:9-10; 7:9-14",
+          "answer": "① Thời ứng nghiệm sách Khải huyền. ② 12 chi phái Shincheonji trong Khải đoạn 7 là nước của Đức Chúa Trời. ③ 144.000 và đoàn dân áo trắng, Khải 1:5~6, Khải 5:9~10, Khải 7:9~14.",
+          "blank": "① Thời _______. ② _______ Shincheonji trong Khải đoạn _______ là nước của Đức Chúa Trời. ③ _______ và _______, Khải 1:_______~_______, Khải 5:_______~_______, Khải 7:_______~_______."
+        },
+        {
+          "id": "c14",
+          "question": "14. Khải đoạn 6 là ①ai đi vào ai để phán xét ②ai? Những kẻ bị đuổi trong Khải đoạn 6 bị giết chết trong ③đoạn mấy, đoạn mấy?",
+          "ref": "Khải huyền 6; 8-9",
+          "answer": "① Chúa Jesus, bốn con sinh vật. ② Dân được chọn đã bỏ đạo, Bảy thiên sứ và các thánh đồ đền tạm. ③ Khải đoạn 8, Khải đoạn 9.",
+          "blank": "① _______, _______. ② _______, _______. ③ Khải đoạn _______, Khải đoạn _______."
+        },
+        {
+          "id": "c15",
+          "question": "15. ①'Các con bổn quốc' sẽ bị liệng ra chốn tối tăm ở ngoài và ②'nhiều người từ đông phương tây phương sẽ đến, ngồi trong nước thiên đàng' trong Mat đoạn 8 là ai? Hãy viết ra lần lượt cùng đoạn Kinh thánh liên quan.",
+          "ref": "Mat 8; Khải huyền 6, 7, 13, 14",
+          "answer": "① Nhà thờ truyền thống đã bại hoại Y-sơ-ra-ên thuộc linh, Khải đoạn 6 Khải đoạn 13. ② 12 chi phái Shincheonji được gặt và đóng ấn Y-sơ-ra-ên mới thuộc linh, Khải đoạn 7 Khải đoạn 14.",
+          "blank": "① _______ đã bại hoại _______, Khải đoạn _______ _______. ② _______ Shincheonji được _______ và đóng _______ _______, Khải đoạn _______ _______."
+        },
+        {
+          "id": "c16",
+          "question": "16. Những người được đóng ấn trong Khải đoạn 7 là những người đã đến①sau sự việc gì? ②đến từ đâu, như thế nào? Thực thể của những người này ③là ai?",
+          "ref": "Khải huyền 7; 6",
+          "answer": "① Sau sự phán xét mặt trời, mặt trăng, các ngôi sao của trời trước đã bỏ đạo trong Khải đoạn 6. ② Được gặt tại ruộng gặt. ③ Shincheonji 12 chi phái 144.000.",
+          "blank": "① Sau _______ _______ của trời trước đã _______ trong Khải đoạn _______. ② Được _______ tại _______. ③ Shincheonji _______ chi phái _______."
+        },
+        {
+          "id": "c17",
+          "question": "17. Lý do phát ra tiếng loa trong Khải đoạn 8 ①là gì? Ngoài ra, những kẻ bị giết chết trong Khải đoạn 8~9 ②là ai? Tiếng loa thứ 1~6 và tiếng loa thứ bảy ③khác nhau như thế nào?",
+          "ref": "Khải huyền 8-9",
+          "answer": "① Bởi vì quyển sách được mở và đọc vì tất cả ấn đều được mở. ② Những kẻ đã bị đuổi trong Khải đoạn 6. ③ Loa thứ 1~6: Sự chết của những kẻ bỏ đạo. Loa thứ bảy: Loa của sự cứu rỗi.",
+          "blank": "① Bởi vì quyển sách _______ vì tất cả _______ đều _______. ② _______ trong Khải đoạn _______. ③ Loa thứ 1~6: _______ của _______. Loa thứ bảy: Loa của _______."
+        },
+        {
+          "id": "c18",
+          "question": "18. Trong sách Khải huyền, 3 đoạn Kinh thánh nói về con thú của dân ngoại (kẻ huỷ diệt) phán xét dân được chọn đền tạm ①là gì? Thực thể của bảy loa mà bảy thiên sứ đã nhận ②là gì? Hãy viết ra cùng đoạn Kinh thánh.",
+          "ref": "Khải huyền 8, 9, 13; 6",
+          "answer": "① Khải đoạn 8, Khải đoạn 9, Khải đoạn 13. ② Những thánh đồ được chuộc bởi hạt giống của đức tin trong thời phán xét, Khải đoạn 6.",
+          "blank": "① Khải đoạn _______, Khải đoạn _______, Khải đoạn _______. ② _______ được chuộc bởi _______ của đức tin trong thời _______, Khải đoạn _______."
+        },
+        {
+          "id": "c19",
+          "question": "19. 'Ngựa và đấng cưỡi ngựa' trong Khải đoạn 9 và Khải đoạn 19 lần lượt ①là đối tượng như thế nào? Thuộc ai? ②'Đầu' và ③'đuôi' của ngựa đã xuất hiện trong Khải đoạn 9, ④'lửa, khói, diêm sinh' ra từ miệng ngựa đó là gì?",
+          "ref": "Khải huyền 9; 19",
+          "answer": "① Khải đoạn 9: Linh, xác thịt thuộc về ma quỉ. Khải đoạn 19: Linh, xác thịt thuộc về Đức Chúa Trời. ② Bảy người chăn chiên của rồng. ③ Tiên tri giả. ④ Giáo lý và giáo pháp giả dối.",
+          "blank": "① Khải đoạn 9: _______ thuộc về _______. Khải đoạn 19: _______ thuộc về _______. ② _______ người chăn chiên của _______. ③ _______ giả. ④ _______ và _______ giả dối."
+        },
+        {
+          "id": "c20",
+          "question": "20. Như những gì được xem trong Khải 9:15, 'người bị giết' bởi bốn thiên sứ phạm tội trong tai nạn của loa thứ sáu ①là ai? Hiện thực của 'giờ, ngày, tháng, năm' bị giết là ②khi nào, là sự kiện gì?",
+          "ref": "Khải huyền 9:15",
+          "answer": "① Những người thuộc đền tạm đã bỏ đạo. ② 14h ngày 20 tháng 9 năm 1981, Lễ nhậm chức mục sư.",
+          "blank": "① Những người thuộc _______ đã bỏ đạo. ② _______h ngày _______ tháng _______ năm _______, _______ mục sư."
+        },
+        {
+          "id": "c21",
+          "question": "21. Việc Giăng 'đã nhận và ăn quyển sách mở' trong Khải đoạn 10 mang ý nghĩa gì?",
+          "ref": "Khải huyền 10",
+          "answer": "Nhận biết và thông đạt một cách trọn vẹn ý nghĩa thật sự và hiện thực của sách Khải huyền và được đóng ấn vào tấm lòng.",
+          "blank": "Nhận biết và _______ một cách trọn vẹn _______ và _______ của sách Khải huyền và được đóng _______ vào tấm lòng."
+        },
+        {
+          "id": "c22",
+          "question": "22. Vào thời giáng trần, 'khải thị được ứng nghiệm từ cựu ước' đã được ①ai nhận ăn và đã làm chứng ở đâu? Hãy viết ra cùng câu Kinh thánh chứng cớ. Vào thời tái lâm, 'khải thị được ứng nghiệm từ tân ước' đã được ②ai nhận ăn và đã làm chứng ở đâu? Hãy viết ra cùng câu Kinh thánh chứng cớ. Ngoài ra như những gì được thấy trong Khải 1:2 thì có một người đã nhận được chỉ thị hãy rao truyền ngôi lời của Đức Chúa Trời. Ngôi lời được rao truyền bởi người đó là ngôi lời đã nhận được trong ③đoạn mấy? Hãy viết ra.",
+          "ref": "Ê-xê 3; Mat 15:24; Khải 1:2; 10; 22:8,16",
+          "answer": "① Chúa Jesus, Y-sơ-ra-ên đã bại hoại, Ê-xê đoạn 3, Mat 15:24. ② Giăng mới, những nhà thờ có giữa tội lỗi, Khải đoạn 10, Khải 22:8, 16. ③ Khải đoạn 10.",
+          "blank": "① _______, _______ đã bại hoại, Ê-xê đoạn _______, Mat _______:_______. ② _______, _______ có giữa tội lỗi, Khải đoạn _______, Khải _______:_______, _______. ③ Khải đoạn _______."
+        },
+        {
+          "id": "c23",
+          "question": "23. Thực thể của tiếng loa thứ bảy là ①ai? Tiếng loa thứ bảy ②là gì? Ngoài ra, 4 câu Kinh thánh xuất hiện 'tiếng loa thứ bảy' trong tân ước và cựu ước ③là gì?",
+          "ref": "Giô-suê 6; I Cô 15; Khải huyền 10; 11",
+          "answer": "① Giăng mới là người chăn chiên của giao ước. ② Chứng cớ khải thị của Giăng mới. ③ Giô-suê 6:15~16, I Cô 15:51~54, Khải 10:7, Khải 11:15.",
+          "blank": "① _______ là người chăn chiên của _______. ② _______ của _______. ③ Giô-suê _______:15~_______, I Cô _______:51~_______, Khải _______:7, Khải 11:_______."
+        },
+        {
+          "id": "c24",
+          "question": "24. Hãy viết rõ 'việc được nên khi tiếng loa thứ bảy được thổi' ①là gì? 'Bí mật của loa cuối cùng' ②là gì? Hãy viết ra cùng 2 câu Kinh thánh liên quan.",
+          "ref": "Khải huyền 10:7; I Cô 15:51-54",
+          "answer": "① Nước thế gian trở thành nước của Đức Chúa Trời. ② Sự sống lại và sự sống đời đời tức là sự biến hóa thành vật được sáng tạo vật mới, Khải 10:7, I Cô 15:51~54.",
+          "blank": "① _______ trở thành _______. ② _______ và _______ tức là _______ thành vật được sáng tạo vật mới, Khải _______:_______, I Cô _______:51~_______."
+        },
+        {
+          "id": "c25",
+          "question": "25. ①'Huyết Chiên Con' và ②'lời làm chứng' là vũ khí mà đứa trẻ và anh em người đã dùng để chiến đấu và chiến thắng bầy lũ của rồng trong Khải 12:9~11 là gì? Nước và sự cứu rỗi của Đức Chúa Trời có được ③sau sự việc gì? Ngoài ra, giao ước trong Khải đoạn 2~3 sẽ được ứng nghiệm trong ④đoạn mấy?",
+          "ref": "Khải huyền 12:9-11",
+          "answer": "① Ngôi Lời sự sống của Chúa Jesus. ② Ngôi lời làm chứng hiện thực ứng nghiệm sách Khải huyền. ③ Sau khi chiến đấu và chiến thắng bầy lũ của rồng. ④ Khải đoạn 12.",
+          "blank": "① _______ của Chúa Jesus. ② Ngôi lời _______. ③ Sau khi chiến đấu và _______ _______. ④ Khải đoạn _______."
+        },
+        {
+          "id": "c26",
+          "question": "26. 'Trời' là hiện trường của sự kiện trong Khải đoạn 13 ①là ở đâu? 'Bảy đầu và mười sừng' trong Khải đoạn 13 ②là ai trong đoạn mấy của sách Khải huyền?",
+          "ref": "Khải huyền 13; 2-3; 17",
+          "answer": "① Đền tạm đồng nhất với Khải đoạn 2~3. ② Bảy người chăn chiên và mười kẻ quyền thế của Ba-by-lôn trong Khải đoạn 17.",
+          "blank": "① _______ đồng nhất với Khải đoạn _______~_______. ② _______ và _______ _______ của Ba-by-lôn trong Khải đoạn _______."
+        },
+        {
+          "id": "c27",
+          "question": "27. 'Bài ca mới' trong Khải 14:3 ①là gì? Trên khắp thế gian, ②chỉ ai mới có thể hát? Hiện thực của nơi học được bài ca mới ③là ở đâu?",
+          "ref": "Khải huyền 14:3",
+          "answer": "① Ngôi lời của hiện thực được ứng nghiệm từ sách Khải huyền. ② 144.000 được đóng ấn thuộc 12 chi phái. ③ Trung tâm truyền giáo Cơ đốc giáo Si-ôn trước ngôi.",
+          "blank": "① _______ được ứng nghiệm từ sách Khải huyền. ② _______ được đóng _______ thuộc _______ chi phái. ③ _______ trước ngôi."
+        },
+        {
+          "id": "c28",
+          "question": "28. Như những gì được xem trong Mat đoạn 13, 'người được sinh ra bằng hạt giống của Đức Chúa Trời' và 'người được sinh ra bằng hạt giống của ma quỉ' có thể biết được bằng ①điều gì? Ngoài ra, thực thể và kết quả lần lượt của họ ②là gì?",
+          "ref": "Mat 13",
+          "answer": "① Người được gặt và người không được gặt. ② Người được sinh ra bằng hạt giống của Đức Chúa Trời: người được gặt, được đóng ấn và được đăng ký vào 12 chi phái, nước thiên đàng và sự sống đời đời. Người được sinh ra bằng hạt giống của ma quỉ: người không được gặt, cũng không được đóng ấn và không được đăng ký vào 12 chi phái, địa ngục và hình phạt đời đời.",
+          "blank": "① Người _______ và người _______. ② Người được sinh ra bằng hạt giống của Đức Chúa Trời: người được _______, được đóng _______ và được đăng ký vào _______ chi phái, _______ và _______. Người được sinh ra bằng hạt giống của ma quỉ: _______ _______, cũng không được đóng _______ và không được đăng ký vào _______, địa ngục và _______."
+        },
+        {
+          "id": "c29",
+          "question": "29. 'Những người đã thắng và thoát khỏi' trong Khải 15:2 ①là ai? Hãy viết ra cùng đoạn Kinh thánh liên quan. Vũ khí chiến thắng ②là gì? Hãy viết ra cùng với 1 câu Kinh thánh chứng cớ.",
+          "ref": "Khải huyền 15:2; 12:11",
+          "answer": "① Những người đã chiến đấu và chiến thắng bầy lũ của rồng, Khải đoạn 12. ② Huyết của Chiên Con và lời làm chứng, Khải 12:11.",
+          "blank": "① _______ bầy lũ của _______, Khải đoạn _______. ② _______ của Chiên Con và _______, Khải 12:_______."
+        },
+        {
+          "id": "c30",
+          "question": "30. Tại 'Đền tạm chứng cớ' trong Khải 15:5 ①ai đã làm chứng về ②điều gì? 2 lý do mà chỉ có những người này mới có thể làm chứng được ③là gì?",
+          "ref": "Khải huyền 15:5",
+          "answer": "① Những người chiến thắng. ② Thực thể của toàn đoạn sách Khải huyền. ③ Bởi vì đã nhìn thấy những thực thể tại hiện trường sự kiện và đã chiến đấu và chiến thắng kẻ hủy diệt.",
+          "blank": "① _______. ② _______ của toàn đoạn sách Khải huyền. ③ Bởi vì đã nhìn thấy _______ tại _______ sự kiện và _______ _______."
+        },
+        {
+          "id": "c31",
+          "question": "31. 'Tai nạn' trong sách Khải huyền có ①mấy loại? Là gì? Hãy viết theo thứ tự. Hãy viết rõ ②đối tượng của sự phán xét trong Khải đoạn 6 và Khải đoạn 16 khác nhau như thế nào?",
+          "ref": "Khải huyền 6; 16",
+          "answer": "① Ba loại, bảy ấn, bảy loa, bảy bát. ② Khải đoạn 6: những kẻ bỏ đạo. Khải đoạn 16: những kẻ bỏ đạo và những kẻ hủy diệt.",
+          "blank": "① _______ loại, bảy _______, bảy _______, bảy _______. ② Khải đoạn 6: _______. Khải đoạn 16: _______ và _______."
+        },
+        {
+          "id": "c32",
+          "question": "32. Bảy bát bằng vàng trong Khải đoạn 16 là nhân vật đã xuất hiện ở đâu trong sách Khải huyền? Hãy viết ①2 đoạn đó ra. Thứ được trút ra từ bát ②là gì? Nơi trút bát ③là ở đâu trong đoạn mấy? Hãy viết ra.",
+          "ref": "Khải huyền 16; 12; 15; 13; 18",
+          "answer": "① Khải đoạn 12, Khải đoạn 15. ② Cơn thạnh nộ của Đức Chúa Trời. ③ Đền tạm trong Khải đoạn 13 và Ba-by-lôn trong Khải đoạn 18.",
+          "blank": "① Khải đoạn _______, Khải đoạn _______. ② _______ của Đức Chúa Trời. ③ _______ trong Khải đoạn 13 và _______ trong Khải đoạn 18."
+        },
+        {
+          "id": "c33",
+          "question": "33. Hãy viết ①đồ ăn được cho bởi người chăn chiên được Chúa Jesus chọn và ②đồ ăn được cho bởi người chăn chiên được ma qủi chọn lần lượt là gì cùng với câu Kinh thánh liên quan.",
+          "ref": "Khải 2:17; 10; 17:2; 18:3; 22",
+          "answer": "① Khải 2:17 ma-na đương giấu kín, Khải đoạn 10 Ngôi lời khải thị, Khải đoạn 22 trái cây sự sống. ② Khải 17:2, Khải 18:3 rượu nho dâm loạn.",
+          "blank": "① Khải 2:_______ _______ đương giấu kín, Khải đoạn 10 Ngôi lời _______, Khải đoạn 22 trái _______. ② Khải _______:2, Khải _______:3 rượu nho _______."
+        },
+        {
+          "id": "c34",
+          "question": "34. 'Rượu dâm loạn buông tuồng' ①là gì? Như những gì được thấy trong Khải đoạn 18, vạn quốc đã đổ và những kẻ đã uống rượu dâm loạn buông tuồng đã kết hôn với ②ai? Chàng rể và cô dâu kết hôn ③là ai?",
+          "ref": "Khải huyền 18",
+          "answer": "① Giáo lý dối trái thiện ác. ② Satan thần của rồng. ③ Satan và những giáo dân thuộc nó.",
+          "blank": "① _______ _______. ② _______ thần của _______. ③ _______ và _______ thuộc nó."
+        },
+        {
+          "id": "c35",
+          "question": "35. Lý do Đức Chúa Trời vẫn chưa phán xét Ba-by-lôn ①là gì? Hãy viết ra cùng 1 câu Kinh thánh liên quan. Hãy viết rõ sự phán xét này là sự phán xét bởi ②ai? Bằng ③gì?",
+          "ref": "Khải huyền 18:4",
+          "answer": "① Khải 18:4, bởi vì tất cả các dân của Đức Chúa Trời vẫn chưa ra hết. ② Đức Chúa Trời. ③ Lửa.",
+          "blank": "① Khải _______:_______, bởi vì _______. ② _______. ③ _______."
+        },
+        {
+          "id": "c36",
+          "question": "36. Khải đoạn 19 sẽ có được ①sau sự kiện gì? 2 việc được ứng nghiệm trong Khải đoạn 19 ②là gì?",
+          "ref": "Khải huyền 19; 18",
+          "answer": "① Sau sự phán xét Ba-by-lôn trong Khải đoạn 18. ② Kết hôn giữa linh và xác thịt, Đức Chúa Trời đến và thống trị.",
+          "blank": "① Sau _______ trong Khải đoạn _______. ② _______ giữa linh và xác thịt, _______ đến và _______."
+        },
+        {
+          "id": "c37",
+          "question": "37. Trong Khải đoạn 20, những kẻ quyền thế ngồi trên ngôi để phán xét sau khi bắt con rồng ①là ai? Kẻ sẽ tham gia vào sự sống lại thứ nhất và trị vì với Đấng Christ ②là ai? Sau một ngàn năm, những kẻ nhận sự phán xét ③là những kẻ như thế nào?",
+          "ref": "Khải huyền 20",
+          "answer": "① Linh-xác thịt 12 môn đồ của Chúa Jesus. ② Những linh tử vì đạo và những kẻ sống đã không nhận dấu của con thú và được đóng ấn của Đức Chúa Trời. ③ Dân Gót và dân Ma-gót, những linh đã chết phần xác thịt.",
+          "blank": "① _______ của Chúa Jesus. ② _______ và _______ đã không nhận _______ của con thú và được đóng _______ của Đức Chúa Trời. ③ _______ và _______, _______ đã chết phần xác thịt."
+        },
+        {
+          "id": "c38",
+          "question": "38. 'Việc bắt đầu ứng nghiệm sách Khải huyền' là ①việc gì trong đoạn mấy? 'Việc hoàn thành sách Khải huyền' là ②việc gì trong đoạn mấy?",
+          "ref": "Khải huyền 1-3; 21",
+          "answer": "① Khải đoạn 1, 2, 3, sự xuất hiện của Chúa Jesus tái lâm. ② Đức Chúa Trời và nước thiên đàng đến ở cùng Shincheonji trong Khải đoạn 21.",
+          "blank": "① Khải đoạn _______, _______, _______, sự xuất hiện của _______ tái lâm. ② _______ và _______ đến ở cùng _______ trong Khải đoạn _______."
+        },
+        {
+          "id": "c39",
+          "question": "39. Lời tiên tri quan trọng nhất trong 66 cuốn Kinh thánh ①là gì? Trong số đó, nội dung của ②đoạn mấy là quan trọng nhất và lý do đó ③là gì?",
+          "ref": "Khải huyền 21",
+          "answer": "① Sách Khải huyền Giăng. ② Khải đoạn 21. ③ Bởi vì là giao ước về việc sáng tạo nên trời mới và đất mới là mục đích của Đức Chúa Trời.",
+          "blank": "① _______ Giăng. ② Khải đoạn _______. ③ Bởi vì là _______ về việc sáng tạo nên _______ là mục đích của _______."
+        },
+        {
+          "id": "c40",
+          "question": "40. Hãy viết rõ ①lý do và câu Kinh thánh làm chứng sách Khải huyền là sách quan trọng nhất vào thời Chúa tái lâm. Hãy viết 'chân lý cao nhất' ②là gì? Có ③ở đâu?",
+          "ref": "Khải huyền 22:18-19; 1-22",
+          "answer": "① Bởi vì nếu thêm hoặc bớt thì không thể vào được nước thiên đàng, Khải 22:18~19. ② Từ Khải đoạn 1 đến Khải đoạn 22. ③ Shincheonji thành ấp của chân lý.",
+          "blank": "① Bởi vì nếu _______ thì _______, Khải _______:_______~_______. ② Từ Khải đoạn _______ đến Khải đoạn _______. ③ _______ thành ấp của _______."
+        }
+      ]
+    }
+  ]
+}

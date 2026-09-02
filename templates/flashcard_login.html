@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#386641">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khải Huyền — Flashcard</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Light.ttf') format('truetype');
+  font-weight: 300;
+}
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Regular.ttf') format('truetype');
+  font-weight: 500;
+}
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Medium.ttf') format('truetype');
+  font-weight: 600;
+}
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Bold.ttf') format('truetype');
+  font-weight: 700;
+}
+@font-face {
+  font-family: 'NeueHaasGroteskDisplay';
+  src: url('/static/fonts/SVN-NeueHaasGroteskDisplay-Black.ttf') format('truetype');
+  font-weight: 900;
+}
+
+:root {
+  --bg:        #F7F3E8;
+  --surface:   #FFFFFF;
+  --border:    rgba(56,102,65,0.18);
+  --border-solid: #2D6A4F;
+  --text:      #0D2B1E;
+  --text-2:    #3D6B55;
+  --text-3:    #7EA98D;
+  --accent:    #2D6A4F;
+  --accent-dk: #1B4332;
+  --accent-lt: #D8F3DC;
+  --accent-glow: rgba(45,106,79,0.15);
+  --green-neon: #52B788;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'NeueHaasGroteskDisplay', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ── */
+header {
+  width: 100%;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.brand { display: flex; align-items: center; gap: 5px; cursor: pointer; }
+
+.logout-btn {
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 99px;
+  border: 1.5px solid var(--border-solid);
+  background: var(--surface);
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.18s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+.logout-btn:hover { background: var(--accent); color: #fff; }
+
+.tab-btn {
+  padding: 7px 18px;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text-2);
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  border-radius: 99px;
+  transition: all 0.18s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+.tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── SPLIT LAYOUT ── */
+.split-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 55fr 45fr;
+  min-height: calc(100vh - 64px);
+}
+
+/* ── LEFT — Hero panel ── */
+.hero-panel {
+  background: linear-gradient(145deg, #17392a 0%, #2b653c 45%, #1c432a 100%);
+  padding: 72px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative orbs */
+.hero-panel::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(82,183,136,0.12) 0%, transparent 70%);
+}
+.hero-panel::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: -80px;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+}
+
+/* Floating particles */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.15;
+  animation: floatParticle linear infinite;
+}
+.p1 { width: 6px; height: 6px; background: #9fe6ab; top: 20%; left: 15%; animation-duration: 8s; animation-delay: 0s; }
+.p2 { width: 4px; height: 4px; background: #fff; top: 45%; left: 75%; animation-duration: 11s; animation-delay: 2s; }
+.p3 { width: 8px; height: 8px; background: #9fe6ab; top: 70%; left: 30%; animation-duration: 9s; animation-delay: 4s; }
+.p4 { width: 5px; height: 5px; background: #fff; top: 30%; left: 60%; animation-duration: 13s; animation-delay: 1s; }
+@keyframes floatParticle {
+  0%   { transform: translateY(0) scale(1);   opacity: 0.15; }
+  50%  { transform: translateY(-30px) scale(1.2); opacity: 0.3; }
+  100% { transform: translateY(0) scale(1);   opacity: 0.15; }
+}
+
+.hero-top { position: relative; z-index: 1; }
+
+.hero-logo-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px; height: 64px;
+  background: rgba(255,255,255,0.1);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 18px;
+  margin-bottom: 36px;
+  font-size: 30px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.hero-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--green-neon);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 24px; height: 2px;
+  background: var(--green-neon);
+  border-radius: 2px;
+}
+
+.hero-title {
+  font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+.hero-title span {
+  background: linear-gradient(90deg, #9fe6ab 0%, #52B788 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-desc {
+  font-size: 0.94rem;
+  color: rgba(255,251,234,0.65);
+  line-height: 1.8;
+  max-width: 360px;
+}
+
+/* Feature pills */
+.hero-features {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 48px;
+  position: relative;
+  z-index: 1;
+}
+.hero-feat {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.875rem;
+  color: rgba(255,251,234,0.8);
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  transition: background 0.2s;
+}
+.hero-feat:hover { background: rgba(255,255,255,0.09); }
+.hero-feat-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.feat-blue   { background: rgba(59,130,246,0.25); }
+.feat-purple { background: rgba(139,92,246,0.25); }
+.feat-green  { background: rgba(16,185,129,0.25); }
+
+/* Verse blockquote */
+.hero-verse {
+  margin-top: auto;
+  padding-top: 36px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  position: relative;
+  z-index: 1;
+}
+.hero-verse::before {
+  content: '"';
+  display: block;
+  font-size: 4rem;
+  color: rgba(159,230,171,0.2);
+  font-family: Georgia, serif;
+  line-height: 1;
+  margin-bottom: -16px;
+}
+.hero-verse p {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: rgba(255,251,234,0.65);
+  line-height: 1.8;
+  margin-bottom: 10px;
+}
+.hero-verse cite {
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 700;
+  color: var(--green-neon);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ── RIGHT — Form panel ── */
+.form-panel {
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 72px 56px;
+  position: relative;
+}
+
+/* Subtle top-left accent */
+.form-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--green-neon) 100%);
+}
+
+.form-inner {
+  width: 100%;
+  max-width: 360px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-3);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  margin-bottom: 40px;
+  transition: all 0.18s;
+  padding: 6px 14px 6px 10px;
+  border-radius: 99px;
+  border: 1.5px solid var(--border);
+}
+.back-link:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-lt); }
+
+.form-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  background: var(--accent-lt);
+  border-radius: 99px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  border: 1px solid rgba(45,106,79,0.2);
+}
+
+.form-heading {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  margin-bottom: 10px;
+  line-height: 1.1;
+}
+.form-sub {
+  font-size: 0.9rem;
+  color: var(--text-3);
+  line-height: 1.65;
+  margin-bottom: 36px;
+}
+
+/* Flashcard mode badges */
+.mode-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+.mode-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: 1.5px solid transparent;
+}
+.badge-title  { background: #eff6ff; color: #1d4ed8; border-color: rgba(29,78,216,0.15); }
+.badge-verse  { background: #f5f3ff; color: #7c3aed; border-color: rgba(124,58,237,0.15); }
+.badge-mean   { background: #ecfdf5; color: #065f46; border-color: rgba(6,95,70,0.15); }
+
+/* Divider */
+.form-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin-bottom: 32px;
+}
+
+.form-group {
+  margin-bottom: 22px;
+}
+.form-group label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin-bottom: 8px;
+}
+
+.input-wrap {
+  position: relative;
+}
+.input-wrap .input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+input[type="password"] {
+  width: 100%;
+  padding: 13px 16px 13px 42px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-family: 'NeueHaasGroteskDisplay', sans-serif;
+  background: #ffffff;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+}
+input[type="password"]:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+input[type="password"].error {
+  border-color: #ef4444;
+  background: #fef2f2;
+  box-shadow: 0 0 0 4px rgba(239,68,68,0.1);
+}
+
+.msg {
+  padding: 13px 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  display: none;
+}
+.msg.error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1.5px solid rgba(239,68,68,0.2);
+  animation: shake 0.3s ease-in-out;
+}
+.msg.success {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f0fdf4;
+  color: #15803d;
+  border: 1.5px solid rgba(22,163,74,0.2);
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  60% { transform: translateX(6px); }
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent) 0%, #1B4332 100%);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: 'NeueHaasGroteskDisplay', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.02em;
+  margin-top: 6px;
+  box-shadow: 0 4px 16px rgba(45,106,79,0.35);
+  position: relative;
+  overflow: hidden;
+}
+.submit-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background 0.2s;
+}
+.submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,106,79,0.4); }
+.submit-btn:hover::after { background: rgba(255,255,255,0.06); }
+.submit-btn:active { transform: scale(0.98); }
+
+/* Security note */
+.security-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  font-size: 0.75rem;
+  color: var(--text-3);
+  justify-content: center;
+} 
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .split-layout { grid-template-columns: 1fr; }
+  .hero-panel { padding: 48px 32px; min-height: auto; }
+  .hero-features { display: none; }
+  .hero-verse { margin-top: 32px; padding-top: 28px; }
+  .form-panel { padding: 48px 28px; justify-content: flex-start; }
+  .form-panel::before { display: none; }
+  header { padding: 0 16px; }
+}
+@media (max-width: 480px) {
+  .hero-panel { padding: 36px 20px; }
+  .form-panel { padding: 36px 20px; }
+  .form-inner { max-width: 100%; }
+}
+</style>
+<script src="/static/js/session-refresh.js"></script>
+<script src="/static/js/sw-register.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand" onclick="window.location.href='{{ url_for("index")}}'" style="cursor:pointer;">
+      <img src="{{ url_for('static', filename='pictures/Logo2.png') }}" alt="Always Stay Hydrated Logo" width="120">
+    </div>
+    <div style="display:flex; gap:12px; align-items:center;">
+      {% if session.get('user') %}
+        <div style="color:var(--text-2); font-weight:600;">Xin chào, {{ session.get('user') }}</div>
+        <a href="{{ url_for('logout') }}" class="logout-btn" onclick="clearAshCaches()">Đăng Xuất</a>
+      {% else %}
+        <a href="/login" class="tab-btn">Đăng nhập</a>
+        <a href="/register" class="tab-btn">Đăng ký</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+<div class="split-layout">
+
+  <!-- LEFT: Hero -->
+  <div class="hero-panel">
+    <!-- Floating particles -->
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+    <div class="particle p4"></div>
+
+    <div class="hero-top">
+      <div class="hero-logo-box">📖</div>
+      <h1 class="hero-title">Thẻ Ghi Nhớ<br><span>Khải Huyền</span></h1>
+      <p class="hero-desc">
+        Học Kinh Thánh qua hệ thống flashcard 4 mặt. Mỗi thẻ giúp bạn ghi khắc Ngôi lời vào lòng một cách sâu sắc và bền vững.
+      </p>
+
+      <div class="hero-features">
+        <div class="hero-feat">
+          <div class="hero-feat-icon feat-blue">📌</div>
+          <span><strong>Tiêu đề</strong> — Nắm ý chính mỗi đoạn</span>
+        </div>
+        <div class="hero-feat">
+          <div class="hero-feat-icon feat-purple">📜</div>
+          <span><strong>Trích đoạn</strong> — Hiển thị phân đoạn Khải Huyền</span>
+        </div>
+        <div class="hero-feat">
+          <div class="hero-feat-icon feat-green">💡</div>
+          <span><strong>Giải nghĩa</strong> — Hiểu từng ý nghĩa phân đoạn</span>
+        </div>
+        <div class="hero-feat">
+          <div class="hero-feat-icon star">✨</div>
+          <span><strong>Gợi ý speech</strong> — Được lấy mạch bài giảng từ NT, giúp ghi khắc sâu sắc hon</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Form -->
+  <div class="form-panel">
+    <div class="form-inner">
+      <div class="form-badge">📖 Flashcard Mode</div>
+      <h2 class="form-heading">Truy cập<br>Thẻ Ghi Nhớ</h2>
+      <p class="form-sub">Nhập mật khẩu để mở bộ flashcard Khải Huyền của bạn.</p>
+
+      {% if msg %}
+      <div class="msg error">⚠️ {{ msg }}</div>
+      {% endif %}
+
+      <form method="POST" action="{{ url_for('flashcard_login') }}" id="flashcardLoginForm">
+        <div class="form-group">
+          <label for="password">Mật khẩu</label>
+          <div class="input-wrap">
+            <span class="input-icon">🔑</span>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Nhập mật khẩu của bạn"
+              autofocus
+              required
+            >
+          </div>
+        </div>
+        <button type="submit" class="submit-btn">Mở Flashcard →</button>
+      </form>
+
+      <div class="security-note">
+        🔒 Chỉ những người được cấp quyền mới có thể truy cập
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function clearErrorStyle() {
+    const pw = document.getElementById('password');
+    const msgDiv = document.querySelector('.msg.error');
+    if (pw.classList.contains('error')) pw.classList.remove('error');
+    if (msgDiv) msgDiv.style.opacity = '0.5';
+  }
+
+  function handleLoginError() {
+    const msgDiv = document.querySelector('.msg.error');
+    if (msgDiv && msgDiv.textContent.trim()) {
+      const pw = document.getElementById('password');
+      pw.classList.add('error');
+      pw.value = '';
+      pw.focus();
+    }
+  }
+
+  document.getElementById('password').addEventListener('input', clearErrorStyle);
+  window.addEventListener('load', handleLoginError);
+</script>
+<script src="/static/js/pwa-install.js"></script>
+</body>
+</html>

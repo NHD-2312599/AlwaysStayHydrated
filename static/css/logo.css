@@ -1,0 +1,13 @@
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logo-img {
+  width: 120px;     /* kích thước trung bình */
+  height: 120px;
+  object-fit: contain;
+  border-radius: 12px; /* bo góc nhẹ nếu cần */
+}

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đấu Trường Khải Huyền</title>
+<link rel="stylesheet" href="/static/css/fonts.css">
+<link rel="stylesheet" href="/static/css/theme.css">
+<style>
+:root{
+  /* Buttons keep a "3D pressable" feel, but now pull from the shared palette */
+  --duo-green:#2D6A4F; --duo-green-sh:#1B4332;
+  --duo-blue:#1D6FA5;  --duo-blue-sh:#124867;
+  --duo-gold:#D4A017;  --duo-gold-sh:#B08312;
+  --duo-red:#B91C1C;   --duo-red-sh:#8f1616;
+  --duo-purple:#7C3AED;--duo-purple-sh:#6025c4;
+  --panel: var(--surface);
+  --text: var(--text-pri); --text-soft: var(--text-sec);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; background:var(--bg); color:var(--text);
+  display:flex; align-items:center; justify-content:center; padding:20px 16px 120px;
+}
+.wrap{width:100%; max-width:440px}
+
+
+h1{font-size:1.5rem; font-weight:800; text-align:center; margin:14px 0 2px}
+.sub{text-align:center; color:var(--text-soft); margin:0 0 22px; font-size:.9rem; font-weight:600}
+
+.panel{
+  background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius-lg);
+  padding:20px; margin-bottom:16px; box-shadow: var(--shadow);
+}
+.panel-title{
+  display:flex; align-items:center; gap:8px; font-weight:800; font-size:1.05rem; margin:0 0 14px;
+}
+.badge-icon{
+  width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem; flex-shrink:0;
+}
+.badge-icon.blue{background:var(--water-lt); color:var(--water)}
+.badge-icon.gold{background:var(--gold-lt); color:var(--duo-gold-sh)}
+
+label{display:block; font-size:.78rem; color:var(--text-soft); margin:12px 0 6px; font-weight:800; text-transform:uppercase; letter-spacing:.03em}
+input, select{
+  width:100%; padding:13px 14px; border:1.5px solid var(--border); border-radius:12px;
+  font-size:1rem; font-family:inherit; background:#fff; color:var(--text); font-weight:600;
+}
+input:focus, select:focus{outline:none; border-color:var(--water)}
+.code-input{letter-spacing:.5em; text-align:center; font-size:1.5rem; font-weight:800}
+.row{display:flex; gap:10px}
+.row > div{flex:1}
+
+/* ── Pressable buttons ── */
+.btn-duo{
+  width:100%; margin-top:18px; padding:14px; border-radius:16px; cursor:pointer;
+  font-family:inherit; font-size:1.05rem; font-weight:800; color:#fff;
+  border:none; border-bottom:4px solid var(--shadow-color, var(--duo-green-sh));
+  background:var(--face, var(--duo-green));
+  transition:transform .04s, border-bottom-width .04s;
+  letter-spacing:.02em;
+}
+.btn-duo:active{ transform:translateY(3px); border-bottom-width:1px; }
+.btn-duo:disabled{ opacity:.5; cursor:not-allowed; transform:none !important; }
+.btn-duo.blue{ --face:var(--duo-blue); --shadow-color:var(--duo-blue-sh); }
+
+.error{color:var(--duo-red); font-size:.85rem; margin-top:8px; font-weight:700; min-height:1em}
+.back{display:block; text-align:center; margin-top:18px; color:var(--text-soft); text-decoration:none; font-weight:700; font-size:.88rem}
+
+/* .bottom-nav / .nav-btn styles now come from theme.css */
+
+</style>
+</head>
+<body class="has-bottom-nav">
+<div class="wrap">
+
+  <h1>Đấu Trường Khải Huyền</h1>
+  <p class="sub">Thi đấu trực tiếp cùng bạn bè — nhanh &amp; đúng thắng lớn!</p>
+
+  <div class="panel">
+    <div class="panel-title">
+      <span class="badge-icon blue">🚪</span> Vào phòng đã có
+    </div>
+    <label>Mã phòng (6 số)</label>
+    <input id="joinCode" class="code-input" maxlength="6" inputmode="numeric" placeholder="••••••">
+    <label>Tên hiển thị</label>
+    <input id="joinName" maxlength="24" placeholder="{{ username }}" value="{{ username }}">
+    <button class="btn-duo blue" id="joinBtn">Vào phòng</button>
+    <div class="error" id="joinError"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">
+      <span class="badge-icon gold">👑</span> Tạo phòng mới
+    </div>
+    <label>Tên hiển thị (chủ phòng)</label>
+    <input id="hostName" maxlength="24" placeholder="{{ username }}" value="{{ username }}">
+    <div class="row">
+      <div>
+        <label>Chương</label>
+        <select id="chapter">
+          <option value="random">Ngẫu nhiên</option>
+          {% for i in range(1, 23) %}
+          <option value="{{ i }}">Khải Huyền {{ i }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label>Độ khó</label>
+        <select id="level">
+          <option value="1">🟢 Dễ</option>
+          <option value="2">🟡 Vừa</option>
+          <option value="3">🔴 Khó</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <label>Số câu hỏi</label>
+        <input id="numQuestions" type="number" min="3" max="30" value="10">
+      </div>
+      <div>
+        <label>Giây / câu</label>
+        <input id="timeLimit" type="number" min="5" max="60" value="20">
+      </div>
+    </div>
+    <button class="btn-duo" id="createBtn">Tạo phòng</button>
+    <div class="error" id="createError"></div>
+  </div>
+
+  <a class="back" href="/home">← Quay lại trang chính</a>
+</div>
+
+<!-- Bottom Navigation Bar -->
+<nav class="bottom-nav" aria-label="Điều hướng chính">
+  <a href="/home" class="nav-btn" data-page="home">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">Trang chủ</span>
+  </a>
+  <a href="/home?tab=fill" class="nav-btn" data-page="fill">
+    <span class="nav-icon">📝</span>
+    <span class="nav-label">Điền</span>
+  </a>
+  <a href="/home?tab=typing" class="nav-btn" data-page="typing">
+    <span class="nav-icon">⌨️</span>
+    <span class="nav-label">Gõ</span>
+  </a>
+  <a href="/flashcard/login" class="nav-btn" data-page="flashcard">
+    <span class="nav-icon">📖</span>
+    <span class="nav-label">Flashcard</span>
+  </a>
+  <a href="/exam_library" class="nav-btn" data-page="exam">
+    <span class="nav-icon">✍️</span>
+    <span class="nav-label">Kiểm tra</span>
+  </a>
+  <a href="/multiplayer" class="nav-btn active" data-page="multiplayer">
+    <span class="nav-icon">🎮</span>
+    <span class="nav-label">Đấu trường</span>
+  </a>
+</nav>
+
+<!-- Linh vật bồ câu gốc — không liên quan tới bất kỳ nhân vật thương hiệu nào -->
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="dove-idle" viewBox="0 0 140 140">
+    <circle cx="70" cy="60" r="34" fill="none" stroke="#D4A017" stroke-width="3" opacity=".55"/>
+    <ellipse cx="70" cy="78" rx="30" ry="26" fill="#FFFFFF" stroke="#D8F3DC" stroke-width="2.5"/>
+    <path d="M40 75 Q18 65 22 42 Q40 48 46 68 Z" fill="#2D6A4F"/>
+    <path d="M100 75 Q122 65 118 42 Q100 48 94 68 Z" fill="#2D6A4F"/>
+    <circle cx="70" cy="52" r="20" fill="#FFFFFF" stroke="#D8F3DC" stroke-width="2.5"/>
+    <circle cx="63" cy="50" r="3.4" fill="#0D2B1E"/>
+    <circle cx="77" cy="50" r="3.4" fill="#0D2B1E"/>
+    <path d="M67 58 Q70 61 73 58" stroke="#0D2B1E" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M70 56 L78 60 L70 62 Z" fill="#D4A017"/>
+  </symbol>
+</svg>
+
+<script>
+document.getElementById('joinCode').addEventListener('input', e => {
+  e.target.value = e.target.value.replace(/\D/g, '').slice(0, 6);
+});
+
+document.getElementById('createBtn').addEventListener('click', () => {
+  const settings = {
+    username: document.getElementById('hostName').value || '{{ username }}',
+    chapter: document.getElementById('chapter').value,
+    level: parseInt(document.getElementById('level').value, 10),
+    num_questions: parseInt(document.getElementById('numQuestions').value, 10) || 10,
+    time_limit: parseInt(document.getElementById('timeLimit').value, 10) || 20,
+  };
+  sessionStorage.setItem('mp_role', 'host');
+  sessionStorage.setItem('mp_username', settings.username);
+  sessionStorage.setItem('mp_settings', JSON.stringify(settings));
+  window.location.href = '/multiplayer/room/create';
+});
+
+document.getElementById('joinBtn').addEventListener('click', () => {
+  const code = document.getElementById('joinCode').value.trim();
+  if (code.length !== 6) {
+    document.getElementById('joinError').textContent = 'Mã phòng phải gồm 6 chữ số.';
+    return;
+  }
+  sessionStorage.setItem('mp_role', 'player');
+  sessionStorage.setItem('mp_username', document.getElementById('joinName').value || '{{ username }}');
+  window.location.href = '/multiplayer/room/' + code;
+});
+
+// Navigation bar active state
+function updateNavActive() {
+  const path = window.location.pathname;
+  const navItems = document.querySelectorAll('.bottom-nav .nav-btn');
+  navItems.forEach(item => {
+    item.classList.remove('active');
+    const page = item.getAttribute('data-page');
+    if ((page === 'multiplayer' && path.startsWith('/multiplayer')) ||
+        (page === 'exam' && path.startsWith('/exam')) ||
+        (page === 'home' && (path === '/home' || path === '/'))) {
+      item.classList.add('active');
+    }
+  });
+}
+window.addEventListener('load', updateNavActive);
+updateNavActive();
+</script>
+</body>
+</html>
