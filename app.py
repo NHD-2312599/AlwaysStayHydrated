@@ -12,7 +12,7 @@ from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 import shutil, pathlib
 from flashcard_models import db, Tab, Card, CardStatus, init_db
 app = Flask(__name__)
-app.secret_key = "khai_huyen_1925_secret"
+app.secret_key = os.environ.get("SECRET_KEY", "dev-only-change-me")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Copy fonts dung duong dan tuyet doi (tranh loi CWD tren PythonAnywhere)
