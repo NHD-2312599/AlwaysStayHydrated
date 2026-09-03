@@ -189,7 +189,7 @@
     /* ── HOME: Mode cards ── */
     .mode-selector {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 20px;
     }
     .mode-card {
@@ -291,7 +291,7 @@
 
     .mode-selector {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 20px;
     }
     .mode-card {
@@ -1035,6 +1035,14 @@
           <h3>Kiểm Tra Đóng Ấn</h3>
           <p>Kiểm tra kiến thức qua bài thi điền thông tin. Nộp bài để xem kết quả chi tiết từng câu và theo dõi tiến bộ.</p>
           <button class="mode-card-btn">Vào Làm Bài →</button>
+        </div>
+
+        <!-- Mode 5: Đấu trường Khải Huyền -->
+        <div class="mode-card" onclick="window.location.href='/multiplayer'">
+          <div class="mode-card-icon">🎮</div>
+          <h3>Đấu Trường Khải Huyền</h3>
+          <p>Thi đấu trực tiếp cùng bạn bè bằng những câu hỏi Khải Huyền và cùng xem bảng xếp hạng.</p>
+          <button class="mode-card-btn">Vào Đấu Trường →</button>
         </div>
       </div>
     </div>
