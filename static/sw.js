@@ -7,8 +7,7 @@ const ASSETS = [
   '/static/js/pwa-install.js',
   '/static/js/sw-register.js',
   '/static/js/session-refresh.js',
-  '/static/icon-192.png',
-  '/static/icon-512.png'
+  '/static/pictures/Logo_White.png'
 ];
 
 /** Trang có dữ liệu theo session — không cache HTML */
