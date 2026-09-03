@@ -54,7 +54,7 @@ class Room:
         self.host_name = host_name
         self.settings = settings  # {chapter, start_verse, end_verse, level, num_questions, time_limit}
         self.state = "lobby"      # lobby | playing | reveal | ended
-        self.players = {}         # sid -> {"name": str, "score": int}
+        self.players = {host_sid: {"name": host_name, "score": 0, "streak": 0}}
         self.questions = []       # list các câu đã sinh sẵn
         self.current_index = -1
         self.question_deadline = 0
