@@ -167,8 +167,12 @@ def register_multiplayer(socketio, BIBLE_DATA, make_blank_question):
             socketio.sleep(time_limit)
             with _lock:
                 r = ROOMS.get(code)
-                if not r or r.round_token != expected_token or r.state != "playing":
-                    return
+                should_reveal = (
+                    r is not None
+                    and r.round_token == expected_token
+                    and r.state == "playing"
+                )
+            if should_reveal:
                 _reveal(r)
 
         socketio.start_background_task(_timeout_watcher, room.code, token)
