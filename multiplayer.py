@@ -310,8 +310,9 @@ def register_multiplayer(socketio, BIBLE_DATA, make_blank_question):
         if all_answered:
             with _lock:
                 room = ROOMS.get(code)
-                if room and room.state == "playing":
-                    _reveal(room)
+                should_reveal = room is not None and room.state == "playing"
+            if should_reveal:
+                _reveal(room)
 
     @socketio.on("mp_leave_room")
     def on_leave_room(data):
