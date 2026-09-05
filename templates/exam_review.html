@@ -21,11 +21,17 @@
     .stat { background: var(--surface); border: 1px solid var(--border-lt); border-radius: 12px; padding: 10px 14px; color: var(--text-sec); font-size: .84rem; }
     .stat strong { color: var(--accent-dk); font-size: 1.05rem; margin-right: 4px; }
     .toolbar { display: flex; gap: 8px; margin-bottom: 18px; }
+    .mode-toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .mode-label { align-self: center; color: var(--text-ter); font-size: .8rem; font-weight: 700; margin-right: 2px; }
     .filter { border: 1px solid var(--border); background: var(--surface); color: var(--text-sec); border-radius: 10px; padding: 9px 14px; font: inherit; font-weight: 700; cursor: pointer; }
     .filter.active, .filter:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .mode-btn { border: 1px solid var(--border); background: var(--surface); color: var(--text-sec); border-radius: 10px; padding: 9px 14px; font: inherit; font-weight: 700; cursor: pointer; }
+    .mode-btn.active, .mode-btn:hover { background: var(--accent-lt); color: var(--accent-dk); border-color: var(--accent); }
     .review-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 18px; box-shadow: var(--shadow); overflow: hidden; }
     .card-top { padding: 20px 22px 12px; display: flex; justify-content: space-between; gap: 12px; color: var(--text-ter); font-size: .82rem; font-weight: 700; }
     .question { padding: 0 22px 20px; font-size: 1.05rem; line-height: 1.65; font-weight: 700; }
+    .blank-guide { margin: -4px 22px 18px; padding: 14px 16px; border-radius: 12px; background: #fffaf0; border: 1px solid rgba(200,146,26,.25); color: var(--text-sec); line-height: 1.8; }
+    .blank-chip { display: inline-block; min-width: 88px; margin: 0 3px; border-bottom: 2px solid var(--accent); color: var(--accent); letter-spacing: .08em; }
     .answer-box { margin: 0 22px 18px; padding: 16px; border-radius: 12px; background: var(--accent-lt); border: 1px solid rgba(46,125,79,.2); line-height: 1.65; }
     .answer-label { color: var(--accent-dk); font-size: .72rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 6px; }
     .answer-box[hidden] { display: none; }
@@ -55,6 +61,7 @@
       <h1 id="title">—</h1>
       <p class="subtitle">Tự suy nghĩ trước, sau đó xem đáp án và đánh dấu mức độ ghi nhớ của bạn.</p>
       <div class="stats"><div class="stat"><strong id="mastered-count">0</strong>đã nhớ</div><div class="stat"><strong id="review-count">0</strong>cần ôn lại</div><div class="stat"><strong id="total-count">0</strong>tổng câu</div></div>
+      <div class="mode-toolbar"><span class="mode-label">Cách ôn:</span><button class="mode-btn active" data-mode="full">Ôn cả câu</button><button class="mode-btn" data-mode="blank">Ôn phần điền chỗ trống</button></div>
       <div class="toolbar"><button class="filter active" data-filter="all">Tất cả</button><button class="filter" data-filter="review">Cần ôn lại</button></div>
       <div id="review-area"></div>
     </section>
@@ -64,6 +71,7 @@ const TAB_ID = {{ tab_id|tojson }};
 let cards = [];
 let statuses = {};
 let filter = 'all';
+let studyMode = 'full';
 let position = 0;
 let answerVisible = false;
 
@@ -100,6 +108,10 @@ function renderStats() {
   document.getElementById('review-count').textContent = cards.length - mastered;
   document.getElementById('total-count').textContent = cards.length;
 }
+function renderBlankGuide(card) {
+  if (!card.blank) return '<div class="blank-guide">Câu này chưa có mẫu chỗ trống.</div>';
+  return `<div class="blank-guide">${card.blank.split(/_{3,}/).map((part, index, parts) => `${escapeHtml(part)}${index < parts.length - 1 ? '<span class="blank-chip">____</span>' : ''}`).join('')}</div>`;
+}
 function render() {
   renderStats();
   const list = filteredCards();
@@ -111,12 +123,15 @@ function render() {
   position = Math.min(position, list.length - 1);
   const card = list[position];
   const status = statuses[card.id]?.status || 'review';
+  const prompt = studyMode === 'blank' ? renderBlankGuide(card) : '';
+  const answerLabel = studyMode === 'blank' ? 'Đáp án của phần điền' : 'Đáp án tham khảo';
   area.innerHTML = `
     <article class="review-card">
       <div class="card-top"><span>Câu ${position + 1} / ${list.length}</span><span>${status === 'mastered' ? '✓ Đã nhớ' : '○ Cần ôn lại'}</span></div>
       <div class="question">${escapeHtml(card.question)}</div>
+      ${prompt}
       <textarea class="user-answer" id="user-answer" placeholder="Bạn có thể tự viết lại câu trả lời ở đây..."></textarea>
-      <div class="answer-box" id="answer-box" ${answerVisible ? '' : 'hidden'}><div class="answer-label">Đáp án tham khảo</div>${escapeHtml(card.answer)}</div>
+      <div class="answer-box" id="answer-box" ${answerVisible ? '' : 'hidden'}><div class="answer-label">${answerLabel}</div>${escapeHtml(card.answer)}</div>
       <div class="actions">
         <button class="secondary" onclick="toggleAnswer()">${answerVisible ? 'Ẩn đáp án' : 'Xem đáp án'}</button>
         <button class="status remember" onclick="saveStatus('mastered')">✓ Đã nhớ</button>
@@ -142,6 +157,10 @@ async function saveStatus(status) {
 document.querySelectorAll('.filter').forEach(button => button.addEventListener('click', () => {
   filter = button.dataset.filter; position = 0; answerVisible = false;
   document.querySelectorAll('.filter').forEach(item => item.classList.toggle('active', item === button)); render();
+}));
+document.querySelectorAll('.mode-btn').forEach(button => button.addEventListener('click', () => {
+  studyMode = button.dataset.mode; answerVisible = false;
+  document.querySelectorAll('.mode-btn').forEach(item => item.classList.toggle('active', item === button)); render();
 }));
 loadReview();
 </script>
