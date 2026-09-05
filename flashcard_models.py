@@ -85,6 +85,31 @@ class CardStatus(db.Model):
         }
 
 
+class ExamReviewStatus(db.Model):
+    __tablename__ = 'exam_review_statuses'
+
+    id = db.Column(db.Integer, primary_key=True)
+    tab_id = db.Column(db.String(50), nullable=False)
+    card_id = db.Column(db.String(50), nullable=False)
+    user_id = db.Column(db.String(100), nullable=False)
+    status = db.Column(db.String(20), nullable=False, default='review')
+    wrong_count = db.Column(db.Integer, nullable=False, default=0)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    __table_args__ = (
+        db.UniqueConstraint('tab_id', 'card_id', 'user_id', name='uq_exam_review_user_card'),
+    )
+
+    def to_dict(self):
+        return {
+            'tab_id': self.tab_id,
+            'card_id': self.card_id,
+            'status': self.status,
+            'wrong_count': self.wrong_count,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None,
+        }
+
+
 def init_db(app):
     """Tạo bảng flashcard trên flashcard.db nếu chưa có."""
     with app.app_context():

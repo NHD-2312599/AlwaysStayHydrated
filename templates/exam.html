@@ -1068,6 +1068,7 @@ function submitExam() {
 
   let correctCount = 0;
   let wrongCount = 0;
+  const wrongCardIds = [];
 
   EXAM_CARDS.forEach(card => {
     const block = document.getElementById(`q-${card.id}`);
@@ -1093,6 +1094,7 @@ function submitExam() {
         const dot = document.getElementById(`nav-${card.id}`);
         if (dot) { dot.classList.remove('filled'); dot.classList.add('correct'); dot.textContent = '✓'; }
       } else {
+        wrongCardIds.push(card.id);
         inp.className = 'text-input wrong-input';
         block.classList.add('wrong');
         block.querySelector('.question-num').textContent = '✗';
@@ -1130,6 +1132,7 @@ function submitExam() {
       const dot = document.getElementById(`nav-${card.id}`);
       if (dot) { dot.classList.remove('filled'); dot.classList.add('correct'); dot.textContent = '✓'; }
     } else {
+      wrongCardIds.push(card.id);
       inp.className = 'text-input wrong-input';
       block.classList.add('wrong');
       block.querySelector('.question-num').textContent = '✗';
@@ -1174,6 +1177,7 @@ function submitExam() {
     score: score / 100,
     time_sec: EXAM_STARTED_AT ? Math.max(1, Math.round((Date.now() - EXAM_STARTED_AT) / 1000)) : 0,
     used_hint: false,
+    wrong_card_ids: wrongCardIds,
   });
 }
 

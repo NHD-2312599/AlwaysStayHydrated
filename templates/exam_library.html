@@ -387,6 +387,32 @@ body::before {
   transform: scale(1.15);
 }
 
+.exam-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.btn-review-exam {
+  width: 100%;
+  padding: 13px 0;
+  background: var(--accent-lt);
+  color: var(--accent-dk);
+  border: 1.5px solid rgba(46,125,79,0.25);
+  border-radius: 12px;
+  font-family: 'NeueHaasGroteskDisplay', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-review-exam:hover {
+  background: var(--surface2);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
 /* Empty state */
 .empty-state {
   text-align: center;
@@ -854,10 +880,15 @@ function renderGrid() {
         </div>
       </div>
       <div class="exam-card-footer">
-        <button class="btn-start-exam" onclick="promptPassword('${tab.id}')">
+        <div class="exam-card-actions">
+        <button class="btn-review-exam" onclick="promptPassword('${tab.id}', 'review')">
+          📖 Ôn Tập
+        </button>
+        <button class="btn-start-exam" onclick="promptPassword('${tab.id}', 'exam')">
           <span class="btn-icon">🔐</span>
           Vào Làm Bài
         </button>
+        </div>
       </div>
     `;
 
@@ -865,8 +896,11 @@ function renderGrid() {
   });
 }
 
-function promptPassword(tabId) {
+let PENDING_ACTION = 'exam';
+
+function promptPassword(tabId, action = 'exam') {
   PENDING_TAB_ID = tabId;
+  PENDING_ACTION = action;
   const tab = TABS.find(t => t.id === tabId);
   if (!tab) return;
 
@@ -875,7 +909,7 @@ function promptPassword(tabId) {
   document.getElementById('pw-input').className = 'pw-input';
   document.getElementById('pw-error').textContent = '';
   document.getElementById('btn-enter').disabled = false;
-  document.getElementById('btn-enter').textContent = 'Vào Làm Bài →';
+  document.getElementById('btn-enter').textContent = action === 'review' ? 'Vào Ôn Tập →' : 'Vào Làm Bài →';
   document.getElementById('password-step').style.display = 'block';
   document.getElementById('exam-mode-choice').classList.remove('show');
   document.getElementById('pw-modal').classList.add('active');
@@ -889,6 +923,10 @@ function closeModal() {
 
 function startExam(mode) {
   window.location.href = `/exam/${PENDING_TAB_ID}?mode=${mode}`;
+}
+
+function startReview() {
+  window.location.href = `/exam-review/${PENDING_TAB_ID}`;
 }
 
 function togglePwVisibility() {
@@ -930,6 +968,11 @@ async function attemptEnter() {
     const data = await res.json();
 
     if (data.ok) {
+      if (PENDING_ACTION === 'review') {
+        btn.textContent = '✓ Đang chuyển...';
+        startReview();
+        return;
+      }
       const isGraduationExam = PENDING_TAB_ID === 'tab1';
       if (isGraduationExam) {
         document.getElementById('password-step').style.display = 'none';
@@ -944,12 +987,12 @@ async function attemptEnter() {
       input.value = '';
       input.focus();
       btn.disabled = false;
-      btn.textContent = 'Vào Làm Bài →';
+      btn.textContent = PENDING_ACTION === 'review' ? 'Vào Ôn Tập →' : 'Vào Làm Bài →';
     }
   } catch (e) {
     errorEl.textContent = '⚠ Lỗi kết nối. Vui lòng thử lại.';
     btn.disabled = false;
-    btn.textContent = 'Vào Làm Bài →';
+    btn.textContent = PENDING_ACTION === 'review' ? 'Vào Ôn Tập →' : 'Vào Làm Bài →';
   }
 }
 

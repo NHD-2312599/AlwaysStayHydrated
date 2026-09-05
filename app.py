@@ -10,7 +10,7 @@ from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError, InvalidHashError
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 import shutil, pathlib
-from flashcard_models import db, Tab, Card, CardStatus, init_db
+from flashcard_models import db, Tab, Card, CardStatus, ExamReviewStatus, init_db
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-only-change-me")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -834,6 +834,13 @@ def exam(tab_id):
         user=session["user"],
     )
 
+@app.route("/exam-review/<tab_id>")
+@login_required
+def exam_review(tab_id):
+    if not get_exam_tab(tab_id) or session.get(f"exam_auth_{tab_id}") is not True:
+        return redirect(url_for("exam_library"))
+    return render_template("exam_review.html", tab_id=tab_id, user=session["user"])
+
 def exam_api_required(f):
     """Giống login_required nhưng hỗ trợ cả Bearer token (app mobile)
     lẫn session cookie (web), dùng get_api_user() để lấy user."""
@@ -911,6 +918,48 @@ def get_exam_tab_cards(tab_id):
     return jsonify({"tab_id": tab_id, "name": tab["name"], "cards": tab["cards"]})
 
 
+@app.route("/api/exam/tabs/<tab_id>/review-progress")
+@exam_api_required
+def get_exam_review_progress(tab_id):
+    if not _has_exam_access(tab_id):
+        return jsonify({"error": "Unauthorized"}), 401
+    tab = get_exam_tab(tab_id)
+    if not tab:
+        return jsonify({"error": "Not found"}), 404
+    statuses = ExamReviewStatus.query.filter_by(
+        tab_id=tab_id, user_id=get_api_user()
+    ).all()
+    return jsonify({"tab_id": tab_id, "statuses": [status.to_dict() for status in statuses]})
+
+
+@app.route("/api/exam/tabs/<tab_id>/review-progress", methods=["PUT"])
+@exam_api_required
+def update_exam_review_progress(tab_id):
+    if not _has_exam_access(tab_id):
+        return jsonify({"error": "Unauthorized"}), 401
+    tab = get_exam_tab(tab_id)
+    if not tab:
+        return jsonify({"error": "Not found"}), 404
+
+    data = request.get_json(silent=True) or {}
+    card_id = str(data.get("card_id", "")).strip()
+    status = data.get("status", "review")
+    valid_ids = {str(card.get("id")) for card in tab["cards"]}
+    if card_id not in valid_ids or status not in {"mastered", "review"}:
+        return jsonify({"error": "Dữ liệu ôn tập không hợp lệ"}), 400
+
+    user_id = get_api_user()
+    item = ExamReviewStatus.query.filter_by(
+        tab_id=tab_id, card_id=card_id, user_id=user_id
+    ).first()
+    if item is None:
+        item = ExamReviewStatus(tab_id=tab_id, card_id=card_id, user_id=user_id)
+        db.session.add(item)
+    item.status = status
+    db.session.commit()
+    return jsonify({"ok": True, "status": item.to_dict()})
+
+
 @app.route("/api/exam/submit", methods=["POST"])
 @exam_api_required
 def submit_exam():
@@ -933,9 +982,30 @@ def submit_exam():
     score     = float(data.get("score", 0))
     time_sec  = float(data.get("time_sec", 9999))
     used_hint = bool(data.get("used_hint", False))
+    wrong_card_ids = data.get("wrong_card_ids", [])
 
     if not tab_id:
         return jsonify({"error": "tab_id is required"}), 400
+
+    tab = get_exam_tab(tab_id)
+    if not tab:
+        return jsonify({"error": "Not found"}), 404
+
+    valid_ids = {str(card.get("id")) for card in tab["cards"]}
+    wrong_ids = {str(card_id) for card_id in wrong_card_ids if str(card_id) in valid_ids}
+    for card_id in wrong_ids:
+        item = ExamReviewStatus.query.filter_by(
+            tab_id=tab_id, card_id=card_id, user_id=user
+        ).first()
+        if item is None:
+            item = ExamReviewStatus(
+                tab_id=tab_id, card_id=card_id, user_id=user, status="review", wrong_count=0
+            )
+            db.session.add(item)
+        item.status = "review"
+        item.wrong_count += 1
+    if wrong_ids:
+        db.session.commit()
 
     return jsonify({
         "ok": True,
