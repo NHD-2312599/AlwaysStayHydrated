@@ -40,17 +40,17 @@
     .check-result[hidden] { display: none; }
     .check-result.correct { background: #e4f5e9; color: #17643a; border: 1px solid #a8d9b7; }
     .check-result.wrong { background: #fff2e4; color: #9a5b12; border: 1px solid #edc68d; }
-    .actions { display: flex; flex-wrap: wrap; gap: 10px; padding: 0 22px 22px; }
+    .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 0 22px 22px; }
     button { font: inherit; font-weight: 700; cursor: pointer; }
-    .primary, .secondary, .status { border-radius: 10px; padding: 11px 15px; border: 1px solid transparent; }
+    .primary, .secondary, .status { border-radius: 10px; padding: 9px 12px; border: 1px solid transparent; font-size: .86rem; white-space: nowrap; }
     .primary { background: var(--accent); color: #fff; }
     .secondary { background: var(--surface); border-color: var(--border); color: var(--text-sec); }
-    .status { flex: 1; min-width: 150px; }
+    .status { flex: 0 1 auto; min-width: 0; }
     .remember { background: #e4f5e9; color: #17643a; border-color: #a8d9b7; }
     .again { background: #fff2e4; color: #9a5b12; border-color: #edc68d; }
     .empty { background: var(--surface); border: 1px dashed var(--border); border-radius: 16px; padding: 44px 22px; text-align: center; color: var(--text-sec); }
     .error { color: var(--red); padding: 30px 0; }
-    @media (max-width: 560px) { h1 { font-size: 1.65rem; } .header { padding: 0 16px; } .main { padding: 28px 14px 70px; } .status { flex-basis: 100%; } }
+    @media (max-width: 560px) { h1 { font-size: 1.65rem; } .header { padding: 0 16px; } .main { padding: 28px 14px 70px; } .actions { gap: 7px; } .actions > button { flex: 1 1 calc(50% - 7px); } .actions .status { flex-basis: calc(50% - 7px); } }
   </style>
 </head>
 <body>
