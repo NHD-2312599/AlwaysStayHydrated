@@ -23,7 +23,7 @@
           "question": "3. Trong Kinh thánh có cây sự sống và cây biết điều thiện và điều ác. Ngày hôm nay, ① trái của cây sự sống và ② trái của cây thiện ác là gì? Hãy viết ra lần lượt.",
           "ref": "Khải huyền",
           "answer": "① Ngôi lời của hiện thực của sách Khải huyền. ② Giáo lý dối Chuseok - sách giải kinh của kẻ chăn chiên giả.",
-          "blank": "① _______ của sách Khải huyền. ② _______ _______ của kẻ chăn chiên giả."
+          "blank": "① _______ của sách Khải huyền. ② _______ (Chuseok - sách giải kinh) của kẻ chăn chiên giả."
         },
         {
           "id": "c4",
@@ -93,21 +93,21 @@
           "question": "13. 'Huyết và thịt của Chúa Jesus' đã được hứa bằng lời giao ước mới trong Lu 22:14~20 được ăn ①khi nào, ②ở đâu, ③bởi ai? Hãy viết ra cùng 3 câu Kinh thánh làm chứng.",
           "ref": "Lu 22:14-20; Khải 1:5-6; 5:9-10; 7:9-14",
           "answer": "① Thời ứng nghiệm sách Khải huyền. ② 12 chi phái Shincheonji trong Khải đoạn 7 là nước của Đức Chúa Trời. ③ 144.000 và đoàn dân áo trắng, Khải 1:5~6, Khải 5:9~10, Khải 7:9~14.",
-          "blank": "① Thời _______. ② _______ Shincheonji trong Khải đoạn _______ là nước của Đức Chúa Trời. ③ _______ và _______, Khải 1:_______~_______, Khải 5:_______~_______, Khải 7:_______~_______."
+          "blank": "① Thời _______. ② _______ Shincheonji trong Khải đoạn _______ là nước của Đức Chúa Trời. ③ _______ và _______, Khải 1:_______~_______, Khải 5:_______~ (10), Khải 7:_______~_______."
         },
         {
           "id": "c14",
           "question": "14. Khải đoạn 6 là ①ai đi vào ai để phán xét ②ai? Những kẻ bị đuổi trong Khải đoạn 6 bị giết chết trong ③đoạn mấy, đoạn mấy?",
           "ref": "Khải huyền 6; 8-9",
           "answer": "① Chúa Jesus, bốn con sinh vật. ② Dân được chọn đã bỏ đạo, Bảy thiên sứ và các thánh đồ đền tạm. ③ Khải đoạn 8, Khải đoạn 9.",
-          "blank": "① _______, _______. ② _______, _______. ③ Khải đoạn _______, Khải đoạn _______."
+          "blank": "① _______, _______. ② _______, (Bảy thiên sứ và các thánh đồ đền tạm). ③ Khải đoạn _______, Khải đoạn _______."
         },
         {
           "id": "c15",
           "question": "15. ①'Các con bổn quốc' sẽ bị liệng ra chốn tối tăm ở ngoài và ②'nhiều người từ đông phương tây phương sẽ đến, ngồi trong nước thiên đàng' trong Mat đoạn 8 là ai? Hãy viết ra lần lượt cùng đoạn Kinh thánh liên quan.",
           "ref": "Mat 8; Khải huyền 6, 7, 13, 14",
           "answer": "① Nhà thờ truyền thống đã bại hoại Y-sơ-ra-ên thuộc linh, Khải đoạn 6 Khải đoạn 13. ② 12 chi phái Shincheonji được gặt và đóng ấn Y-sơ-ra-ên mới thuộc linh, Khải đoạn 7 Khải đoạn 14.",
-          "blank": "① _______ đã bại hoại _______, Khải đoạn _______ _______. ② _______ Shincheonji được _______ và đóng _______ _______, Khải đoạn _______ _______."
+          "blank": "① _______ đã bại hoại (Y-sơ-ra-ên thuộc linh), Khải đoạn _______ (Khải đoạn 13). ② _______ Shincheonji được _______ và đóng _______ (Y-sơ-ra-ên mới thuộc linh), Khải đoạn _______ (Khải đoạn 14)."
         },
         {
           "id": "c16",
@@ -191,7 +191,7 @@
           "question": "27. 'Bài ca mới' trong Khải 14:3 ①là gì? Trên khắp thế gian, ②chỉ ai mới có thể hát? Hiện thực của nơi học được bài ca mới ③là ở đâu?",
           "ref": "Khải huyền 14:3",
           "answer": "① Ngôi lời của hiện thực được ứng nghiệm từ sách Khải huyền. ② 144.000 được đóng ấn thuộc 12 chi phái. ③ Trung tâm truyền giáo Cơ đốc giáo Si-ôn trước ngôi.",
-          "blank": "① _______ được ứng nghiệm từ sách Khải huyền. ② _______ được đóng _______ thuộc _______ chi phái. ③ _______ trước ngôi."
+          "blank": "① _______ được ứng nghiệm từ sách Khải huyền. ② _______ được đóng _______ thuộc (12) chi phái. ③ _______ trước ngôi."
         },
         {
           "id": "c28",
@@ -240,7 +240,7 @@
           "question": "34. 'Rượu dâm loạn buông tuồng' ①là gì? Như những gì được thấy trong Khải đoạn 18, vạn quốc đã đổ và những kẻ đã uống rượu dâm loạn buông tuồng đã kết hôn với ②ai? Chàng rể và cô dâu kết hôn ③là ai?",
           "ref": "Khải huyền 18",
           "answer": "① Giáo lý dối trái thiện ác. ② Satan thần của rồng. ③ Satan và những giáo dân thuộc nó.",
-          "blank": "① _______ _______. ② _______ thần của _______. ③ _______ và _______ thuộc nó."
+          "blank": "① _______ (trái thiện ác). ② _______ thần của _______. ③ _______ và _______ thuộc nó."
         },
         {
           "id": "c35",
