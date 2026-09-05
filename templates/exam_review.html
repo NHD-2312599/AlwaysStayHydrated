@@ -36,6 +36,10 @@
     .answer-label { color: var(--accent-dk); font-size: .72rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 6px; }
     .answer-box[hidden] { display: none; }
     .user-answer { width: calc(100% - 44px); margin: 0 22px 16px; min-height: 88px; resize: vertical; border: 1px solid var(--border); border-radius: 10px; padding: 12px; font: inherit; color: var(--text-pri); background: var(--bg); }
+    .check-result { margin: 0 22px 16px; padding: 11px 14px; border-radius: 10px; font-weight: 700; line-height: 1.5; }
+    .check-result[hidden] { display: none; }
+    .check-result.correct { background: #e4f5e9; color: #17643a; border: 1px solid #a8d9b7; }
+    .check-result.wrong { background: #fff2e4; color: #9a5b12; border: 1px solid #edc68d; }
     .actions { display: flex; flex-wrap: wrap; gap: 10px; padding: 0 22px 22px; }
     button { font: inherit; font-weight: 700; cursor: pointer; }
     .primary, .secondary, .status { border-radius: 10px; padding: 11px 15px; border: 1px solid transparent; }
@@ -74,6 +78,8 @@ let filter = 'all';
 let studyMode = 'full';
 let position = 0;
 let answerVisible = false;
+let draftAnswer = '';
+let checkResult = null;
 
 async function loadReview() {
   try {
@@ -112,6 +118,42 @@ function renderBlankGuide(card) {
   if (!card.blank) return '<div class="blank-guide">Câu này chưa có mẫu chỗ trống.</div>';
   return `<div class="blank-guide">${card.blank.split(/_{3,}/).map((part, index, parts) => `${escapeHtml(part)}${index < parts.length - 1 ? '<span class="blank-chip">____</span>' : ''}`).join('')}</div>`;
 }
+function normalizeText(value) {
+  return String(value || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase().replace(/\s+/g, ' ').replace(/["']/g, '').replace(/[-–—]/g, ' ').replace(/[.,;:!?()]/g, '');
+}
+function extractBlankAnswers(card) {
+  const parts = String(card.blank || '').split(/_{3,}/).map(part => part.trim()).filter(Boolean);
+  const answer = String(card.answer || '');
+  const expected = [];
+  let searchIndex = 0;
+  for (let index = 0; index < parts.length - 1; index++) {
+    const left = parts[index];
+    const right = parts[index + 1];
+    const leftPos = answer.indexOf(left, searchIndex);
+    const rightPos = answer.indexOf(right, leftPos >= 0 ? leftPos + left.length : searchIndex);
+    if (leftPos >= 0 && rightPos > leftPos + left.length) {
+      expected.push(answer.slice(leftPos + left.length, rightPos).trim());
+      searchIndex = rightPos;
+    }
+  }
+  return expected.filter(Boolean);
+}
+function checkBlankAnswer(card, value) {
+  const expected = extractBlankAnswers(card);
+  const submitted = String(value || '').split(/\r?\n|[;|•]|,\s+/).map(item => item.trim()).filter(Boolean);
+  return expected.length > 0 && expected.every(item => submitted.some(entry => normalizeText(entry) === normalizeText(item) || normalizeText(entry).includes(normalizeText(item)) || normalizeText(item).includes(normalizeText(entry))));
+}
+function captureDraft() {
+  const input = document.getElementById('user-answer');
+  if (input) draftAnswer = input.value;
+}
+function checkAnswer() {
+  captureDraft();
+  const card = filteredCards()[position];
+  const correct = studyMode === 'blank' ? checkBlankAnswer(card, draftAnswer) : normalizeText(draftAnswer) === normalizeText(card.answer);
+  checkResult = correct ? { correct: true, text: '✓ Chính xác! Bạn có thể đánh dấu Đã nhớ.' } : { correct: false, text: '✗ Chưa đúng. Hãy xem lại đáp án hoặc đánh dấu Cần ôn lại.' };
+  render();
+}
 function render() {
   renderStats();
   const list = filteredCards();
@@ -125,14 +167,17 @@ function render() {
   const status = statuses[card.id]?.status || 'review';
   const prompt = studyMode === 'blank' ? renderBlankGuide(card) : '';
   const answerLabel = studyMode === 'blank' ? 'Đáp án của phần điền' : 'Đáp án tham khảo';
+  const resultHtml = checkResult ? `<div class="check-result ${checkResult.correct ? 'correct' : 'wrong'}">${checkResult.text}</div>` : '';
   area.innerHTML = `
     <article class="review-card">
       <div class="card-top"><span>Câu ${position + 1} / ${list.length}</span><span>${status === 'mastered' ? '✓ Đã nhớ' : '○ Cần ôn lại'}</span></div>
       <div class="question">${escapeHtml(card.question)}</div>
       ${prompt}
-      <textarea class="user-answer" id="user-answer" placeholder="Bạn có thể tự viết lại câu trả lời ở đây..."></textarea>
+      <textarea class="user-answer" id="user-answer" placeholder="Bạn có thể tự viết lại câu trả lời ở đây...">${escapeHtml(draftAnswer)}</textarea>
+      ${resultHtml}
       <div class="answer-box" id="answer-box" ${answerVisible ? '' : 'hidden'}><div class="answer-label">${answerLabel}</div>${escapeHtml(card.answer)}</div>
       <div class="actions">
+        <button class="primary" onclick="checkAnswer()">✓ Kiểm tra</button>
         <button class="secondary" onclick="toggleAnswer()">${answerVisible ? 'Ẩn đáp án' : 'Xem đáp án'}</button>
         <button class="status remember" onclick="saveStatus('mastered')">✓ Đã nhớ</button>
         <button class="status again" onclick="saveStatus('review')">↻ Cần ôn lại</button>
@@ -141,25 +186,28 @@ function render() {
       </div>
     </article>`;
 }
-function toggleAnswer() { answerVisible = !answerVisible; render(); }
-function move(direction) { position += direction; answerVisible = false; render(); }
+function toggleAnswer() { captureDraft(); answerVisible = !answerVisible; render(); }
+function move(direction) { captureDraft(); position += direction; draftAnswer = ''; checkResult = null; answerVisible = false; render(); }
 async function saveStatus(status) {
+  captureDraft();
   const card = filteredCards()[position];
   try {
     const response = await apiFetch(`/api/exam/tabs/${TAB_ID}/review-progress`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ card_id: card.id, status }) });
     if (!response.ok) throw new Error('save failed');
     statuses[card.id] = await response.json().then(data => data.status);
+    draftAnswer = '';
+    checkResult = null;
     const list = filteredCards();
     if (filter === 'review' && status === 'mastered') position = Math.min(position, Math.max(0, list.length - 1));
     render();
   } catch (error) { alert('Không thể lưu tiến độ. Vui lòng thử lại.'); }
 }
 document.querySelectorAll('.filter').forEach(button => button.addEventListener('click', () => {
-  filter = button.dataset.filter; position = 0; answerVisible = false;
+  captureDraft(); filter = button.dataset.filter; position = 0; draftAnswer = ''; checkResult = null; answerVisible = false;
   document.querySelectorAll('.filter').forEach(item => item.classList.toggle('active', item === button)); render();
 }));
 document.querySelectorAll('.mode-btn').forEach(button => button.addEventListener('click', () => {
-  studyMode = button.dataset.mode; answerVisible = false;
+  captureDraft(); studyMode = button.dataset.mode; checkResult = null; answerVisible = false;
   document.querySelectorAll('.mode-btn').forEach(item => item.classList.toggle('active', item === button)); render();
 }));
 loadReview();
