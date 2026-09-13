@@ -749,16 +749,11 @@ def download_apk():
 
 EXAM_DIR = os.path.join(BASE_DIR, "Exam")
 
-# Mật khẩu riêng cho từng học phần — id phải khớp với "id" trong file JSON
-EXAM_PASSWORDS = {
-    "tab1": "dongan_baithitotnghiep"
-}
-
 
 def load_exam_data():
     """
     Đọc tất cả file *.json trong thư mục Exam/ và gộp tabs.
-    Thêm học phần mới: tạo file JSON mới + thêm mật khẩu vào EXAM_PASSWORDS.
+    Mật khẩu được đọc từ trường "password" (hoặc "pass") trong mỗi file.
     """
     tabs = []
     if not os.path.isdir(EXAM_DIR):
@@ -771,6 +766,7 @@ def load_exam_data():
         try:
             with open(path, encoding="utf-8") as f:
                 data = json.load(f)
+            file_password = str(data.get("password", data.get("pass", ""))).strip()
             file_tabs = data.get("tabs") or []
             if not isinstance(file_tabs, list):
                 print(f"[exam] Bỏ qua {filename}: 'tabs' không phải list")
@@ -782,6 +778,8 @@ def load_exam_data():
                 if any(t["id"] == tab["id"] for t in tabs):
                     print(f"[exam] Trùng tab id '{tab['id']}' — bỏ qua bản trong {filename}")
                     continue
+                tab = dict(tab)
+                tab["_password"] = str(tab.get("password", file_password)).strip()
                 tabs.append(tab)
         except Exception as e:
             print(f"[exam] Lỗi đọc {filename}: {e}")
@@ -793,7 +791,7 @@ def get_exam_tab(tab_id):
     """Lấy đúng học phần từ nguồn bài thi, không dùng dữ liệu flashcard khác."""
     return next(
         (tab for tab in load_exam_data()["tabs"]
-         if tab.get("id") == tab_id and tab_id in EXAM_PASSWORDS),
+         if tab.get("id") == tab_id and tab.get("_password")),
         None,
     )
 
@@ -880,7 +878,7 @@ def get_exam_tabs():
     result = [
         {"id": t["id"], "name": t["name"], "card_count": len(t["cards"])}
         for t in data["tabs"]
-        if t.get("id") in EXAM_PASSWORDS
+        if t.get("_password")
     ]
     response = jsonify({"data": result})
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
@@ -896,7 +894,7 @@ def verify_exam_password():
     tab = get_exam_tab(tab_id)
     if not tab:
         return jsonify({"ok": False, "error": "Học phần không tồn tại"}), 404
-    if password != EXAM_PASSWORDS[tab_id]:
+    if password != tab["_password"]:
         return jsonify({"ok": False, "error": "Mật khẩu không đúng"}), 403
 
     # Lưu vào session — đã xác thực tab này (dùng cho web)
