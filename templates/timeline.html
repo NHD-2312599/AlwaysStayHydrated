@@ -112,8 +112,11 @@
 
     function renderTimeline(filter = 'all') {
       const visibleItems = timelineItems.filter((item) => filter === 'all' || item.tags.includes(filter));
-      list.innerHTML = visibleItems.length ? visibleItems.map((item) => `
-        <article class="timeline-item" id="${item.id}" data-tags="${item.tags.join('|')}">
+      list.innerHTML = visibleItems.length ? visibleItems.map((item) => {
+        const itemIndex = timelineItems.indexOf(item);
+        const domId = `timeline-item-${itemIndex}`;
+        return `
+        <article class="timeline-item" id="${domId}" data-tags="${item.tags.join('|')}">
           <span class="timeline-dot" aria-hidden="true"></span>
           <div class="timeline-card">
             <div class="timeline-date">${item.date_label}</div>
@@ -126,8 +129,12 @@
             <p class="timeline-source">${item.source_note}</p>
             <a class="timeline-cta" href="${readReferenceUrl(item.chapter_refs[0] || '')}">Đọc đoạn liên quan →</a>
           </div>
-        </article>`).join('') : '<p class="timeline-empty" style="display:block">Không có mốc cho bộ lọc này.</p>';
-      rail.innerHTML = visibleItems.map((item) => `<a href="#${item.id}">${item.date_label}</a>`).join('');
+        </article>`;
+      }).join('') : '<p class="timeline-empty" style="display:block">Không có mốc cho bộ lọc này.</p>';
+      rail.innerHTML = visibleItems.map((item) => {
+        const itemIndex = timelineItems.indexOf(item);
+        return `<a href="#timeline-item-${itemIndex}">${item.date_label}</a>`;
+      }).join('');
       observeItems();
     }
 

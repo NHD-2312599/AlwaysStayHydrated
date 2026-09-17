@@ -533,16 +533,64 @@ input[type="password"].error {
   .form-inner { max-width: 100%; }
 }
 
-/* Shared white app surface: keep the login split layout card-like. */
-body.has-bottom-nav { background: var(--bg); }
-.split-layout { gap: 28px; padding: 32px; min-height: calc(100vh - 64px); }
+/* Keep the login panels compact so the page gradient remains visible around them. */
+body.has-bottom-nav {
+  background: #FFFFFF;
+}
+.split-layout {
+  flex: 0 0 auto;
+  width: min(1180px, calc(100% - 80px));
+  height: min(560px, calc(100vh - 190px));
+  min-height: 0;
+  margin: auto;
+  gap: 28px;
+  padding: 0;
+  align-items: stretch;
+}
 .hero-panel {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   color: var(--text-pri);
-  padding: 56px 52px;
+  padding: 34px 38px;
+}
+.hero-top {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+}
+.hero-logo-box {
+  width: 52px;
+  height: 52px;
+  margin-bottom: 24px;
+  font-size: 24px;
+  border-radius: 14px;
+}
+.hero-title {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  margin-bottom: 16px;
+}
+.hero-desc {
+  font-size: 0.84rem;
+  line-height: 1.6;
+  max-width: 100%;
+}
+.hero-features {
+  width: 100%;
+  gap: 10px;
+  margin-top: 28px;
+}
+.hero-feat {
+  gap: 10px;
+  font-size: 0.78rem;
+  padding: 9px 12px;
+}
+.hero-feat-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  font-size: 15px;
 }
 .hero-panel::before, .hero-panel::after, .particle { display: none; }
 .hero-title { color: var(--text-pri); }
@@ -561,11 +609,18 @@ body.has-bottom-nav { background: var(--bg); }
 .submit-btn { background: var(--accent); box-shadow: 0 4px 16px var(--accent-glow); }
 .submit-btn:hover { background: var(--accent-dk); box-shadow: 0 8px 24px var(--accent-glow); }
 @media (max-width: 900px) {
-  .split-layout { padding: 20px; }
+  .split-layout {
+    width: calc(100% - 40px);
+    height: auto;
+    min-height: 0;
+    flex: 1 0 auto;
+    margin: 20px auto;
+    padding: 0;
+  }
   .hero-panel, .form-panel { border-radius: var(--radius); }
 }
 @media (max-width: 480px) {
-  .split-layout { padding: 12px; gap: 12px; }
+  .split-layout { width: calc(100% - 24px); margin: 12px auto; gap: 12px; }
 }
 </style>
 <script src="/static/js/session-refresh.js"></script>
@@ -602,7 +657,7 @@ body.has-bottom-nav { background: var(--bg); }
 
     <div class="hero-top">
       <div class="hero-logo-box">📖</div>
-      <h1 class="hero-title">Thẻ Ghi Nhớ<br><span>Khải Huyền</span></h1>
+      <h1 class="hero-title">Thẻ Ghi Nhớ <span>Khải Huyền</span></h1>
       <p class="hero-desc">
         Học Kinh Thánh qua hệ thống flashcard 4 mặt. Mỗi thẻ giúp bạn ghi khắc Ngôi lời vào lòng một cách sâu sắc và bền vững.
       </p>

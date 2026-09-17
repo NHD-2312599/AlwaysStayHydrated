@@ -1142,15 +1142,39 @@
       .mode-card, .mode-card:nth-child(4), .mode-card:nth-child(5) { grid-column: auto; }
     }
     @media (max-width: 560px) {
-      .container { padding: 24px 16px 104px; }
+      header { padding: 0 10px; }
+      .header-inner { height: 64px; gap: 8px; }
+      .brand { min-width: 0; }
+      .brand img { width: 102px; height: auto; }
+      .header-inner > div:last-child { gap: 6px !important; min-width: 0; }
+      .profile-link { gap: 0; }
+      .profile-link > span:last-child { display: none; }
+      .profile-avatar { width: 32px; height: 32px; font-size: .72rem; }
+      .logout-btn { padding: 7px 12px; font-size: .78rem; white-space: nowrap; }
+      .container { padding: 18px 12px 104px; gap: 14px; }
+      .home-hero { padding: 14px 4px 8px; margin-bottom: 4px; }
+      .greeting-kicker { font-size: .62rem; margin-bottom: 8px; }
+      .home-hero h1 { font-size: clamp(1.75rem, 8vw, 2.2rem); line-height: 1.08; margin-bottom: 8px; }
+      .home-hero p { font-size: .9rem; line-height: 1.55; }
+      .mission-banner { min-height: 70px; gap: 10px; padding: 12px 11px; margin: 6px 0; border-radius: 16px; }
+      .mission-banner-icon { width: 32px; height: 32px; flex-basis: 32px; border-radius: 10px; }
+      .mission-banner strong { font-size: .84rem; line-height: 1.25; }
+      .mission-banner small { font-size: .7rem; line-height: 1.25; }
+      .mission-banner-arrow { font-size: 1.05rem; }
       .section-heading-row { align-items:flex-start; flex-direction:column; gap:4px; }
       .mission-groups { grid-template-columns:1fr; }
       .mission-form { grid-template-columns:1fr 1fr; }
       .mission-form input:first-child { grid-column:1 / -1; }
       .mission-save-btn, .mission-cancel-btn { min-height:38px; }
       .mode-selector { grid-template-columns: 1fr; }
-      .mode-card { min-height: 270px; }
-      .learning-section-heading { align-items: start; flex-direction: column; gap: 4px; }
+      .mode-card { min-height: 0; padding: 18px 16px 16px; gap: 9px; border-radius: 18px; }
+      .mode-card-icon { width: 44px; height: 44px; border-radius: 14px; }
+      .mode-card-icon svg { width: 23px; height: 23px; }
+      .mode-card h3 { font-size: 1rem; }
+      .mode-card p { font-size: .78rem; line-height: 1.45; }
+      .mode-card-btn { min-height: 40px; padding: 8px 13px; font-size: .76rem; }
+      .learning-section-heading { align-items: start; flex-direction: column; gap: 3px; margin-top: 10px; }
+      .learning-section-heading h2 { font-size: 1.35rem; }
       .section-count { padding: 0; }
     }
 

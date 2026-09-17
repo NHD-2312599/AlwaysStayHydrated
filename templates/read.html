@@ -24,8 +24,7 @@
     .reader-icon-btn, .reader-title { border:0; background:transparent; color:inherit; font:inherit; cursor:pointer; }
     .reader-icon-btn { width:42px; height:42px; border-radius:50%; display:grid; place-items:center; font-size:1.2rem; }
     .reader-icon-btn svg { width:20px; height:20px; display:block; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
-    .aa-glyph { display:inline-flex; align-items:baseline; gap:3px; font-family:'NeueHaasGroteskDisplay',sans-serif; font-size:1.08rem; font-weight:500; line-height:1; letter-spacing:0; }
-    .aa-glyph small { font-size:.78em; font-weight:400; }
+    .aa-glyph { display:inline-flex; align-items:baseline; font-family:'NeueHaasGroteskDisplay',sans-serif; font-size:1.08rem; font-weight:500; line-height:1; letter-spacing:0; }
     .reader-icon-btn:hover { background:rgba(45,106,79,.12); }
     .reader-title { font-weight:700; font-size:1rem; padding:10px 14px; white-space:nowrap; }
     .reader-title::after { content:''; display:inline-block; width:7px; height:7px; margin:0 0 3px 8px; border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor; transform:rotate(45deg); }
@@ -67,7 +66,7 @@
   <header class="reader-header"><div class="reader-header-inner">
     <a class="reader-icon-btn" href="{{ url_for('index') }}" aria-label="Quay lại trang chủ"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M10 7l-5 5 5 5"/></svg></a>
     <button class="reader-title" id="chapterPickerButton" type="button">Khải Huyền {{ chapter }}</button>
-    <div class="reader-actions"><button class="reader-icon-btn" id="settingsButton" type="button" aria-label="Điều chỉnh đọc"><span class="aa-glyph" aria-hidden="true"><span>A</span><small>a</small></span></button><button class="reader-icon-btn" id="menuButton" type="button" aria-label="Mục lục"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg></button></div>
+    <div class="reader-actions"><button class="reader-icon-btn" id="settingsButton" type="button" aria-label="Điều chỉnh đọc"><span class="aa-glyph" aria-hidden="true">Aa</span></button><button class="reader-icon-btn" id="menuButton" type="button" aria-label="Mục lục"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg></button></div>
   </div></header>
 
   <main class="reader-main">

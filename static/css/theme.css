@@ -212,8 +212,26 @@ body.has-bottom-nav { padding-bottom: 96px; }
 .nav-btn.active .nav-icon { transform: scale(1.05); }
 
 @media (max-width: 420px) {
-  .bottom-nav { left: 8px; right: 8px; bottom: 8px; width: calc(100% - 16px); padding: 6px; border-radius: var(--radius); }
-  .nav-btn { font-size: 0.6rem; padding: 6px 2px; }
+  .bottom-nav {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    width: calc(100% - 16px);
+    padding: 6px;
+    border-radius: var(--radius);
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+  }
+  .bottom-nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    flex: 0 0 58px;
+    min-width: 58px;
+    max-width: none;
+    font-size: 0.58rem;
+    padding: 6px 2px;
+  }
   .nav-btn .nav-icon { font-size: 1.1rem; }
   .nav-btn .nav-icon svg { width: 18px; height: 18px; }
 }
