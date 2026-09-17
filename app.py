@@ -1157,6 +1157,6 @@ def submit_exam():
 if __name__ == "__main__":
     print("🕊️  Khởi động ứng dụng Học Khải Huyền...")
     port = int(os.environ.get("PORT", 5000))
-    host = os.environ.get("HOST", "127.0.0.1")
-    print(f"📖  Mở trình duyệt tại: http://localhost:{port}")
+    host = os.environ.get("HOST", "0.0.0.0")
+    print(f"📖  Server listening on {host}:{port}")
     socketio.run(app, debug=False, host=host, port=port, allow_unsafe_werkzeug=True)
