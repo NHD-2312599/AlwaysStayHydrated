@@ -20,18 +20,20 @@
 *{box-sizing:border-box}
 body{
   margin:0; min-height:100vh; background:var(--bg); color:var(--text);
-  display:flex; align-items:center; justify-content:center; padding:20px 16px 120px;
+  display:flex; align-items:center; justify-content:center; padding:32px 20px 120px;
 }
-.wrap{width:100%; max-width:440px}
+.wrap{width:100%; max-width:900px; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:20px}
+h1, .sub, .back { grid-column:1 / -1; }
 
 
 h1{font-size:1.5rem; font-weight:800; text-align:center; margin:14px 0 2px}
 .sub{text-align:center; color:var(--text-soft); margin:0 0 22px; font-size:.9rem; font-weight:600}
 
 .panel{
-  background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius-lg);
-  padding:20px; margin-bottom:16px; box-shadow: var(--shadow);
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:24px; margin:0; box-shadow:var(--shadow); transition:transform .2s ease, box-shadow .2s ease;
 }
+.panel:hover { transform:translateY(-3px); box-shadow:var(--shadow-hover); }
 .panel-title{
   display:flex; align-items:center; gap:8px; font-weight:800; font-size:1.05rem; margin:0 0 14px;
 }
@@ -56,7 +58,7 @@ input:focus, select:focus{outline:none; border-color:var(--water)}
 .btn-duo{
   width:100%; margin-top:18px; padding:14px; border-radius:16px; cursor:pointer;
   font-family:inherit; font-size:1.05rem; font-weight:800; color:#fff;
-  border:none; border-bottom:4px solid var(--shadow-color, var(--duo-green-sh));
+  border:1px solid transparent; border-bottom:4px solid var(--shadow-color, var(--duo-green-sh));
   background:var(--face, var(--duo-green));
   transition:transform .04s, border-bottom-width .04s;
   letter-spacing:.02em;
@@ -69,6 +71,12 @@ input:focus, select:focus{outline:none; border-color:var(--water)}
 .back{display:block; text-align:center; margin-top:18px; color:var(--text-soft); text-decoration:none; font-weight:700; font-size:.88rem}
 
 /* .bottom-nav / .nav-btn styles now come from theme.css */
+
+@media (max-width: 700px) {
+  .wrap { grid-template-columns:1fr; max-width:500px; }
+  h1, .sub, .back { grid-column:auto; }
+  .panel { padding:20px; }
+}
 
 </style>
 </head>
@@ -133,32 +141,7 @@ input:focus, select:focus{outline:none; border-color:var(--water)}
 </div>
 
 <!-- Bottom Navigation Bar -->
-<nav class="bottom-nav" aria-label="Điều hướng chính">
-  <a href="/home" class="nav-btn" data-page="home">
-    <span class="nav-icon">🏠</span>
-    <span class="nav-label">Trang chủ</span>
-  </a>
-  <a href="/home?tab=fill" class="nav-btn" data-page="fill">
-    <span class="nav-icon">📝</span>
-    <span class="nav-label">Điền</span>
-  </a>
-  <a href="/home?tab=typing" class="nav-btn" data-page="typing">
-    <span class="nav-icon">⌨️</span>
-    <span class="nav-label">Gõ</span>
-  </a>
-  <a href="/flashcard/login" class="nav-btn" data-page="flashcard">
-    <span class="nav-icon">📖</span>
-    <span class="nav-label">Flashcard</span>
-  </a>
-  <a href="/exam_library" class="nav-btn" data-page="exam">
-    <span class="nav-icon">✍️</span>
-    <span class="nav-label">Kiểm tra</span>
-  </a>
-  <a href="/multiplayer" class="nav-btn active" data-page="multiplayer">
-    <span class="nav-icon">🎮</span>
-    <span class="nav-label">Đấu trường</span>
-  </a>
-</nav>
+{% include "_bottom_nav.html" %}
 
 <!-- Linh vật bồ câu gốc — không liên quan tới bất kỳ nhân vật thương hiệu nào -->
 <svg width="0" height="0" style="position:absolute">

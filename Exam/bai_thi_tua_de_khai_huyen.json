@@ -1,0 +1,172 @@
+{
+  "password": "dongan_tuadekhaihuyen",
+  "tabs": [
+    {
+      "id": "tab_tua_de_khai_huyen",
+      "name": "Tựa đề Khải Huyền",
+      "cards": [
+        {
+          "id": "c1",
+          "question": "1. Hãy viết tựa đề của Khải 1:1-8.",
+          "ref": "Khải 1:1-8",
+          "answer": "Tóm Tắt Và Kết Luận Toàn Đoạn Khải Huyền",
+          "blank": "Tóm Tắt Và Kết Luận Toàn Đoạn Khải Huyền"
+        },
+        {
+          "id": "c2",
+          "question": "2. Hãy viết tựa đề của Khải 1:9-20.",
+          "ref": "Khải 1:9-20",
+          "answer": "Bắt Đầu Các Sự Kiện Khải Huyền Và Sự Mầu Nhiệm Của Bảy Ngôi Sao Bảy Chân Đèn Vàng",
+          "blank": "Bắt Đầu Các Sự Kiện Khải Huyền Và Sự Mầu Nhiệm Của Bảy Ngôi Sao Bảy Chân Đèn Vàng"
+        },
+        {
+          "id": "c3",
+          "question": "3. Hãy viết tựa đề của Khải 2.",
+          "ref": "Khải 2",
+          "answer": "Thư Gửi Cho Các Sứ Giả Của Bảy Hội Thánh",
+          "blank": "Thư Gửi Cho Các Sứ Giả Của Bảy Hội Thánh"
+        },
+        {
+          "id": "c4",
+          "question": "4. Hãy viết tựa đề của Khải 3.",
+          "ref": "Khải 3",
+          "answer": "Thư Gửi Cho Các Sứ Giả Của Bảy Hội Thánh",
+          "blank": "Thư Gửi Cho Các Sứ Giả Của Bảy Hội Thánh"
+        },
+        {
+          "id": "c5",
+          "question": "5. Hãy viết tựa đề của Khải 4.",
+          "ref": "Khải 4",
+          "answer": "Ngôi Của Đức Chúa Trời Và Cấu Trúc Trên Thế Giới Thần Linh",
+          "blank": "Ngôi Của Đức Chúa Trời Và Cấu Trúc Trên Thế Giới Thần Linh"
+        },
+        {
+          "id": "c6",
+          "question": "6. Hãy viết tựa đề của Khải 5.",
+          "ref": "Khải 5",
+          "answer": "Sách Được Đóng Bởi Bảy Ấn",
+          "blank": "Sách Được Đóng Bởi Bảy Ấn"
+        },
+        {
+          "id": "c7",
+          "question": "7. Hãy viết tựa đề của Khải 6.",
+          "ref": "Khải 6",
+          "answer": "Sự Phán Xét Mặt Trời, Mặt Trăng Và Các Ngôi Sao Của Trời Trước Bỏ Đạo",
+          "blank": "Sự Phán Xét Mặt Trời, Mặt Trăng Và Các Ngôi Sao Của Trời Trước Bỏ Đạo"
+        },
+        {
+          "id": "c8",
+          "question": "8. Hãy viết tựa đề của Khải 7.",
+          "ref": "Khải 7",
+          "answer": "Mười Hai Chi Phái Y-Sơ-Ra-Ên Thuộc Linh Mới Được Sáng Tạo Mới",
+          "blank": "Mười Hai Chi Phái Y-Sơ-Ra-Ên Thuộc Linh Mới Được Sáng Tạo Mới"
+        },
+        {
+          "id": "c9",
+          "question": "9. Hãy viết tựa đề của Khải 8.",
+          "ref": "Khải 8",
+          "answer": "Ấn Cuối Cùng Và Bảy Loa",
+          "blank": "Ấn Cuối Cùng Và Bảy Loa"
+        },
+        {
+          "id": "c10",
+          "question": "10. Hãy viết tựa đề của Khải 9.",
+          "ref": "Khải 9",
+          "answer": "Châu Chấu Từ Vực Sâu Và Các Thiên Sứ Phạm Tội",
+          "blank": "Châu Chấu Từ Vực Sâu Và Các Thiên Sứ Phạm Tội"
+        },
+        {
+          "id": "c11",
+          "question": "11. Hãy viết tựa đề của Khải 10.",
+          "ref": "Khải 10",
+          "answer": "Sách Khải Thị Từ Trời Và Người Chăn Chiên Giao Ước",
+          "blank": "Sách Khải Thị Từ Trời Và Người Chăn Chiên Giao Ước"
+        },
+        {
+          "id": "c12",
+          "question": "12. Hãy viết tựa đề của Khải 11.",
+          "ref": "Khải 11",
+          "answer": "Hai Chứng Nhân Và Loa Thứ Bảy",
+          "blank": "Hai Chứng Nhân Và Loa Thứ Bảy"
+        },
+        {
+          "id": "c13",
+          "question": "13. Hãy viết tựa đề của Khải 12.",
+          "ref": "Khải 12",
+          "answer": "Chiến Tranh Giữa Đức Chúa Trời Và Con Rồng",
+          "blank": "Chiến Tranh Giữa Đức Chúa Trời Và Con Rồng"
+        },
+        {
+          "id": "c14",
+          "question": "14. Hãy viết tựa đề của Khải 13.",
+          "ref": "Khải 13",
+          "answer": "Dân Được Chọn Nhận Dấu Con Thú Và Bỏ Đạo",
+          "blank": "Dân Được Chọn Nhận Dấu Con Thú Và Bỏ Đạo"
+        },
+        {
+          "id": "c15",
+          "question": "15. Hãy viết tựa đề của Khải 14.",
+          "ref": "Khải 14",
+          "answer": "144.000 Trái Đầu Mùa Của Núi Si-Ôn",
+          "blank": "144.000 Trái Đầu Mùa Của Núi Si-Ôn"
+        },
+        {
+          "id": "c16",
+          "question": "16. Hãy viết tựa đề của Khải 15.",
+          "ref": "Khải 15",
+          "answer": "Nơi Thánh Của Đền Tạm Chứng Cớ - Nơi Mọi Dân Tộc Đến Để Thờ Lạy",
+          "blank": "Nơi Thánh Của Đền Tạm Chứng Cớ - Nơi Mọi Dân Tộc Đến Để Thờ Lạy"
+        },
+        {
+          "id": "c17",
+          "question": "17. Hãy viết tựa đề của Khải 16.",
+          "ref": "Khải 16",
+          "answer": "Bảy Bát Thạnh Nộ",
+          "blank": "Bảy Bát Thạnh Nộ"
+        },
+        {
+          "id": "c18",
+          "question": "18. Hãy viết tựa đề của Khải 17.",
+          "ref": "Khải 17",
+          "answer": "Đồ Ăn Của Ma Quỷ - Rượu Dâm Loạn",
+          "blank": "Đồ Ăn Của Ma Quỷ - Rượu Dâm Loạn"
+        },
+        {
+          "id": "c19",
+          "question": "19. Hãy viết tựa đề của Khải 18.",
+          "ref": "Khải 18",
+          "answer": "Kết Hôn Với Satan Làm Sụp Đổ Mọi Dân Tộc",
+          "blank": "Kết Hôn Với Satan Làm Sụp Đổ Mọi Dân Tộc"
+        },
+        {
+          "id": "c20",
+          "question": "20. Hãy viết tựa đề của Khải 19.",
+          "ref": "Khải 19",
+          "answer": "Tiệc Cưới Chiên Con Thần Thể",
+          "blank": "Tiệc Cưới Chiên Con Thần Thể"
+        },
+        {
+          "id": "c21",
+          "question": "21. Hãy viết tựa đề của Khải 20.",
+          "ref": "Khải 20",
+          "answer": "Sự Sống Lại Lần Thứ Nhất Của Các Linh Từ Vì Đạo Và Những Người Sống",
+          "blank": "Sự Sống Lại Lần Thứ Nhất Của Các Linh Từ Vì Đạo Và Những Người Sống"
+        },
+        {
+          "id": "c22",
+          "question": "22. Hãy viết tựa đề của Khải 21.",
+          "ref": "Khải 21",
+          "answer": "Shincheonji - Trời Mới Đất Mới Được Hứa",
+          "blank": "Shincheonji - Trời Mới Đất Mới Được Hứa"
+        },
+        {
+          "id": "c23",
+          "question": "23. Hãy viết tựa đề của Khải 22.",
+          "ref": "Khải 22",
+          "answer": "Thành Thánh Nơi Có Cây Sự Sống",
+          "blank": "Thành Thánh Nơi Có Cây Sự Sống"
+        }
+      ]
+    }
+  ]
+}

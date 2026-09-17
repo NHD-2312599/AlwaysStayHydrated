@@ -3,6 +3,7 @@
 <head>
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#386641">
+<link rel="stylesheet" href="/static/css/theme.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Alway Stay Hydrated — Bài Thi</title>
@@ -693,10 +694,11 @@ body {
 
 </style>
 <script src="/static/js/session-refresh.js"></script>
+<script src="/static/js/mission-progress.js"></script>
 <script src="/static/js/sw-register.js"></script>
 </head>
 
-<body>
+<body class="has-bottom-nav">
 
 <!-- Header -->
 <div class="header">
@@ -1159,6 +1161,9 @@ function submitExam() {
   const total = EXAM_CARDS.length;
   const score = total > 0 ? Math.round((correctCount / total) * 100) : 0;
 
+  updateMissionProgress('exam', 1, 'exam_submitted');
+  if (score >= 80) updateMissionProgress('exam', 1, 'exam_score_ge_80');
+
   document.getElementById('summary-score').textContent = score + '%';
   document.getElementById('summary-correct').textContent = correctCount;
   document.getElementById('summary-wrong').textContent = wrongCount;
@@ -1246,5 +1251,6 @@ function escapeHtml(str) {
 }
 </script>
 
+{% include "_bottom_nav.html" %}
 </body>
 </html>

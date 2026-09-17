@@ -1,6 +1,7 @@
 import json
 import random
 import os
+from datetime import datetime, timedelta
 from functools import wraps
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for, send_from_directory
 from flask_cors import CORS
@@ -10,7 +11,7 @@ from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError, InvalidHashError
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 import shutil, pathlib
-from flashcard_models import db, Tab, Card, CardStatus, ExamReviewStatus, init_db
+from flashcard_models import db, User, Tab, Card, CardStatus, CardReviewSchedule, ExamReviewStatus, init_db
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-only-change-me")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -23,17 +24,26 @@ if _src_fonts.exists():
     for p in _src_fonts.rglob('*.woff2'):
         shutil.copy2(p, _dst_fonts)
 
-FLASHCARD_DB_PATH = os.path.join(BASE_DIR, "instance", "flashcard.db")
-os.makedirs(os.path.join(BASE_DIR, "instance"), exist_ok=True)
+FLASHCARD_DB_PATH = os.environ.get(
+    "SQLITE_DATABASE_PATH",
+    os.path.join(BASE_DIR, "instance", "flashcard.db"),
+)
+os.makedirs(os.path.dirname(os.path.abspath(FLASHCARD_DB_PATH)), exist_ok=True)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{FLASHCARD_DB_PATH}"
+database_url = os.environ.get('DATABASE_URL', '').strip()
+if database_url.startswith('postgres://'):
+    database_url = 'postgresql://' + database_url[len('postgres://'):]
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url or f"sqlite:///{FLASHCARD_DB_PATH}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-    'connect_args': {'check_same_thread': False},
     'pool_pre_ping': True,
     'pool_recycle': 30,
 }
-print("Flashcard DB:", FLASHCARD_DB_PATH)
+if not database_url:
+    app.config['SQLALCHEMY_ENGINE_OPTIONS']['connect_args'] = {
+        'check_same_thread': False,
+    }
+print("Database:", 'DATABASE_URL' if database_url else FLASHCARD_DB_PATH)
 
 db.init_app(app)
 init_db(app)
@@ -78,17 +88,38 @@ USERS_FILE = os.path.join(os.path.dirname(__file__), "users.json")
 # ─── User helpers ────────────────────────────────────────────────────────────
 
 def load_users():
-    if not os.path.exists(USERS_FILE):
-        return {}
-    with open(USERS_FILE, encoding="utf-8") as f:
-        try:
-            return json.load(f)
-        except Exception:
-            return {}
+    return {
+        user.username: {"pw": user.password, "role": user.role}
+        for user in User.query.order_by(User.username).all()
+    }
 
 def save_users(users):
-    with open(USERS_FILE, "w", encoding="utf-8") as f:
-        json.dump(users, f, ensure_ascii=False, indent=2)
+    for username, data in users.items():
+        user = db.session.get(User, username)
+        if user is None:
+            user = User(username=username)
+            db.session.add(user)
+        user.password = data.get("pw", user.password if user.password else "")
+        user.role = data.get("role", user.role or "view")
+    db.session.commit()
+
+
+def migrate_legacy_users():
+    """Import users.json once when moving an existing deployment to the database."""
+    if not os.path.exists(USERS_FILE) or User.query.count() > 0:
+        return
+    try:
+        with open(USERS_FILE, encoding="utf-8") as file:
+            legacy_users = json.load(file)
+        if isinstance(legacy_users, dict) and legacy_users:
+            save_users(legacy_users)
+            print(f"Migrated {len(legacy_users)} legacy users to database")
+    except (OSError, ValueError) as error:
+        print(f"Legacy user migration skipped: {error}")
+
+
+with app.app_context():
+    migrate_legacy_users()
 
 # ─── Password hashing helpers (Argon2) ──────────────────────────────────────
 
@@ -255,6 +286,55 @@ def _calculate_stats(user):
         'percentage': round((passed / total * 100) if total > 0 else 0, 1)
     }
 
+
+REVIEW_INTERVAL_DAYS = {'g': 7, 'r': 3, 'h': 1}
+
+
+def _review_schedule_payload(user, tab_id=None):
+    query = CardReviewSchedule.query.filter_by(user_id=user)
+    if tab_id:
+        query = query.join(Card).filter(Card.tab_id == tab_id)
+    schedules = query.order_by(CardReviewSchedule.next_review.asc()).all()
+    now = datetime.utcnow()
+    horizon = now + timedelta(days=7)
+    due = [item for item in schedules if item.next_review <= horizon]
+    return {
+        'schedules': {item.card_id: item.to_dict() for item in schedules},
+        'summary': {
+            'today': sum(1 for item in schedules if item.next_review <= now + timedelta(days=1)),
+            'three_days': sum(1 for item in schedules if item.next_review <= now + timedelta(days=3)),
+            'seven_days': sum(1 for item in schedules if item.next_review <= horizon),
+            'due': [
+                {
+                    'card_id': item.card_id,
+                    'ref': item.card.ref if item.card else '',
+                    'next_review': item.next_review.isoformat(),
+                    'last_status': item.last_status,
+                }
+                for item in due[:20]
+            ],
+        },
+    }
+
+
+def _update_review_schedule(user, card_id, status):
+    schedule = CardReviewSchedule.query.filter_by(card_id=card_id, user_id=user).first()
+    if not status:
+        if schedule:
+            db.session.delete(schedule)
+        return None
+
+    now = datetime.utcnow()
+    if not schedule:
+        schedule = CardReviewSchedule(card_id=card_id, user_id=user)
+        db.session.add(schedule)
+    schedule.next_review = now + timedelta(days=REVIEW_INTERVAL_DAYS[status])
+    schedule.last_reviewed_at = now
+    schedule.last_status = status
+    schedule.interval_days = REVIEW_INTERVAL_DAYS[status]
+    schedule.review_count = (schedule.review_count or 0) + 1
+    return schedule
+
 # ─── Web routes ──────────────────────────────────────────────────────────────
 
 @app.route('/')
@@ -268,7 +348,55 @@ def download_page():
 @app.route('/home')
 @login_required
 def index():
-    return render_template("index.html")
+    active_page = request.args.get("tab", "home")
+    if active_page not in {"home", "fill", "typing"}:
+        active_page = "home"
+    return render_template("index.html", active_page=active_page)
+
+@app.route('/read')
+@app.route('/read/<int:chapter>')
+@login_required
+def read_bible(chapter=1):
+    if chapter < 1 or chapter > 22:
+        return redirect(url_for('read_bible', chapter=1))
+
+    verses = BIBLE_DATA.get(str(chapter), [])
+    return render_template(
+        "read.html",
+        chapter=chapter,
+        verses=verses,
+        chapters=list(range(1, 23)),
+    )
+
+@app.route('/timeline')
+@login_required
+def timeline():
+    timeline_path = os.path.join(BASE_DIR, "timeline_data.json")
+    with open(timeline_path, encoding="utf-8") as timeline_file:
+        timeline_items = json.load(timeline_file)
+    return render_template("timeline.html", active_page="timeline", timeline_items=timeline_items)
+
+@app.route('/profile')
+@login_required
+def profile():
+    username = session["user"]
+    account = db.session.get(User, username)
+    statuses = CardStatus.query.filter_by(user_id=username).all()
+    joined_at = account.created_at.strftime("%d/%m/%Y") if account and account.created_at else None
+    return render_template(
+        "profile.html",
+        username=username,
+        initials="".join(part[0] for part in username.split() if part)[:2].upper(),
+        joined_at=joined_at,
+        answered_count=len(statuses) if statuses else None,
+        correct_count=sum(1 for status in statuses if status.status == "g") if statuses else None,
+        active_page="",
+    )
+
+@app.route('/missions')
+@login_required
+def missions():
+    return render_template("missions.html", active_page="missions")
 
 @app.route("/api/feedback", methods=["POST"])
 def submit_feedback():
@@ -298,7 +426,8 @@ def flashcard():
         return redirect(url_for("flashcard_login"))
     return render_template("flashcard.html",
                            user=session["user"],
-                           role=session["flashcard_role"])
+                           role=session["flashcard_role"],
+                           active_page="flashcard")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -386,7 +515,7 @@ def flashcard_login():
             return redirect(url_for("flashcard"))
         else:
             msg = "Mật khẩu không đúng. Vui lòng đăng nhập lại."
-    return render_template("flashcard_login.html", msg=msg)
+    return render_template("flashcard_login.html", msg=msg, active_page="flashcard")
 
 @app.route("/flashcard/logout")
 def flashcard_logout():
@@ -618,7 +747,11 @@ def get_flashcard_data():
             cd['status'] = s.status if s else ''
             tab_dict['cards'].append(cd)
         data.append(tab_dict)
-    response = jsonify({'data': data, 'stats': _calculate_stats(user)})
+    response = jsonify({
+        'data': data,
+        'stats': _calculate_stats(user),
+        'review_schedule': _review_schedule_payload(user),
+    })
     response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
@@ -628,6 +761,12 @@ def get_flashcard_data():
 @flashcard_api_required
 def get_flashcard_stats():
     return jsonify(_calculate_stats(get_api_user()))
+
+
+@app.route("/api/flashcard/review-schedule")
+@flashcard_api_required
+def get_review_schedule():
+    return jsonify(_review_schedule_payload(get_api_user(), request.args.get('tab_id')))
 
 @app.route("/api/flashcard/tabs", methods=["POST"])
 @flashcard_admin_required
@@ -706,6 +845,7 @@ def delete_card(card_id):
     return jsonify({'message': 'Card deleted'}), 200
 
 @app.route("/api/flashcard/cards/<card_id>/status", methods=["POST"])
+@flashcard_api_required
 def update_card_status(card_id):
     user = get_api_user()
     card = Card.query.get(card_id)
@@ -724,12 +864,14 @@ def update_card_status(card_id):
         s.status = new_status
     else:
         db.session.add(CardStatus(card_id=card_id, user_id=user, status=new_status))
+    review_schedule = _update_review_schedule(user, card_id, new_status)
     db.session.commit()
  
     return jsonify({
         'card_id':           card_id,
         'user_id':           user,
         'status':            new_status,
+        'review_schedule': review_schedule.to_dict() if review_schedule else None,
     })
 
 @app.route("/api/sync")
@@ -798,23 +940,23 @@ def get_exam_tab(tab_id):
 @app.route("/multiplayer", endpoint="multiplayer")
 @login_required
 def multiplayer_home():
-    return render_template("multiplayer_home.html", username=session.get("user"))
+    return render_template("multiplayer_home.html", username=session.get("user"), active_page="multiplayer")
 
 @app.route("/multiplayer/room/create")
 @login_required
 def multiplayer_room_create():
     # code=None -> template biết cần emit mp_create_room thay vì mp_join_room
-    return render_template("multiplayer_room.html", room_code=None, username=session.get("user"))
+    return render_template("multiplayer_room.html", room_code=None, username=session.get("user"), active_page="multiplayer")
 
 @app.route("/multiplayer/room/<code>")
 @login_required
 def multiplayer_room(code):
-    return render_template("multiplayer_room.html", room_code=code, username=session.get("user"))
+    return render_template("multiplayer_room.html", room_code=code, username=session.get("user"), active_page="multiplayer")
 
 @app.route("/exam_library")
 @login_required
 def exam_library():
-    return render_template("exam_library.html", user=session["user"])
+    return render_template("exam_library.html", user=session["user"], active_page="exam")
 
 @app.route("/exam/<tab_id>")
 @login_required
@@ -830,6 +972,7 @@ def exam(tab_id):
         tab_id=tab_id,
         exam_mode=exam_mode,
         user=session["user"],
+        active_page="exam",
     )
 
 @app.route("/exam-review/<tab_id>")
@@ -837,7 +980,7 @@ def exam(tab_id):
 def exam_review(tab_id):
     if not get_exam_tab(tab_id) or session.get(f"exam_auth_{tab_id}") is not True:
         return redirect(url_for("exam_library"))
-    return render_template("exam_review.html", tab_id=tab_id, user=session["user"])
+    return render_template("exam_review.html", tab_id=tab_id, user=session["user"], active_page="exam")
 
 def exam_api_required(f):
     """Giống login_required nhưng hỗ trợ cả Bearer token (app mobile)
@@ -1014,5 +1157,6 @@ def submit_exam():
 if __name__ == "__main__":
     print("🕊️  Khởi động ứng dụng Học Khải Huyền...")
     port = int(os.environ.get("PORT", 5000))
+    host = os.environ.get("HOST", "127.0.0.1")
     print(f"📖  Mở trình duyệt tại: http://localhost:{port}")
-    socketio.run(app, debug=False, host="0.0.0.0", port=port, allow_unsafe_werkzeug=True)
+    socketio.run(app, debug=False, host=host, port=port, allow_unsafe_werkzeug=True)

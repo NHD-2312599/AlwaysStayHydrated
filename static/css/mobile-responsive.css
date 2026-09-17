@@ -1,4 +1,4 @@
-@media(max-width:768px){body{padding-bottom:70px!important}.container,.content,.main-content{width:100%!important;padding:10px!important}.card,.flashcard{width:100%!important}.btn,button{min-height:44px}.bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#fff;justify-content:space-around;padding:10px;z-index:9999;border-top:1px solid #ddd}}
+@media(max-width:768px){body{padding-bottom:78px!important}.container,.content,.main-content{width:100%!important;padding:10px!important}.card,.flashcard{width:100%!important}.btn,button{min-height:44px}.bottom-nav{display:flex}}
 
 .install-banner{
     position:fixed;

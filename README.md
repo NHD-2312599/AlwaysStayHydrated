@@ -1,5 +1,19 @@
 # 📚 Documentation Index
 
+## Render: Lưu tài khoản bền vững
+
+Ứng dụng tự dùng SQLite khi chạy local và chuyển sang PostgreSQL khi Render cung cấp biến `DATABASE_URL`. Tài khoản mới sẽ được lưu trong bảng `users`, không còn phụ thuộc vào `users.json`.
+
+Để dùng file SQLite khác, đặt biến `SQLITE_DATABASE_PATH`. Khi `DATABASE_URL` có giá trị, PostgreSQL vẫn được ưu tiên; khi biến này trống hoặc không tồn tại, app dùng SQLite.
+
+Trên Render, cần cấu hình:
+
+1. Tạo một PostgreSQL database và liên kết `DATABASE_URL` với Web Service.
+2. Thêm biến `SECRET_KEY` cố định, có giá trị ngẫu nhiên dài.
+3. Deploy lại service để SQLAlchemy tạo bảng `users`.
+
+Nếu local có `users.json` cũ, lần khởi động đầu tiên sẽ tự import vào database khi bảng `users` đang trống. Dữ liệu flashcard và tiến độ cũng dùng cùng database URL khi chạy trên Render.
+
 Welcome to the Always Stay Hydrated project! Here's a guide to all the documentation files.
 
 ---

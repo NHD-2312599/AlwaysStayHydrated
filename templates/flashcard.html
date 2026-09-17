@@ -46,7 +46,10 @@
 
 body {
   font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
-  background: linear-gradient(180deg, var(--bg-grad1) 0%, var(--bg-grad2) 100%);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(216,243,220,0.72), transparent 34%),
+    radial-gradient(circle at 92% 18%, rgba(254,243,199,0.42), transparent 30%),
+    linear-gradient(145deg, #F5FAF1 0%, #F7F3E8 52%, #EEF7F0 100%);
   min-height: 100vh;
   color: var(--text-pri);
   display: flex;
@@ -57,9 +60,9 @@ body {
 /* ── HEADER ── */
 .header {
   width: 100%;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
+  background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(245,249,243,0.98) 100%);
+  border-bottom: 1px solid rgba(32, 93, 70, 0.12);
+  box-shadow: 0 8px 18px rgba(22, 41, 31, 0.04);
   padding: 0 32px;
   position: sticky;
   top: 0;
@@ -121,10 +124,12 @@ body {
 .user-info {
   font-size: 0.85rem;
   color: var(--text-sec);
-  font-weight: 600;
-  padding: 6px 14px;
-  background: var(--surface2);
-  border-radius: 99px;
+  font-weight: 700;
+  padding: 7px 14px;
+  background: linear-gradient(180deg, rgba(216,243,220,0.8), rgba(255,255,255,0.75));
+  border: 1px solid rgba(32, 93, 70, 0.12);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
 }
 
 .logout-btn {
@@ -258,14 +263,292 @@ body {
   width: 100%;
 }
 
+#study-view.session-mode .layout {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 1100px;
+}
+#study-view.session-mode .sidebar { display: none; }
+#study-view.session-mode .study-area { width: 100%; }
+
 /* ── CARD STUDY ── */
 .study-area { display: flex; flex-direction: column; gap: 20px; }
 
+.study-mode-switch {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  border: 1px solid rgba(35, 90, 66, 0.12);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.7);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 10px 18px rgba(22,47,35,0.05);
+  font-size: 16px;
+}
+.study-mode-btn {
+  flex: 1;
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 16px;
+  background: transparent;
+  color: var(--text-sec);
+  cursor: pointer;
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.25;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+.study-mode-btn:hover { background: rgba(38,109,80,0.06); color: var(--accent); }
+.study-mode-btn.active {
+  background: linear-gradient(135deg, var(--accent) 0%, #1c6f52 100%);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(19, 94, 71, 0.24);
+}
+
+/* ── 5-MINUTE LEARNING SESSION ── */
+.learning-session {
+  border: 1px solid rgba(35, 90, 66, 0.14);
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(239,249,240,0.96) 0%, rgba(255,253,245,0.98) 100%);
+  padding: 18px 20px;
+  box-shadow: 0 18px 34px rgba(27,67,50,0.10);
+  font-size: 16px;
+  animation: sessionEnter 0.35s ease both;
+}
+
+@keyframes sessionEnter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.learning-session.active { border-color: var(--accent); }
+.session-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.session-kicker { display: flex; align-items: center; gap: 7px; color: var(--accent); font-size: 14px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+.session-kicker::before { content: '✦'; color: var(--amber); font-size: 15px; }
+.session-title { margin-top: 5px; color: var(--text-pri); font-size: 24px; line-height: 1.25; font-weight: 800; letter-spacing: -0.01em; }
+.session-copy { margin-top: 6px; color: var(--text-sec); font-size: 15px; line-height: 1.5; }
+.session-start { flex-shrink: 0; }
+.session-start::before { content: '●'; margin-right: 7px; color: #D8F3DC; font-size: 10px; animation: livePulse 1.7s ease-in-out infinite; }
+@keyframes livePulse { 0%, 100% { opacity: 0.45; } 50% { opacity: 1; } }
+.learning-session .btn { min-height: 42px; padding: 10px 16px; font-size: 15px; line-height: 1.25; }
+.session-progress { color: var(--text-ter); font-size: 13px; line-height: 1.4; font-weight: 600; white-space: nowrap; }
+.session-card-progress { height: 5px; margin-top: 9px; overflow: hidden; border-radius: 99px; background: rgba(45,106,79,0.12); }
+.session-card-progress span { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--accent), #52B788); transition: width 0.35s ease; }
+.session-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+.session-step { min-height: 40px; display: flex; align-items: center; justify-content: center; padding: 7px 6px; border: 1px solid var(--border); border-radius: 9px; background: rgba(255,255,255,0.52); color: var(--text-ter); font-size: 13px; font-weight: 700; text-align: center; transition: transform 0.2s, box-shadow 0.2s, background 0.2s, opacity 0.25s ease; position: relative; overflow: hidden; }
+.session-step::after { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, rgba(255,255,255,0.18), rgba(255,255,255,0)); opacity: 0; transition: opacity 0.25s ease; }
+.session-step:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+.session-step.active { background: var(--accent); color: #fff; animation: stepPulse 0.42s ease; }
+.session-step.active::after { opacity: 1; }
+.session-step.done { background: var(--accent-lt); color: var(--accent); }
+@keyframes stepPulse { 0% { transform: scale(0.98); filter: brightness(0.96); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+.session-task { margin-top: 14px; padding-top: 14px; border-top: 1px solid #CFE5D3; }
+.session-prompt { display: flex; align-items: flex-start; gap: 9px; margin-top: 12px; padding: 11px 13px; border: 1px solid #CFE5D3; border-radius: 9px; background: rgba(216,243,220,0.55); color: var(--text-pri); font-size: 17px; font-weight: 600; line-height: 1.5; }
+.session-prompt::before { content: '✍'; flex-shrink: 0; color: var(--accent); font-size: 19px; }
+.session-choice { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.session-choice[hidden] { display: none; }
+.session-choice .btn { padding: 10px 14px; font-size: 15px; }
+.session-choice .btn.selected { background: var(--accent-lt); border-color: var(--accent); color: var(--accent); }
+.session-recall { width: 100%; min-height: 92px; margin-top: 10px; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text-pri); font: inherit; line-height: 1.55; resize: vertical; }
+.session-recall:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-lt); }
+.session-recall::placeholder { color: var(--text-ter); }
+.session-input-meta { display: flex; justify-content: flex-end; margin-top: 4px; color: var(--text-ter); font-size: 12px; }
+.session-answer { margin-top: 10px; padding: 14px; border-left: 3px solid var(--accent); background: rgba(255,255,255,0.7); color: var(--text-sec); font-size: 16px; line-height: 1.65; }
+.session-answer[hidden] { display: none; }
+.session-reflection { width: 100%; min-height: 58px; margin-top: 10px; padding: 10px 12px; border: 1px dashed #B7D8C0; border-radius: var(--radius-sm); background: rgba(255,255,255,0.56); color: var(--text-pri); font: inherit; resize: vertical; }
+.session-reflection:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-lt); }
+.session-rating { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.session-rating[hidden] { display: none; }
+.session-rating .btn-status { padding: 9px 13px; font-size: 14px; }
+.session-fill { margin-top: 10px; color: var(--text-pri); font-size: 16px; line-height: 1.7; }
+.session-fill[hidden] { display: none; }
+.session-fill-answer { width: 100%; min-height: 72px; margin-top: 10px; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text-pri); font: inherit; font-size: 1rem; }
+.session-fill-answer:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-lt); }
+.session-fill-result { margin-top: 8px; color: var(--text-sec); font-size: 14px; line-height: 1.45; }
+.session-speech { margin-top: 10px; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: rgba(255,255,255,0.65); }
+.session-speech[hidden] { display: none; }
+.session-speech-target { max-height: 180px; overflow-y: auto; color: var(--text-sec); font-size: 15px; line-height: 1.6; }
+.session-speech-target p { margin: 0 0 8px; }
+.session-speech-target blockquote { margin: 8px 0; padding-left: 12px; border-left: 3px solid var(--border2); }
+.session-speech-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.session-recording { color: var(--red); font-size: 14px; font-weight: 700; }
+.session-speech-result { margin-top: 8px; color: var(--text-sec); font-size: 14px; line-height: 1.5; }
+.session-speech-result.success { color: var(--green); }
+.session-speech-result.fail { color: var(--red); }
+.session-retry { margin-top: 8px; color: var(--red); font-size: 0.82rem; }
+.session-retry button { margin-left: 6px; padding: 5px 9px; border: 1px solid var(--red); border-radius: 6px; background: var(--surface); color: var(--red); cursor: pointer; font: inherit; font-size: 0.76rem; }
+.session-summary { margin-top: 14px; padding-top: 14px; border-top: 1px solid #CFE5D3; }
+.session-summary[hidden] { display: none; }
+.session-summary-title { color: var(--accent); font-weight: 700; }
+.session-summary-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.summary-stat { padding: 12px 14px; border: 1px solid #D8E9DC; border-radius: 12px; background: rgba(255,255,255,0.7); box-shadow: 0 6px 14px rgba(24,53,39,0.04); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.summary-stat:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(24,53,39,0.08); }
+.summary-stat .label { display: block; color: var(--text-ter); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.summary-stat .value { display: block; margin-top: 6px; color: var(--text-pri); font-size: 1.4rem; font-weight: 800; }
+.summary-stat .meta { display: block; margin-top: 4px; color: var(--text-sec); font-size: 0.75rem; }
+.session-summary-list { margin-top: 10px; color: var(--text-sec); font-size: 0.84rem; line-height: 1.7; }
+.session-summary-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; }
+.session-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
+.session-actions .btn { padding: 8px 14px; font-size: 0.8rem; }
+.session-finished { color: var(--accent); font-size: 0.9rem; font-weight: 700; line-height: 1.5; }
+
 .progress-row { display: flex; align-items: center; gap: 14px; }
-.progress-bar { flex: 1; height: 8px; background: var(--surface2); border-radius: 99px; overflow: hidden; box-shadow: inset 0 1px 2px rgba(22,41,31,0.08); }
-.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #4F9D6C); border-radius: 99px; transition: width 0.4s; }
-.progress-label { font-size: 0.78rem; color: var(--text-ter); white-space: nowrap; font-weight: 500; }
-.progress-done { font-size: 0.9rem; color: var(--accent); font-weight: 700; }
+.progress-bar { flex: 1; height: 10px; background: rgba(38, 94, 71, 0.12); border-radius: 999px; overflow: hidden; box-shadow: inset 0 1px 2px rgba(22,41,31,0.08); }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #58B280); border-radius: 999px; transition: width 0.4s ease; box-shadow: 0 0 18px rgba(45, 106, 79, 0.22); }
+.progress-label { font-size: 0.8rem; color: var(--text-ter); white-space: nowrap; font-weight: 700; }
+.progress-done { font-size: 0.92rem; color: var(--accent); font-weight: 800; }
+
+.review-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 18px 14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(241,246,239,0.9));
+  border: 1px solid rgba(120, 144, 124, 0.16);
+  border-radius: 18px;
+  box-shadow: 0 12px 24px rgba(31, 54, 41, 0.05), inset 0 1px 0 rgba(255,255,255,0.65);
+  backdrop-filter: blur(8px);
+}
+.review-panel .panel-header {
+  padding: 0;
+  margin: 0;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(37, 52, 42, 0.9);
+}
+.review-reminder {
+  position: relative;
+  margin: 0;
+  padding: 12px 14px 12px 38px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(231, 240, 235, 0.96), rgba(247, 250, 248, 0.9));
+  border: 1px solid rgba(120, 142, 170, 0.14);
+  color: rgba(42, 70, 95, 0.9);
+  font-size: 0.85rem;
+  line-height: 1.45;
+  font-weight: 700;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.58);
+}
+.review-reminder::before {
+  content: '◔';
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(74, 124, 103, 0.1);
+  color: #2d6d57;
+  font-size: 0.82rem;
+}
+.review-reminder.empty {
+  background: linear-gradient(135deg, rgba(230, 240, 234, 0.92), rgba(255,255,255,0.72));
+  border-color: rgba(71, 120, 86, 0.14);
+  color: #1d5d3d;
+}
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.review-pill {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  min-height: 98px;
+  padding: 12px 10px 10px;
+  border-radius: 14px;
+  text-align: center;
+  border: 1px solid rgba(120, 149, 122, 0.18);
+  background: linear-gradient(180deg, rgba(218,236,223,0.96), rgba(255,255,255,0.68));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 8px 16px rgba(38, 56, 43, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.review-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 12px 22px rgba(38, 56, 43, 0.06);
+}
+.review-today {
+  background: linear-gradient(180deg, rgba(220, 239, 226, 0.96), rgba(255,255,255,0.7));
+}
+.review-3d {
+  background: linear-gradient(180deg, rgba(242, 233, 208, 0.96), rgba(255,255,255,0.72));
+}
+.review-7d {
+  background: linear-gradient(180deg, rgba(226, 233, 245, 0.94), rgba(255,255,255,0.7));
+}
+.review-label {
+  font-size: 0.68rem;
+  color: rgba(44, 55, 49, 0.72);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 800;
+}
+.review-pill strong {
+  font-size: clamp(2rem, 2.2vw, 2.5rem);
+  line-height: 1;
+  color: #111111;
+  font-weight: 800;
+}
+.review-due-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 180px;
+  overflow-y: auto;
+  padding-top: 2px;
+}
+.review-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.76), rgba(238,246,241,0.78));
+  border: 1px solid rgba(112, 136, 118, 0.14);
+  color: rgba(41, 55, 48, 0.8);
+  font-size: 0.8rem;
+  box-shadow: 0 6px 12px rgba(30,46,35,0.03);
+}
+.review-item strong {
+  color: rgba(17, 17, 17, 0.9);
+  font-size: 0.8rem;
+}
+.review-item .tag {
+  font-weight: 800;
+  color: #1d5d3d;
+  background: rgba(95, 170, 110, 0.12);
+  border-radius: 999px;
+  padding: 5px 9px;
+}
+.review-empty {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #1d5d3d;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 8px 4px 2px;
+}
+.review-empty::before {
+  content: '✓';
+  display: inline-flex;
+  width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(92, 167, 105, 0.14);
+  color: #1d5d3d;
+  font-weight: 800;
+}
 
 /* Card flip */
 .card-wrap {
@@ -315,9 +598,19 @@ body {
 .card {
   position: relative;
   width: 100%;
-  height: 380px;
+  height: 430px;
   transform-style: preserve-3d;
   transition: transform 0.55s cubic-bezier(0.4,0,.2,1);
+}
+
+.card.status-burst {
+  animation: cardBurst 0.45s ease;
+}
+
+@keyframes cardBurst {
+  0% { transform: scale(1) translateY(0); }
+  35% { transform: scale(1.015) translateY(-3px); }
+  100% { transform: scale(1) translateY(0); }
 }
 
 .card.face2 { transform: rotateY(90deg); }
@@ -329,18 +622,26 @@ body {
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  border-radius: 18px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-md);
-  padding: 32px;
+  border-radius: 22px;
+  border: 1px solid rgba(35, 90, 66, 0.12);
+  box-shadow: 0 16px 30px rgba(32, 68, 52, 0.08), 0 2px 8px rgba(22, 41, 31, 0.04);
+  padding: 32px 40px;
   display: flex;
   flex-direction: column;
-  background: var(--surface);
-  transition: box-shadow 0.2s;
+  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(246,250,247,1) 100%);
+  transition: box-shadow 0.2s, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.card:not(.face2):not(.face3):not(.face4) .face-1,
+.card.face2 .face-2,
+.card.face3 .face-3,
+.card.face4 .face-4 {
+  pointer-events: auto;
 }
 
 .card-wrap:hover .face {
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 22px 38px rgba(32, 68, 52, 0.12), 0 6px 12px rgba(22,41,31,0.05);
 }
 
 .face-1 { transform: rotateY(0deg); }
@@ -351,12 +652,12 @@ body {
 .face-indicator {
   display: flex;
   gap: 6px;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .fi-dot {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: var(--border);
   transition: background 0.2s, transform 0.2s;
@@ -368,12 +669,12 @@ body {
 .fi-dot.f4 { background: var(--purple); transform: scale(1.2); }
 
 .face-label {
-  font-size: 0.72rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  margin-bottom: 10px;
-  color: var(--text-ter);
+  margin-bottom: 8px;
+  color: rgba(61,107,85,0.58);
 }
 
 .face-1 .face-label { color: var(--accent); }
@@ -382,22 +683,24 @@ body {
 .face-4 .face-label { color: var(--purple); }
 
 .card-ref {
-  font-size: 0.72rem;
+  font-size: 0.86rem;
   color: var(--accent);
-  margin-bottom: 12px;
-  font-weight: 700;
-  background: var(--accent-lt);
-  padding: 3px 10px;
-  border-radius: 6px;
+  margin-bottom: 16px;
+  font-weight: 800;
+  background: linear-gradient(135deg, rgba(216,243,220,0.95), rgba(234,248,239,0.82));
+  padding: 6px 12px;
+  border-radius: 999px;
   display: inline-block;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
+  border: 1px solid rgba(26,94,70,0.16);
+  box-shadow: 0 5px 12px rgba(45,106,79,0.08);
 }
 
 .card-title {
   font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
-  font-size: 1.2rem;
-  font-weight: 500;
-  line-height: 1.6;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.45;
   color: var(--text-pri);
   flex: 1;
   display: -webkit-box;
@@ -408,6 +711,7 @@ body {
   max-height: 3.2em;
   align-items: center;
   word-break: break-word;
+  letter-spacing: -0.02em;
 }
 
 .card-verse,
@@ -418,8 +722,25 @@ body {
   line-height: 1.9;
   color: var(--text-pri);
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
 }
+
+.face-2 { overflow: hidden; }
+.face-2::before {
+  content: attr(data-watermark);
+  position: absolute;
+  right: 18px;
+  bottom: -18px;
+  color: rgba(45,106,79,0.07);
+  font-size: clamp(7rem, 16vw, 11rem);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.08em;
+  pointer-events: none;
+}
+.face-2 .card-verse { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center; font-size: clamp(1.05rem, 1.8vw, 1.4rem); line-height: 1.65; padding: 12px 24px 24px; overflow-x: hidden; overflow-wrap: anywhere; }
+.face-2 .card-verse > .verse-copy { width: 100%; max-width: 760px; }
 
 .card-analysis {
   font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
@@ -513,44 +834,100 @@ body {
 
 .btn-status {
   font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 10px 20px;
-  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 14px 18px;
+  border-radius: 12px;
   border: 1.5px solid var(--border);
   background: var(--surface);
   cursor: pointer;
-  transition: all 0.18s;
+  transition: all 0.18s ease;
   color: var(--text-sec);
   letter-spacing: 0.01em;
+  min-width: 158px;
+  box-shadow: 0 4px 10px rgba(18, 43, 32, 0.03);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
 }
 
-.btn-status:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+.btn-status::before {
+  font-size: 1.15rem;
+  line-height: 1;
+}
 
-.btn-status.g { border-color: #9fe3b8; }
-.btn-status.g:hover, .btn-status.g.on { background: var(--green-lt); border-color: var(--green); color: var(--green); }
-.btn-status.g.on { box-shadow: 0 0 0 3px var(--green-lt); }
+.btn-status-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 
-.btn-status.r { border-color: #fcd34d; }
-.btn-status.r:hover, .btn-status.r.on { background: var(--amber-lt); border-color: var(--amber); color: var(--amber); }
-.btn-status.r.on { box-shadow: 0 0 0 3px var(--amber-lt); }
+.btn-status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  font-size: 0.66rem;
+  font-weight: 800;
+  opacity: 0.75;
+  background: rgba(255,255,255,0.34);
+}
 
-.btn-status.h { border-color: #fca5a5; }
-.btn-status.h:hover, .btn-status.h.on { background: var(--red-lt); border-color: var(--red); color: var(--red); }
-.btn-status.h.on { box-shadow: 0 0 0 3px var(--red-lt); }
+.btn-status:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(18, 43, 32, 0.08); }
+
+.btn-status.g {
+  border-color: rgba(33, 130, 86, 0.20);
+  background: rgba(88, 182, 118, 0.12);
+  color: var(--green);
+  min-width: 174px;
+}
+.btn-status.g::before { content: '✓'; }
+.btn-status.g:hover, .btn-status.g.on { background: rgba(88, 182, 118, 0.17); border-color: rgba(33, 130, 86, 0.38); color: var(--green); }
+.btn-status.g.on { box-shadow: 0 0 0 3px rgba(42,154,87,0.12); }
+
+.btn-status.r {
+  border-color: rgba(204, 145, 24, 0.20);
+  background: rgba(209, 161, 82, 0.10);
+  color: var(--amber);
+}
+.btn-status.r::before { content: '⟳'; }
+.btn-status.r:hover, .btn-status.r.on { background: rgba(209, 161, 82, 0.14); border-color: rgba(204, 145, 24, 0.32); color: var(--amber); }
+.btn-status.r.on { box-shadow: 0 0 0 3px rgba(228,174,53,0.12); }
+
+.btn-status.h {
+  border-color: rgba(209, 79, 79, 0.20);
+  background: rgba(200, 95, 95, 0.10);
+  color: var(--red);
+}
+.btn-status.h::before { content: '✕'; }
+.btn-status.h:hover, .btn-status.h.on { background: rgba(200, 95, 95, 0.14); border-color: rgba(209, 79, 79, 0.28); color: var(--red); }
+.btn-status.h.on { box-shadow: 0 0 0 3px rgba(221, 93, 93, 0.12); }
 
 /* ── SIDEBAR ── */
 .sidebar { display: flex; flex-direction: column; gap: 18px; }
 
 .panel {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(246,250,247,0.95) 100%);
+  border: 1px solid rgba(35, 90, 66, 0.12);
   border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 10px 22px rgba(22, 41, 31, 0.05);
 }
 
 .panel-header {
+  .stat-progress-row { display: flex; align-items: center; gap: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .progress-ring { --progress: 0%; width: 64px; height: 64px; flex: 0 0 64px; display: grid; place-items: center; border-radius: 50%; background: conic-gradient(var(--accent) var(--progress), #E2ECE5 0); position: relative; }
+  .progress-ring::before { content: ''; position: absolute; inset: 6px; border-radius: 50%; background: var(--surface); }
+  .progress-ring-inner { position: relative; z-index: 1; color: var(--accent); font-size: 0.82rem; font-weight: 800; }
+  .stat-progress-label { display: block; color: var(--text-sec); font-weight: 800; }
+  .stat-progress-row small { display: block; margin-top: 3px; color: var(--text-ter); font-size: 0.72rem; }
+  .card-ref-secondary { margin-top: -2px; margin-bottom: 4px; }
   padding: 14px 18px;
   font-size: 0.72rem;
   font-weight: 700;
@@ -573,24 +950,35 @@ body {
   padding: 11px 14px;
   border-bottom: 1px solid var(--border);
   cursor: pointer;
-  transition: background 0.15s;
+  transition: all 0.18s ease;
 }
 
 .list-item:last-child { border-bottom: none; }
-.list-item:hover { background: var(--bg); }
-.list-item.active { background: var(--accent-lt); }
+.list-item:hover { background: rgba(35, 90, 66, 0.04); transform: translateX(2px); }
+.list-item.active { background: linear-gradient(90deg, rgba(31, 116, 85, 0.08), rgba(31, 116, 85, 0.02)); border-left: 3px solid var(--accent); padding-left: 11px; }
 
 .list-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  border-radius: 9px;
   background: var(--border);
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0;
+  position: relative;
 }
 
+.list-dot::before { content: '•'; color: #fff; font-size: 1.1rem; line-height: 1; }
 .list-dot.g { background: var(--green); }
+.list-dot.g::before { content: '✓'; font-size: 0.85rem; font-weight: 800; }
 .list-dot.r { background: var(--amber); }
+.list-dot.r::before { content: '↻'; font-size: 0.9rem; font-weight: 800; }
 .list-dot.h { background: var(--red); }
+.list-dot.h::before { content: '×'; font-size: 1rem; font-weight: 800; }
+.list-dot:not(.g):not(.r):not(.h) { background: #DDE8E0; }
+.list-dot:not(.g):not(.r):not(.h)::before { color: var(--text-sec); }
 
 .list-ref { font-size: 0.72rem; font-weight: 700; color: var(--accent); min-width: 55px; background: var(--accent-lt); padding: 3px 7px; border-radius: 6px; }
 .list-title { font-size: 0.85rem; color: var(--text-sec); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -1054,10 +1442,12 @@ body {
 /* Responsive */
 @media (max-width: 768px) {
   .layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     padding: 20px 16px 36px;
     gap: 20px;
   }
+
+  .study-area, .card-wrap, .card, .face { min-width: 0; }
 
   .tabs {
     padding: 10px 16px;
@@ -1068,7 +1458,7 @@ body {
   }
 
   .card {
-    height: 320px;
+    height: 360px;
   }
 
   .face {
@@ -1090,8 +1480,17 @@ body {
   .nav-row { gap: 8px; }
   .btn { padding: 10px 16px; font-size: 0.85rem; }
 
-  .status-row { gap: 8px; }
-  .btn-status { flex: 1; min-width: 0; padding: 10px 8px; font-size: 0.78rem; }
+  .study-mode-btn { padding: 9px 8px; font-size: 0.78rem; }
+
+  .learning-session { padding: 16px; }
+  .session-heading { align-items: flex-start; flex-direction: column; }
+  .session-start { width: 100%; }
+  .session-prompt { font-size: 16px; }
+  .session-choice .btn { flex: 1; min-width: 0; }
+
+  .status-row { gap: 8px; min-width: 0; }
+  .btn-status, .btn-status.g, .btn-status.r, .btn-status.h { flex: 1 1 0; min-width: 0; padding: 10px 7px; font-size: 0.78rem; }
+  .btn-status span { white-space: nowrap; }
 
   .header { padding: 0 16px; }
   .header-inner { height: 56px; }
@@ -1170,6 +1569,7 @@ body {
 </head>
 
 <script src="/static/js/session-refresh.js"></script>
+<script src="/static/js/mission-progress.js"></script>
 <script src="/static/js/sw-register.js"></script>
 <script>
 // ── Hiển thị toast khi unlock achievement mới ──────────────────────────────
@@ -1238,10 +1638,82 @@ function showBadgeToasts(achievements) {
 
 <!-- Study View -->
 <div id="study-view" style="display: none;">
+<div class="study-mode-switch" style="max-width: 1200px; margin: 24px auto 0;">
+  <button class="study-mode-btn active" id="mode-cards" onclick="setStudyMode('cards')">📖 Học thẻ</button>
+  <button class="study-mode-btn" id="mode-session" onclick="setStudyMode('session')">⏱ Phiên học 5 phút</button>
+</div>
 <!-- Main Layout -->
 <div class="layout">
   <!-- Study Area -->
   <div class="study-area">
+    <section class="learning-session" id="learning-session">
+      <div class="session-heading">
+        <div>
+          <div class="session-kicker">Học chủ động</div>
+          <div class="session-title">Phiên học 5 phút</div>
+          <div class="session-copy" id="session-copy">Tự trả lời trước, đối chiếu sau, rồi ghi lại cách áp dụng.</div>
+        </div>
+        <button class="btn btn-primary session-start" id="session-start" onclick="startLearningSession()">Bắt đầu</button>
+      </div>
+      <div class="session-task" id="session-task" hidden>
+        <div class="session-progress" id="session-progress"></div>
+        <div class="session-card-progress" aria-hidden="true"><span id="session-card-progress-fill"></span></div>
+        <div class="session-steps" aria-label="Tiến trình phiên học">
+          <div class="session-step" id="step-recall">1. Nhớ</div>
+          <div class="session-step" id="step-fill">2. Điền</div>
+          <div class="session-step" id="step-speech">3. Speech</div>
+        </div>
+        <div class="session-prompt" id="session-prompt"></div>
+        <div class="session-choice" id="session-choice">
+          <span class="session-progress">Chọn phần muốn kiểm tra:</span>
+          <button class="btn" onclick="chooseSessionTarget('verse')">Trích đoạn</button>
+          <button class="btn" onclick="chooseSessionTarget('analysis')">Giải nghĩa</button>
+          <button class="btn" onclick="chooseSessionTarget('speech')">Gợi ý speech</button>
+        </div>
+        <textarea class="session-recall" id="session-recall" placeholder="Viết điều bạn nhớ được trước khi xem đáp án..."></textarea>
+        <div class="session-input-meta"><span id="session-recall-count">0 ký tự</span></div>
+        <div class="session-answer" id="session-answer" hidden></div>
+        <div class="session-rating" id="session-rating" hidden>
+          <span class="session-progress">Bạn nhớ đúng mức nào?</span>
+          <button class="btn-status g" onclick="rateSessionRecall('g')">Nhớ tốt</button>
+          <button class="btn-status r" onclick="rateSessionRecall('r')">Nhớ một phần</button>
+          <button class="btn-status h" onclick="rateSessionRecall('h')">Không nhớ</button>
+        </div>
+        <div class="session-fill" id="session-fill" hidden>
+          <div class="session-progress">Bài điền khuyết ngẫu nhiên</div>
+          <div id="session-fill-question"></div>
+          <input class="session-fill-answer" id="session-fill-answer" placeholder="Nhập phần còn thiếu...">
+          <div class="session-fill-result" id="session-fill-result"></div>
+          <div class="session-retry" id="session-fill-retry" hidden>Chưa đúng. <button onclick="retrySessionFill()">Thử lại</button></div>
+        </div>
+        <div class="session-speech" id="session-speech" hidden>
+          <div class="session-progress">Ghi âm và kiểm tra speech</div>
+          <div class="session-speech-target" id="session-speech-target"></div>
+          <div class="session-speech-controls">
+            <button class="btn" id="session-record" onclick="toggleSpeechRecording()">🎙 Bắt đầu ghi âm</button>
+            <audio id="session-audio" controls hidden></audio>
+            <span class="session-recording" id="session-recording" hidden>Đang ghi âm...</span>
+          </div>
+          <div class="session-speech-result" id="session-speech-result"></div>
+          <div class="session-retry" id="session-speech-retry" hidden>Cần luyện thêm. <button onclick="retrySessionSpeech()">Ghi âm lại</button></div>
+        </div>
+        <textarea class="session-reflection" id="session-reflection" placeholder="💡 Bạn sẽ áp dụng điều này vào đâu? (không bắt buộc)"></textarea>
+        <div class="session-actions">
+          <button class="btn" id="session-reveal" onclick="revealSessionAnswer()">↻ Đối chiếu đáp án</button>
+          <button class="btn btn-primary" id="session-next" onclick="completeSessionCard()" disabled>Tiếp tục →</button>
+        </div>
+      </div>
+      <div class="session-summary" id="session-summary" hidden>
+        <div class="session-summary-title">Kết quả phiên học</div>
+        <div class="session-summary-grid" id="session-summary-grid"></div>
+        <div class="session-summary-list" id="session-summary-list"></div>
+        <div class="session-summary-actions">
+          <button class="btn btn-primary" onclick="startReviewSession()">Ôn lại câu yếu</button>
+          <button class="btn" onclick="resetLearningSession()">Kết thúc</button>
+        </div>
+      </div>
+    </section>
+
     <!-- Progress -->
     <div class="progress-row">
       <div class="progress-bar">
@@ -1275,6 +1747,7 @@ function showBadgeToasts(achievements) {
             <div class="fi-dot"></div>
           </div>
           <div class="face-label">Trích Đoạn</div>
+          <div class="card-ref card-ref-secondary" id="card-verse-ref"></div>
           <div class="card-verse" id="card-verse"></div>
         </div>
 
@@ -1313,9 +1786,9 @@ function showBadgeToasts(achievements) {
 
     <!-- Status Buttons -->
     <div class="status-row">
-      <button class="btn-status g" data-status="g" onclick="setStatus('g')">✓ Thuộc</button>
-      <button class="btn-status r" data-status="r" onclick="setStatus('r')">⟲ Cần Ôn Lại</button>
-      <button class="btn-status h" data-status="h" onclick="setStatus('h')">✗ Chưa Thuộc</button>
+      <button class="btn-status g" data-status="g" onclick="setStatus('g')"><span class="btn-status-text">Thuộc</span><span class="btn-status-badge">1</span></button>
+      <button class="btn-status r" data-status="r" onclick="setStatus('r')"><span class="btn-status-text">Cần Ôn Lại</span><span class="btn-status-badge">2</span></button>
+      <button class="btn-status h" data-status="h" onclick="setStatus('h')"><span class="btn-status-text">Chưa Thuộc</span><span class="btn-status-badge">3</span></button>
     </div>
   </div>
 
@@ -1336,10 +1809,38 @@ function showBadgeToasts(achievements) {
           <span style="display:flex; align-items:center; gap:7px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--amber);display:inline-block;"></span>Cần ôn</span>
           <strong id="stat-review" style="color: var(--text-pri); font-size: 1rem;">0</strong>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid var(--border); color: var(--text-sec);">
-          <span>Tiến độ</span>
-          <strong id="stat-percentage" style="color: var(--accent); font-weight: 700; font-size: 1.05rem;">0%</strong>
+        <div class="stat-progress-row">
+          <div class="progress-ring" id="progress-ring" style="--progress: 0%;">
+            <div class="progress-ring-inner"><strong id="stat-percentage">0%</strong></div>
+          </div>
+          <div>
+            <span class="stat-progress-label">Tiến độ</span>
+            <small>thẻ đã thuộc</small>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Review Schedule Panel -->
+    <div class="panel review-panel">
+      <div class="panel-header">Lịch Ôn Tập</div>
+      <div class="review-reminder" id="review-reminder">Chưa có lịch nhắc.</div>
+      <div class="review-grid">
+        <div class="review-pill review-today">
+          <span class="review-label">Hôm nay</span>
+          <strong id="review-today">0</strong>
+        </div>
+        <div class="review-pill review-3d">
+          <span class="review-label">3 ngày</span>
+          <strong id="review-3d">0</strong>
+        </div>
+        <div class="review-pill review-7d">
+          <span class="review-label">7 ngày</span>
+          <strong id="review-7d">0</strong>
+        </div>
+      </div>
+      <div class="review-due-list" id="review-due-list">
+        <div class="review-empty">Chưa có thẻ cần ôn.</div>
       </div>
     </div>
 
@@ -1493,10 +1994,30 @@ function showBadgeToasts(achievements) {
 <script>
 let APP_DATA = {
   tabs: [],
+  reviewSchedule: {},
   currentTabId: null,
   currentCardIndex: 0,
   role: '{{ role }}',
-  currentView: 'library' // 'library' or 'study'
+  currentView: 'library', // 'library' or 'study'
+  studyMode: 'cards'
+};
+
+let SESSION = {
+  cards: [],
+  index: 0,
+  active: false,
+  revealed: false,
+  rating: '',
+  target: '',
+  phase: 'target',
+  blankAnswer: '',
+  blankChecked: false,
+  speechChecked: false,
+  weakCards: [],
+  recorder: null,
+  recognition: null,
+  audioChunks: [],
+  seenTracker: {} 
 };
 
 // Initialize
@@ -1515,6 +2036,7 @@ async function loadData() {
     
     const result = await response.json();
     APP_DATA.tabs = result.data;
+    APP_DATA.reviewSchedule = result.review_schedule?.schedules || {};
     
     renderLibrary();
     
@@ -1597,6 +2119,8 @@ function enterStudyMode(tabId) {
   APP_DATA.currentView = 'study';
   APP_DATA.studyStarted = false;
   APP_DATA.currentCardIndex = 0;
+  APP_DATA.studyMode = 'cards';
+  resetLearningSession();
   
   updateViewUI();
   
@@ -1604,6 +2128,491 @@ function enterStudyMode(tabId) {
   renderCards();
   showCard(0);
   loadStats();
+  updateStudyModeUI();
+}
+
+function resetLearningSession() {
+  if (SESSION.recorder && SESSION.recorder.state === 'recording') SESSION.recorder.stop();
+  if (SESSION.recognition) SESSION.recognition.stop();
+  SESSION = { cards: [], index: 0, active: false, revealed: false, rating: '', target: '', phase: 'target', blankAnswer: '', blankChecked: false, speechChecked: false, weakCards: [], recorder: null, recognition: null, audioChunks: [] };
+  setStandardStudyControls(false);
+  const task = document.getElementById('session-task');
+  const start = document.getElementById('session-start');
+  const panel = document.getElementById('learning-session');
+  if (!task || !start || !panel) return;
+  task.hidden = true;
+  panel.classList.remove('active');
+  start.disabled = false;
+  start.textContent = 'Bắt đầu';
+  document.getElementById('session-copy').textContent = 'Tự trả lời trước, đối chiếu sau, rồi ghi lại cách áp dụng.';
+  document.getElementById('session-summary').hidden = true;
+  document.getElementById('session-fill-retry').hidden = true;
+  document.getElementById('session-speech-retry').hidden = true;
+}
+
+function setStandardStudyControls(hidden) {
+  document.querySelector('.study-area .card-wrap').style.display = hidden ? 'none' : '';
+  document.querySelector('.study-area .nav-row').style.display = hidden ? 'none' : '';
+  document.querySelector('.study-area .status-row').style.display = hidden ? 'none' : '';
+}
+
+function setStudyMode(mode) {
+  if (APP_DATA.studyMode === mode) return;
+  APP_DATA.studyMode = mode;
+  resetLearningSession();
+  updateStudyModeUI();
+}
+
+function updateStudyModeUI() {
+  const isSession = APP_DATA.studyMode === 'session';
+  const session = document.getElementById('learning-session');
+  const cardsButton = document.getElementById('mode-cards');
+  const sessionButton = document.getElementById('mode-session');
+  if (!session || !cardsButton || !sessionButton) return;
+
+  session.style.display = isSession ? '' : 'none';
+  document.getElementById('study-view').classList.toggle('session-mode', isSession);
+  cardsButton.classList.toggle('active', !isSession);
+  sessionButton.classList.toggle('active', isSession);
+  setStandardStudyControls(isSession);
+}
+
+function getSessionSeenTracker() {
+  try {
+    const tracker = JSON.parse(localStorage.getItem('ash_session_seen_tracker') || '{}');
+    return tracker && typeof tracker === 'object' ? tracker : {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function persistSessionSeenTracker() {
+  localStorage.setItem('ash_session_seen_tracker', JSON.stringify(SESSION.seenTracker));
+}
+
+function getReviewSchedule() {
+  return APP_DATA.reviewSchedule || {};
+}
+
+function saveReviewSchedule(schedule) {
+  APP_DATA.reviewSchedule = schedule || {};
+}
+
+function getCardDueText(cardId) {
+  const schedule = getReviewSchedule();
+  const item = schedule[cardId];
+  if (!item || !item.nextReview) return 'Chưa lên lịch';
+  const due = new Date(item.nextReview);
+  const diffDays = Math.ceil((due - new Date()) / 86400000);
+  if (diffDays <= 0) return 'Hôm nay';
+  if (diffDays === 1) return '1 ngày';
+  if (diffDays < 7) return `${diffDays} ngày`;
+  return `${Math.ceil(diffDays / 7)} tuần`;
+}
+
+function isCardDue(cardId) {
+  const schedule = getReviewSchedule();
+  const item = schedule[cardId];
+  if (!item || !item.nextReview) return false;
+  return new Date(item.nextReview).getTime() <= Date.now();
+}
+
+function getSmartSessionQueue(cards) {
+  const tracker = getSessionSeenTracker();
+  const schedule = getReviewSchedule();
+  const statusPriority = { h: 0, r: 1, '': 2, g: 3 };
+
+  const dueCards = [...cards].filter(card => isCardDue(card.id));
+  const prioritized = [...cards].sort((a, b) => {
+    const aDue = isCardDue(a.id) ? 0 : 1;
+    const bDue = isCardDue(b.id) ? 0 : 1;
+    if (aDue !== bDue) return aDue - bDue;
+
+    const aWeight = statusPriority[a.status || ''] ?? 2;
+    const bWeight = statusPriority[b.status || ''] ?? 2;
+    const aSeen = Number(tracker[a.id] || 0);
+    const bSeen = Number(tracker[b.id] || 0);
+    const aSchedule = schedule[a.id]?.nextReview ? new Date(schedule[a.id].nextReview).getTime() : Number.MAX_SAFE_INTEGER;
+    const bSchedule = schedule[b.id]?.nextReview ? new Date(schedule[b.id].nextReview).getTime() : Number.MAX_SAFE_INTEGER;
+
+    if (aWeight !== bWeight) return aWeight - bWeight;
+    if (aSeen !== bSeen) return aSeen - bSeen;
+    if (aSchedule !== bSchedule) return aSchedule - bSchedule;
+    return (a.ref || '').localeCompare(b.ref || '');
+  });
+
+  return prioritized.slice(0, 5);
+}
+
+function recordSessionOutcome(cardId, result) {
+  const tracker = getSessionSeenTracker();
+  tracker[cardId] = (Number(tracker[cardId] || 0) + 1) * (result === 'g' ? 1 : 1.2);
+  SESSION.seenTracker = tracker;
+  persistSessionSeenTracker();
+
+}
+
+function startLearningSession() {
+  const currentTab = APP_DATA.tabs.find(t => t.id === APP_DATA.currentTabId);
+  if (!currentTab || !currentTab.cards.length) return;
+
+  SESSION.seenTracker = getSessionSeenTracker();
+  SESSION.cards = getSmartSessionQueue(currentTab.cards);
+  SESSION.index = 0;
+  SESSION.active = true;
+  SESSION.weakCards = [];
+  setStandardStudyControls(true);
+  document.getElementById('learning-session').classList.add('active');
+  document.getElementById('session-start').disabled = true;
+  document.getElementById('session-start').textContent = 'Đang học';
+  document.getElementById('session-task').hidden = false;
+  showSessionCard();
+}
+
+function showSessionCard() {
+  const card = SESSION.cards[SESSION.index];
+  if (!card) return;
+  const tab = APP_DATA.tabs.find(t => t.id === APP_DATA.currentTabId);
+  const cardIndex = tab.cards.findIndex(item => item.id === card.id);
+  showCard(cardIndex);
+  SESSION.revealed = false;
+  SESSION.rating = '';
+  SESSION.target = '';
+  SESSION.phase = 'target';
+  SESSION.blankAnswer = '';
+  SESSION.blankChecked = false;
+  SESSION.speechChecked = false;
+  SESSION.weakCards = SESSION.weakCards || [];
+
+  const statusSummary = { h: 'thẻ yếu', r: 'cần ôn', '': 'mới', g: 'đã thuộc' };
+  const statusText = statusSummary[card.status || ''] || 'thẻ mới';
+  document.getElementById('session-progress').textContent = `Thẻ ${SESSION.index + 1} / ${SESSION.cards.length} · ${card.ref} · ${statusText}`;
+  document.getElementById('session-card-progress-fill').style.width = `${((SESSION.index + 1) / SESSION.cards.length) * 100}%`;
+  document.getElementById('session-prompt').textContent = `Không nhìn thẻ: chọn một phần để tự nhớ về ${card.ref}.`;
+  document.getElementById('session-choice').hidden = false;
+  document.querySelectorAll('#session-choice .btn').forEach(button => button.classList.remove('selected'));
+  document.getElementById('session-recall').value = '';
+  document.getElementById('session-recall-count').textContent = '0 ký tự';
+  document.getElementById('session-recall').disabled = false;
+  document.getElementById('session-recall').hidden = true;
+  document.getElementById('session-answer').hidden = true;
+  document.getElementById('session-answer').innerHTML = '';
+  document.getElementById('session-rating').hidden = true;
+  document.getElementById('session-fill').hidden = true;
+  document.getElementById('session-fill-result').textContent = '';
+  document.getElementById('session-fill-retry').hidden = true;
+  document.getElementById('session-fill-answer').value = '';
+  document.getElementById('session-speech').hidden = true;
+  document.getElementById('session-speech-result').textContent = '';
+  document.getElementById('session-speech-retry').hidden = true;
+  document.getElementById('session-audio').hidden = true;
+  document.getElementById('session-reflection').hidden = true;
+  document.getElementById('session-reflection').value = '';
+  document.getElementById('session-reflection').disabled = false;
+  document.getElementById('session-reveal').disabled = false;
+  document.getElementById('session-reveal').hidden = true;
+  document.getElementById('session-next').disabled = true;
+  document.getElementById('session-next').textContent = 'Tiếp tục';
+  updateSessionSteps('target');
+}
+
+function chooseSessionTarget(target) {
+  const labels = { verse: 'trích đoạn', analysis: 'giải nghĩa', speech: 'gợi ý speech' };
+  SESSION.target = target;
+  SESSION.phase = 'recall';
+  document.querySelectorAll('#session-choice .btn').forEach(button => button.classList.toggle('selected', button.textContent.toLowerCase().includes(labels[target])));
+  document.getElementById('session-choice').hidden = true;
+  document.getElementById('session-recall').hidden = false;
+  document.getElementById('session-reveal').hidden = false;
+  document.getElementById('session-reflection').hidden = false;
+  document.getElementById('session-prompt').textContent = `Không nhìn thẻ: hãy viết điều bạn nhớ về ${labels[target]}.`;
+  document.getElementById('session-recall').placeholder = `Viết ${labels[target]} bạn nhớ được trước khi xem đáp án...`;
+  updateSessionSteps('recall');
+}
+
+function updateSessionSteps(phase) {
+  const order = { target: 0, recall: 0, fill: 1, speech: 2 };
+  ['recall', 'fill', 'speech'].forEach((name, index) => {
+    const step = document.getElementById(`step-${name}`);
+    if (!step) return;
+    step.classList.toggle('active', order[phase] === index);
+    step.classList.toggle('done', order[phase] > index);
+  });
+}
+
+function revealSessionAnswer() {
+  const card = SESSION.cards[SESSION.index];
+  if (!card) return;
+  const recall = document.getElementById('session-recall').value.trim();
+  if (recall.length < 3) {
+    document.getElementById('session-recall').focus();
+    document.getElementById('session-recall').setCustomValidity('Hãy viết ít nhất vài từ bạn nhớ được trước khi đối chiếu.');
+    document.getElementById('session-recall').reportValidity();
+    return;
+  }
+  document.getElementById('session-recall').setCustomValidity('');
+  SESSION.revealed = true;
+  const answer = card[SESSION.target] || 'Thẻ này chưa có nội dung cho phần được chọn.';
+  document.getElementById('session-answer').innerHTML = answer;
+  document.getElementById('session-answer').hidden = false;
+  document.getElementById('session-recall').disabled = true;
+  document.getElementById('session-rating').hidden = false;
+  document.getElementById('session-reveal').disabled = true;
+}
+
+function rateSessionRecall(status) {
+  if (!SESSION.revealed) return;
+  SESSION.rating = status;
+  document.querySelectorAll('#session-rating .btn-status').forEach(button => button.classList.remove('on'));
+  document.querySelector(`#session-rating .btn-status.${status}`).classList.add('on');
+  document.getElementById('session-next').disabled = false;
+  document.getElementById('session-next').textContent = 'Sang bài điền khuyết';
+}
+
+async function completeSessionCard() {
+  if (!SESSION.revealed || !SESSION.rating) return;
+  const card = SESSION.cards[SESSION.index];
+  const tab = APP_DATA.tabs.find(t => t.id === APP_DATA.currentTabId);
+  const cardIndex = tab.cards.findIndex(item => item.id === card.id);
+  APP_DATA.currentCardIndex = cardIndex;
+
+  if (SESSION.phase === 'recall') {
+    startSessionFillQuestion(card);
+    return;
+  }
+  if (SESSION.phase === 'fill') {
+    if (!checkSessionFillAnswer()) return;
+    startSessionSpeech(card);
+    return;
+  }
+  if (SESSION.phase !== 'speech' || !SESSION.speechChecked) return;
+
+  const recall = document.getElementById('session-recall').value.trim();
+  const reflection = document.getElementById('session-reflection').value.trim();
+  const finalStatus = SESSION.rating === 'h' || !SESSION.blankChecked || !SESSION.speechChecked ? 'h' : SESSION.rating;
+
+  if (recall || reflection) {
+    const reflections = JSON.parse(localStorage.getItem('ash_session_reflections') || '{}');
+    reflections[card.id] = { target: SESSION.target, recall, reflection, savedAt: new Date().toISOString() };
+    localStorage.setItem('ash_session_reflections', JSON.stringify(reflections));
+  }
+
+  recordSessionOutcome(card.id, finalStatus);
+  await setStatus(finalStatus);
+
+  SESSION.index += 1;
+  if (SESSION.index >= SESSION.cards.length) {
+    SESSION.active = false;
+    setStandardStudyControls(true);
+    document.getElementById('session-task').hidden = true;
+    document.getElementById('session-copy').textContent = 'Bạn đã hoàn thành phiên học. Hãy quay lại ngày mai để ôn những thẻ còn yếu.';
+    document.getElementById('session-start').disabled = false;
+    document.getElementById('session-start').textContent = 'Học lại';
+
+    const weakCount = new Set(SESSION.weakCards).size;
+    const goodCount = SESSION.cards.filter(card => {
+      const s = card.status;
+      return s === 'g' || s === 'r';
+    }).length;
+    const todayDue = Object.values(getReviewSchedule()).filter(item => item && item.nextReview && new Date(item.nextReview).getTime() <= Date.now()).length;
+    const summaryGrid = document.getElementById('session-summary-grid');
+    const summaryList = document.getElementById('session-summary-list');
+
+    summaryGrid.innerHTML = `
+      <div class="summary-stat">
+        <span class="label">Phiên học</span>
+        <span class="value">${SESSION.cards.length}</span>
+        <span class="meta">thẻ đã xử lý</span>
+      </div>
+      <div class="summary-stat">
+        <span class="label">Đã nhớ</span>
+        <span class="value">${Math.max(0, weakCount === 0 ? SESSION.cards.length : SESSION.cards.length - weakCount)}</span>
+        <span class="meta">thẻ có tiến bộ</span>
+      </div>
+      <div class="summary-stat">
+        <span class="label">Cần ôn</span>
+        <span class="value">${weakCount}</span>
+        <span class="meta">thẻ yếu</span>
+      </div>
+      <div class="summary-stat">
+        <span class="label">Lịch ôn</span>
+        <span class="value">${todayDue}</span>
+        <span class="meta">thẻ đến hạn hôm nay</span>
+      </div>
+    `;
+
+    summaryList.innerHTML = weakCount
+      ? `<strong>Ôn lại tiếp theo:</strong> ${weakCount} thẻ yếu sẽ được ưu tiên ở phiên học tiếp theo. Hệ thống sẽ nhắc bạn ôn lại trong 1 ngày hoặc 3 ngày tùy mức độ nhớ.<br><strong>Lưu ý:</strong> các thẻ còn yếu sẽ xuất hiện sớm hơn trong queue session để bạn không quên.`
+      : '<strong>Rất tốt:</strong> phiên này không có thẻ yếu nào. Hệ thống tiếp tục đẩy các thẻ đã thuộc theo lịch 3–7 ngày để củng cố lâu dài.';
+
+    document.getElementById('session-summary').hidden = false;
+    return;
+  }
+  showSessionCard();
+}
+
+function startReviewSession() {
+  const currentTab = APP_DATA.tabs.find(t => t.id === APP_DATA.currentTabId);
+  const weakIds = new Set(SESSION.weakCards);
+  const dueWeakCards = currentTab.cards.filter(card => weakIds.has(card.id) || isCardDue(card.id));
+  const weakCards = dueWeakCards.length ? dueWeakCards : currentTab.cards.filter(card => weakIds.has(card.id));
+
+  if (!weakCards.length) {
+    document.getElementById('session-summary-list').textContent = 'Chưa có thẻ yếu để ôn lại.';
+    return;
+  }
+  SESSION.cards = getSmartSessionQueue(weakCards);
+  SESSION.index = 0;
+  SESSION.active = true;
+  document.getElementById('session-summary').hidden = true;
+  document.getElementById('session-task').hidden = false;
+  document.getElementById('session-start').disabled = true;
+  document.getElementById('session-start').textContent = 'Đang ôn lỗi';
+  showSessionCard();
+}
+
+function startSessionFillQuestion(card) {
+  const words = (card.verse || '').replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean);
+  if (words.length < 6) {
+    SESSION.blankAnswer = words.join(' ');
+    document.getElementById('session-fill-question').textContent = 'Câu này quá ngắn để tạo chỗ trống; hãy nhập lại toàn bộ câu:';
+  } else {
+    const length = Math.min(Math.max(3, Math.floor(words.length / 4)), 5);
+    const start = 1 + Math.floor(Math.random() * Math.max(1, words.length - length - 1));
+    SESSION.blankAnswer = words.slice(start, start + length).join(' ');
+    document.getElementById('session-fill-question').textContent = words.slice(0, start).join(' ') + ' _________ ' + words.slice(start + length).join(' ');
+  }
+  SESSION.phase = 'fill';
+  SESSION.blankChecked = false;
+  document.getElementById('session-prompt').textContent = 'Hãy điền phần còn thiếu mà không mở lại thẻ.';
+  document.getElementById('session-choice').hidden = true;
+  document.getElementById('session-recall').hidden = true;
+  document.getElementById('session-answer').hidden = true;
+  document.getElementById('session-rating').hidden = true;
+  document.getElementById('session-fill').hidden = false;
+  document.getElementById('session-fill-result').textContent = '';
+  document.getElementById('session-fill-answer').value = '';
+  document.getElementById('session-reflection').hidden = true;
+  document.getElementById('session-reveal').hidden = true;
+  document.getElementById('session-next').disabled = false;
+  document.getElementById('session-next').textContent = 'Kiểm tra điền khuyết';
+  updateSessionSteps('fill');
+}
+
+function normalizeSessionText(text) {
+  return text.replace(/<[^>]*>/g, '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function checkSessionFillAnswer() {
+  const typed = normalizeSessionText(document.getElementById('session-fill-answer').value);
+  const expected = normalizeSessionText(SESSION.blankAnswer);
+  if (!typed) {
+    document.getElementById('session-fill-result').textContent = 'Hãy nhập câu trả lời trước khi kiểm tra.';
+    return false;
+  }
+  SESSION.blankChecked = typed === expected || expected.includes(typed) || typed.includes(expected);
+  const result = document.getElementById('session-fill-result');
+  result.textContent = SESSION.blankChecked ? 'Đúng rồi. Bạn đã nhớ đúng phần còn thiếu.' : `Chưa đúng. Đáp án là: ${SESSION.blankAnswer}`;
+  result.style.color = SESSION.blankChecked ? 'var(--green)' : 'var(--red)';
+  document.getElementById('session-fill-retry').hidden = SESSION.blankChecked;
+  if (!SESSION.blankChecked) SESSION.weakCards.push(SESSION.cards[SESSION.index].id);
+  return true;
+}
+
+function retrySessionFill() {
+  document.getElementById('session-fill-answer').value = '';
+  document.getElementById('session-fill-result').textContent = '';
+  document.getElementById('session-fill-retry').hidden = true;
+  document.getElementById('session-next').disabled = false;
+  document.getElementById('session-fill-answer').focus();
+}
+
+function startSessionSpeech(card) {
+  SESSION.phase = 'speech';
+  SESSION.speechChecked = false;
+  document.getElementById('session-prompt').textContent = 'Hãy nói lại gợi ý speech bằng giọng của bạn.';
+  document.getElementById('session-fill').hidden = true;
+  document.getElementById('session-speech').hidden = false;
+  document.getElementById('session-speech-target').innerHTML = card.speech || '<span class="card-empty">Thẻ này chưa có gợi ý speech.</span>';
+  document.getElementById('session-speech-result').textContent = 'Bấm ghi âm, nói lại, rồi bấm dừng để hệ thống đối chiếu.';
+  document.getElementById('session-next').disabled = true;
+  document.getElementById('session-next').textContent = SESSION.index === SESSION.cards.length - 1 ? 'Hoàn tất' : 'Thẻ tiếp theo';
+  updateSessionSteps('speech');
+  if (!card.speech || !card.speech.trim()) {
+    SESSION.speechChecked = true;
+    document.getElementById('session-speech-result').textContent = 'Thẻ này chưa có gợi ý speech, bước này được bỏ qua.';
+    document.getElementById('session-next').disabled = false;
+  }
+}
+
+function retrySessionSpeech() {
+  SESSION.speechChecked = false;
+  document.getElementById('session-speech-retry').hidden = true;
+  document.getElementById('session-speech-result').textContent = 'Bấm ghi âm để thử lại.';
+  document.getElementById('session-next').disabled = true;
+}
+
+async function toggleSpeechRecording() {
+  if (SESSION.recorder && SESSION.recorder.state === 'recording') {
+    SESSION.recorder.stop();
+    if (SESSION.recognition) SESSION.recognition.stop();
+    return;
+  }
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) {
+    showSpeechResult('Trình duyệt này chưa hỗ trợ ghi âm.', false);
+    return;
+  }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    SESSION.audioChunks = [];
+    SESSION.recorder = new MediaRecorder(stream);
+    SESSION.recorder.ondataavailable = event => { if (event.data.size) SESSION.audioChunks.push(event.data); };
+    SESSION.recorder.onstop = () => {
+      stream.getTracks().forEach(track => track.stop());
+      const audio = document.getElementById('session-audio');
+      audio.src = URL.createObjectURL(new Blob(SESSION.audioChunks, { type: SESSION.recorder.mimeType }));
+      audio.hidden = false;
+      document.getElementById('session-recording').hidden = true;
+      document.getElementById('session-record').textContent = '🎙 Ghi âm lại';
+      if (!SESSION.speechChecked) showSpeechResult('Đã ghi âm nhưng trình duyệt chưa hỗ trợ nhận dạng tự động. Hãy dùng Chrome hoặc Edge để hệ thống chấm speech.', false, true);
+    };
+    SESSION.recorder.start();
+    document.getElementById('session-recording').hidden = false;
+    document.getElementById('session-record').textContent = '⏹ Dừng ghi âm';
+    startSpeechRecognition();
+  } catch (error) {
+    showSpeechResult('Không thể truy cập microphone. Hãy cấp quyền ghi âm rồi thử lại.', false);
+  }
+}
+
+function startSpeechRecognition() {
+  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!Recognition) return;
+  SESSION.recognition = new Recognition();
+  SESSION.recognition.lang = 'vi-VN';
+  SESSION.recognition.interimResults = false;
+  SESSION.recognition.onresult = event => {
+    const transcript = event.results[0][0].transcript;
+    const target = normalizeSessionText(SESSION.cards[SESSION.index].speech || '');
+    const spoken = normalizeSessionText(transcript);
+    const targetWords = target.split(' ').filter(Boolean);
+    const matched = targetWords.filter(word => spoken.includes(word)).length;
+    const passed = targetWords.length > 0 && matched / targetWords.length >= 0.65;
+    SESSION.speechChecked = true;
+    showSpeechResult(`${passed ? 'Đạt' : 'Cần luyện thêm'} · Nhận dạng: “${transcript}” · Khớp ${Math.round(matched / Math.max(targetWords.length, 1) * 100)}%`, passed);
+    document.getElementById('session-speech-retry').hidden = passed;
+    if (!passed) SESSION.weakCards.push(SESSION.cards[SESSION.index].id);
+    document.getElementById('session-next').disabled = false;
+  };
+  SESSION.recognition.onerror = () => {};
+  SESSION.recognition.start();
+}
+
+function showSpeechResult(message, passed, manual = false) {
+  const result = document.getElementById('session-speech-result');
+  result.textContent = message;
+  result.className = `session-speech-result${manual ? '' : (passed ? ' success' : ' fail')}`;
+  if (manual) document.getElementById('session-next').disabled = true;
 }
 
 function exitStudyMode() {
@@ -1685,8 +2694,10 @@ function showCard(index) {
   
   // Update display
   document.getElementById('card-ref').textContent = card.ref;
+  document.getElementById('card-verse-ref').textContent = card.ref;
+  document.querySelector('.face-2').dataset.watermark = (card.ref || '').replace(/^Khải\s*/i, '');
   document.getElementById('card-title').textContent = card.title;
-  document.getElementById('card-verse').innerHTML = card.verse || '<span class="card-empty">Không có nội dung</span>';
+  document.getElementById('card-verse').innerHTML = `<div class="verse-copy">${card.verse || '<span class="card-empty">Không có nội dung</span>'}</div>`;
   document.getElementById('card-analysis').innerHTML = card.analysis || '<span class="card-empty">Không có nội dung</span>';
   document.getElementById('card-speech').innerHTML = card.speech || '<span class="card-empty">Chưa có gợi ý speech</span>';
   
@@ -1735,6 +2746,32 @@ function setupEventListeners() {
     card.className = 'card' + (faces[nextFace] ? ' ' + faces[nextFace] : '');
   });
 
+  document.getElementById('card-container').addEventListener('wheel', event => {
+    const card = document.getElementById('card');
+    const contentByFace = {
+      face2: document.getElementById('card-verse'),
+      face3: document.getElementById('card-analysis'),
+      face4: document.getElementById('card-speech')
+    };
+    const activeContent = contentByFace[card.className.replace('card', '').trim()];
+    if (!activeContent || activeContent.scrollHeight <= activeContent.clientHeight) return;
+    activeContent.scrollTop += event.deltaY;
+    event.preventDefault();
+  }, { passive: false });
+
+  document.getElementById('session-recall').addEventListener('input', event => {
+    document.getElementById('session-recall-count').textContent = `${event.target.value.length} ký tự`;
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.target.matches('input, textarea, [contenteditable="true"]')) return;
+    const shortcuts = { '1': 'g', '2': 'r', '3': 'h' };
+    if (shortcuts[event.key]) {
+      event.preventDefault();
+      setStatus(shortcuts[event.key]);
+    }
+  });
+
   // Phím Tab / Shift+Tab để tăng/giảm cấp độ bullet ngay khi đang gõ nội dung thẻ
   ['form-verse', 'form-analysis', 'form-speech'].forEach((id) => {
     const field = document.getElementById(id);
@@ -1751,22 +2788,39 @@ function setupEventListeners() {
 async function setStatus(status) {
   const currentTab = APP_DATA.tabs.find(t => t.id === APP_DATA.currentTabId);
   const card = currentTab.cards[APP_DATA.currentCardIndex];
-  
+  const previousStatus = card.status;
+  const cardEl = document.getElementById('card');
+  if (cardEl) {
+    cardEl.classList.remove('status-burst');
+    void cardEl.offsetWidth;
+    cardEl.classList.add('status-burst');
+  }
+
   try {
     const response = await fetch(`/api/flashcard/cards/${card.id}/status`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status })
     });
-    
+
     if (!response.ok) throw new Error('Failed to update status');
-    
+
     const data = await response.json();
     card.status = status;
+    if (previousStatus !== status) {
+      if (!previousStatus) updateMissionProgress('flashcard', 1, 'reviewed_any');
+      if (status === 'r') updateMissionProgress('flashcard', 1, 'reviewed_marked');
+    }
+    const schedule = getReviewSchedule();
+    if (data.review_schedule) {
+      schedule[card.id] = data.review_schedule;
+    } else {
+      delete schedule[card.id];
+    }
+    saveReviewSchedule(schedule);
     renderCards();
     updateProgress();
     loadStats();
-
   } catch (error) {
     console.error('Error:', error);
   }
@@ -1798,6 +2852,67 @@ function updateStats(stats) {
   document.getElementById('stat-passed').textContent = stats.passed;
   document.getElementById('stat-review').textContent = stats.review;
   document.getElementById('stat-percentage').textContent = stats.percentage + '%';
+  document.getElementById('progress-ring').style.setProperty('--progress', `${stats.percentage}%`);
+  updateReviewSummary();
+}
+
+function updateReviewSummary() {
+  const currentTab = APP_DATA.tabs.find(t => t.id === APP_DATA.currentTabId);
+  if (!currentTab) {
+    document.getElementById('review-today').textContent = '0';
+    document.getElementById('review-3d').textContent = '0';
+    document.getElementById('review-7d').textContent = '0';
+    document.getElementById('review-due-list').innerHTML = '<div class="review-empty">Hôm nay chưa có thẻ cần ôn.</div>';
+    document.getElementById('review-reminder').textContent = 'Chưa có lịch nhắc.';
+    return;
+  }
+
+  const now = Date.now();
+  const dueCounts = { today: 0, three: 0, seven: 0 };
+  const dueItems = [];
+
+  currentTab.cards.forEach(card => {
+    const schedule = getReviewSchedule()[card.id];
+    if (!schedule || !schedule.nextReview) return;
+
+    const diffDays = Math.ceil((new Date(schedule.nextReview).getTime() - now) / 86400000);
+    const normalized = diffDays <= 0 ? 0 : diffDays;
+    if (normalized <= 1) dueCounts.today += 1;
+    if (normalized <= 3) dueCounts.three += 1;
+    if (normalized <= 7) dueCounts.seven += 1;
+
+    if (normalized <= 7) {
+      dueItems.push({
+        ref: card.ref || 'Thẻ',
+        days: normalized <= 0 ? 'Hôm nay' : normalized === 1 ? '1 ngày' : `${normalized} ngày`,
+        urgent: normalized <= 1 ? 'gần' : normalized <= 3 ? 'sắp' : 'sau'
+      });
+    }
+  });
+
+  document.getElementById('review-today').textContent = dueCounts.today;
+  document.getElementById('review-3d').textContent = dueCounts.three;
+  document.getElementById('review-7d').textContent = dueCounts.seven;
+  const reminder = document.getElementById('review-reminder');
+  reminder.classList.toggle('empty', !dueCounts.today && !dueCounts.seven);
+  reminder.textContent = dueCounts.today
+    ? `Bạn có ${dueCounts.today} thẻ cần ôn hôm nay.`
+    : dueCounts.seven
+      ? `${dueCounts.seven} thẻ sẽ đến lịch trong 7 ngày tới.`
+      : 'Hôm nay không có thẻ cần ôn. Bạn đang giữ nhịp rất tốt.';
+
+  const listEl = document.getElementById('review-due-list');
+  if (!dueItems.length) {
+    listEl.innerHTML = '<div class="review-empty">Hôm nay chưa có thẻ cần ôn.</div>';
+    return;
+  }
+
+  listEl.innerHTML = dueItems.slice(0, 5).map(item => `
+    <div class="review-item">
+      <strong>${item.ref}</strong>
+      <span class="tag">${item.days}</span>
+    </div>
+  `).join('');
 }
 
 function showStats() {
@@ -2126,32 +3241,7 @@ document
 });
 </script>
 
-<nav class="bottom-nav" aria-label="Điều hướng chính">
-  <a href="{{ url_for('index') }}" class="nav-btn" data-page="home">
-    <span class="nav-icon">🏠</span>
-    <span class="nav-label">Trang chủ</span>
-  </a>
-  <a href="{{ url_for('index') }}?tab=fill" class="nav-btn" data-page="fill">
-    <span class="nav-icon">📝</span>
-    <span class="nav-label">Điền</span>
-  </a>
-  <a href="{{ url_for('index') }}?tab=typing" class="nav-btn" data-page="typing">
-    <span class="nav-icon">⌨️</span>
-    <span class="nav-label">Gõ</span>
-  </a>
-  <a href="{{ url_for('flashcard_login') }}" class="nav-btn active" data-page="flashcard">
-    <span class="nav-icon">📖</span>
-    <span class="nav-label">Flashcard</span>
-  </a>
-  <a href="{{ url_for('exam_library') }}" class="nav-btn" data-page="exam">
-    <span class="nav-icon">✍️</span>
-    <span class="nav-label">Kiểm tra</span>
-  </a>
-  <a href="{{ url_for('multiplayer') }}" class="nav-btn" data-page="multiplayer">
-    <span class="nav-icon">🎮</span>
-    <span class="nav-label">Đấu trường</span>
-  </a>
-</nav>
+{% include "_bottom_nav.html" %}
 
 </body>
 </html>

@@ -27,15 +27,7 @@ body {
 
 /* ── ANIMATED BG DOTS ── */
 body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 20% 20%, rgba(46,125,79,0.07) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(200,146,26,0.05) 0%, transparent 50%),
-    radial-gradient(circle at 60% 30%, rgba(46,125,79,0.05) 0%, transparent 40%);
-  pointer-events: none;
-  z-index: 0;
+  display: none;
 }
 
 /* ── HEADER ── */
@@ -232,7 +224,7 @@ body::before {
 .exam-card {
   background: var(--surface);
   border: 1.5px solid var(--border);
-  border-radius: 20px;
+  border-radius: var(--radius);
   padding: 0;
   overflow: hidden;
   display: flex;
@@ -247,7 +239,7 @@ body::before {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 20px;
+  border-radius: var(--radius);
   border: 2px solid transparent;
   transition: border-color 0.25s;
   pointer-events: none;
@@ -396,9 +388,9 @@ body::before {
 .btn-review-exam {
   width: 100%;
   padding: 13px 0;
-  background: var(--accent-lt);
-  color: var(--accent-dk);
-  border: 1.5px solid rgba(46,125,79,0.25);
+  background: var(--surface);
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
   border-radius: 12px;
   font-family: 'NeueHaasGroteskDisplay', sans-serif;
   font-size: 0.9rem;
@@ -408,10 +400,13 @@ body::before {
 }
 
 .btn-review-exam:hover {
-  background: var(--surface2);
+  background: var(--accent-lt);
   border-color: var(--accent);
   transform: translateY(-1px);
 }
+
+.btn-start-exam { background: var(--accent); box-shadow: 0 4px 14px var(--accent-glow); }
+.btn-start-exam:hover { background: var(--accent-dk); box-shadow: 0 6px 20px var(--accent-glow); }
 
 /* Empty state */
 .empty-state {
@@ -1000,49 +995,9 @@ document.getElementById('pw-modal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
 });
 
-// Navigation bar active state
-function updateNavActive() {
-  const path = window.location.pathname;
-  const navItems = document.querySelectorAll('.bottom-nav .nav-btn');
-  navItems.forEach(item => {
-    item.classList.remove('active');
-    const page = item.getAttribute('data-page');
-    if ((page === 'exam' && path.startsWith('/exam'))) {
-      item.classList.add('active');
-    }
-  });
-}
-window.addEventListener('load', updateNavActive);
-updateNavActive();
 </script>
 
-<!-- Bottom Navigation Bar -->
-<nav class="bottom-nav" aria-label="Điều hướng chính">
-  <a href="/home" class="nav-btn" data-page="home">
-    <span class="nav-icon">🏠</span>
-    <span class="nav-label">Trang chủ</span>
-  </a>
-  <a href="/home?tab=fill" class="nav-btn" data-page="fill">
-    <span class="nav-icon">📝</span>
-    <span class="nav-label">Điền</span>
-  </a>
-  <a href="/home?tab=typing" class="nav-btn" data-page="typing">
-    <span class="nav-icon">⌨️</span>
-    <span class="nav-label">Gõ</span>
-  </a>
-  <a href="/flashcard/login" class="nav-btn" data-page="flashcard">
-    <span class="nav-icon">📖</span>
-    <span class="nav-label">Flashcard</span>
-  </a>
-  <a href="/exam_library" class="nav-btn active" data-page="exam">
-    <span class="nav-icon">✍️</span>
-    <span class="nav-label">Kiểm tra</span>
-  </a>
-  <a href="/multiplayer" class="nav-btn" data-page="multiplayer">
-    <span class="nav-icon">🎮</span>
-    <span class="nav-label">Đấu trường</span>
-  </a>
-</nav>
+{% include "_bottom_nav.html" %}
 
 </body>
 </html>

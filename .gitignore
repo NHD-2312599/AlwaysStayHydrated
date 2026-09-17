@@ -2,7 +2,8 @@
 __pycache__/
 *.py[cod]
 
-instance/
+instance/*
+!instance/flashcard.db
 feedback/
 users.json
 

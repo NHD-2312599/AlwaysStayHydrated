@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nhiệm vụ hôm nay | Đóng Ấn Ngôi Lời</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+  <style>
+    body { background:#FFFFFF; }
+    .missions-page { width:min(100% - 32px, 980px); margin:0 auto; padding:34px 0 112px; }
+    .missions-heading { display:flex; justify-content:space-between; align-items:end; gap:16px; margin-bottom:20px; }
+    .missions-heading h1 { margin:0; color:var(--text-pri); font-size:clamp(1.8rem,4vw,2.6rem); }
+    .missions-heading p { margin:7px 0 0; color:var(--text-sec); }
+    .date-label { color:var(--accent); font-weight:800; font-size:.88rem; text-transform:capitalize; white-space:nowrap; }
+    .mission-card { background:#fff; border-radius:20px; box-shadow:0 8px 28px rgba(0,0,0,.06); padding:22px; margin-bottom:16px; }
+    .mission-progress-card { display:grid; grid-template-columns:minmax(0,1fr) 280px; gap:22px; align-items:start; }
+    .mission-card-head { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px; }
+    .mission-card h2 { margin:0; color:var(--text-pri); font-size:1.15rem; }
+    .mission-total { color:var(--text-sec); font-size:.82rem; font-weight:800; }
+    .mission-list { display:grid; gap:9px; }
+    .mission-item { display:grid; grid-template-columns:30px minmax(0,1fr) auto; align-items:center; gap:11px; padding:13px 11px; background:var(--bg2); border-radius:14px; }
+    .mission-item.done { opacity:.62; }
+    .mission-check { width:23px; height:23px; border:2px solid var(--text-ter); border-radius:50%; display:grid; place-items:center; color:#fff; background:transparent; cursor:pointer; }
+    .mission-item.done .mission-check { border-color:var(--accent); background:var(--accent); }
+    .mission-title { color:var(--text-pri); font-size:.9rem; font-weight:800; line-height:1.35; }
+    .mission-item.done .mission-title { text-decoration:line-through; }
+    .mission-progress { color:var(--text-ter); font-size:.75rem; font-weight:700; margin-top:4px; }
+    .mission-go, .mission-delete { color:var(--accent); font-size:.76rem; font-weight:800; text-decoration:none; border:0; background:transparent; cursor:pointer; white-space:nowrap; }
+    .mission-go:hover, .mission-delete:hover { color:var(--accent-dk); }
+    .mission-empty { color:var(--text-ter); background:var(--bg2); border-radius:14px; padding:18px; font-size:.85rem; }
+    .add-mission-btn { border:0; border-radius:99px; background:var(--accent-lt); color:var(--accent-dk); padding:9px 14px; font:inherit; font-size:.78rem; font-weight:800; cursor:pointer; }
+    .mission-form { display:grid; grid-template-columns:minmax(0,2fr) 1fr 90px auto auto; gap:8px; margin-top:12px; }
+    .mission-form input, .mission-form select { min-height:40px; width:100%; border:1px solid rgba(0,0,0,.08); border-radius:10px; padding:8px 10px; font:inherit; color:var(--text-pri); background:var(--bg2); }
+    .mission-save-btn, .mission-cancel-btn { border:0; border-radius:99px; padding:8px 14px; font:inherit; font-size:.78rem; font-weight:800; cursor:pointer; }
+    .mission-save-btn { color:#fff; background:var(--accent); } .mission-cancel-btn { color:var(--accent); background:var(--accent-lt); }
+    .progress-link { display:inline-flex; align-items:center; padding:10px 16px; border-radius:99px; background:var(--accent); color:#fff; text-decoration:none; font-weight:800; font-size:.82rem; margin-top:2px; box-shadow:0 5px 14px var(--accent-glow); transition:transform .18s, background .18s; }
+    .progress-link:hover { transform:translateY(-2px); background:var(--accent-dk); }
+    .progress-calendar { padding-left:22px; border-left:1px solid rgba(0,0,0,.07); }
+    .progress-calendar-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:11px; color:var(--text-sec); font-size:.8rem; font-weight:800; }
+    .progress-calendar-nav { display:flex; align-items:center; gap:6px; }
+    .progress-calendar-nav button { width:26px; height:26px; border:0; border-radius:50%; background:var(--bg2); color:var(--accent); font-weight:900; cursor:pointer; }
+    .progress-calendar-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:5px; }
+    .progress-weekday { color:var(--text-ter); font-size:.62rem; font-weight:800; text-align:center; }
+    .progress-day { min-height:30px; border:0; border-radius:9px; display:grid; place-items:center; background:#F1F1F1; color:#9CA3AF; font:inherit; font-size:.7rem; cursor:pointer; }
+    .progress-day.activity { background:#C8E6C9; color:#1B4332; }
+    .progress-day.complete { background:var(--accent); color:#fff; font-weight:800; }
+    .progress-day.today { outline:2px solid var(--accent); outline-offset:1px; }
+    .progress-day.future, .progress-day.empty { opacity:.4; pointer-events:none; }
+    .progress-day.empty { background:transparent; }
+    .progress-day.selected { box-shadow:0 0 0 2px var(--water); }
+    .progress-detail { min-height:42px; margin-top:10px; padding:10px; border-radius:11px; background:var(--bg2); color:var(--text-sec); font-size:.72rem; line-height:1.45; }
+    @media(max-width:680px) { .missions-heading { align-items:flex-start; flex-direction:column; } .mission-form { grid-template-columns:1fr 1fr; } .mission-form input:first-child { grid-column:1 / -1; } .mission-progress-card { grid-template-columns:1fr; } .progress-calendar { padding:16px 0 0; border-top:1px solid rgba(0,0,0,.07); border-left:0; } }
+  </style>
+</head>
+<body class="has-bottom-nav">
+  <main class="missions-page">
+    <div class="missions-heading"><div><h1>Nhiệm vụ hôm nay</h1><p>Hoàn thành từng bước nhỏ để giữ nhịp học thật.</p></div><time id="missionDate" class="date-label"></time></div>
+    <section class="mission-card mission-progress-card">
+      <div>
+        <div class="mission-card-head"><h2>Hoàn thành hôm nay</h2><span id="requiredSummary" class="mission-total"></span></div>
+        <div id="requiredMissions" class="mission-list"></div>
+      </div>
+      <aside class="progress-calendar" aria-label="Lịch tiến độ học tập">
+        <div class="progress-calendar-head"><span>Lịch tiến độ</span><div class="progress-calendar-nav"><button type="button" id="previousMissionMonth" aria-label="Tháng trước">‹</button><span id="missionCalendarMonth"></span><button type="button" id="nextMissionMonth" aria-label="Tháng sau">›</button></div></div>
+        <div id="missionCalendar" class="progress-calendar-grid"></div>
+        <div id="missionProgressDetail" class="progress-detail">Chọn một ngày để xem tiến độ.</div>
+      </aside>
+    </section>
+    <section class="mission-card">
+      <div class="mission-card-head"><h2>Nhiệm vụ tự nguyện</h2><button type="button" id="addMissionBtn" class="add-mission-btn">+ Thêm nhiệm vụ</button></div>
+      <div id="optionalMissions" class="mission-list"></div><div id="optionalEmpty" class="mission-empty">Chưa có nhiệm vụ tự nguyện hôm nay.</div>
+      <form id="missionForm" class="mission-form" hidden>
+        <input id="missionTitleInput" maxlength="120" placeholder="Ví dụ: Ôn lại Khải Huyền 1" required>
+        <select id="missionModeInput"><option value="">Không liên kết mode</option><option value="fill">Điền</option><option value="typing">Gõ</option><option value="flashcard">Flashcard</option><option value="exam">Kiểm tra</option><option value="multiplayer">Đấu trường</option></select>
+        <input id="missionTargetInput" type="number" min="1" max="999" value="1" aria-label="Mục tiêu">
+        <button type="submit" class="mission-save-btn">Lưu</button><button type="button" id="cancelMissionBtn" class="mission-cancel-btn">Hủy</button>
+      </form>
+    </section>
+    <a class="progress-link" href="{{ url_for('profile') }}">Xem lịch tiến độ →</a>
+  </main>
+  {% include "_bottom_nav.html" %}
+  <script>
+    const missionPool = [
+      { id:'fill_streak_10', title:'Trả lời đúng 10 câu liên tiếp không sai', mode:'fill', target:10, metric:'consecutive_correct' },
+      { id:'typing_acc_5', title:'Gõ 5 câu liên tiếp đạt ≥ 90% accuracy', mode:'typing', target:5, metric:'accuracy_ge_90' },
+      { id:'flashcard_review_1', title:'Review lại ít nhất 1 thẻ đã đánh dấu cần ôn', mode:'flashcard', target:1, metric:'reviewed_marked' },
+      { id:'exam_once', title:'Hoàn thành 1 bài Kiểm tra đóng ấn', mode:'exam', target:1, metric:'exam_submitted' },
+      { id:'multiplayer_once', title:'Tham gia 1 ván Đấu trường', mode:'multiplayer', target:1, metric:'match_played' },
+      { id:'fill_accuracy_8', title:'Trả lời đúng 8 câu điền chỗ trống', mode:'fill', target:8, metric:'correct_answers' },
+      { id:'typing_speed_10', title:'Luyện gõ 10 câu với độ chính xác từ 85%', mode:'typing', target:10, metric:'accuracy_ge_85' },
+      { id:'flashcard_review_3', title:'Ôn lại 3 thẻ ghi nhớ trong ngày', mode:'flashcard', target:3, metric:'reviewed_any' },
+      { id:'exam_score_80', title:'Đạt từ 80% trong một bài kiểm tra', mode:'exam', target:1, metric:'exam_score_ge_80' },
+      { id:'multiplayer_win', title:'Giành 1 chiến thắng tại Đấu trường', mode:'multiplayer', target:1, metric:'match_won' }
+    ];
+    const missionLinks = { fill:'/home?tab=fill', typing:'/home?tab=typing', flashcard:'/flashcard/login', exam:'/exam_library', multiplayer:'/multiplayer' };
+    const now = new Date();
+    const dateKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+    const storageKey = `missions_${dateKey}`;
+    function dailySeed() { return [...dateKey].reduce((sum, character) => sum + character.charCodeAt(0), 0); }
+    function chooseDailyMissions() { const pool=[...missionPool]; let seed=dailySeed(); const selected=[]; while(selected.length<5 && pool.length){ seed=(seed*9301+49297)%233280; const index=seed%pool.length; selected.push(pool.splice(index,1)[0]); } return selected; }
+    function loadMissions() { try { const data=JSON.parse(localStorage.getItem(storageKey)||'null'); if(data?.version===2 && data.required?.length===5 && data.optional) return data; } catch(error) {} const data={version:2,required:chooseDailyMissions().map(item=>({...item,progress:0,done:false})),optional:[]}; saveMissions(data); return data; }
+    function saveMissions(data) { localStorage.setItem(storageKey, JSON.stringify(data)); localStorage.setItem(`activity_${dateKey}`, '1'); }
+    function done(item) { return item.done || item.progress >= item.target; }
+    function progress(item) { return done(item) ? 'Hoàn thành' : item.progress ? `${item.progress}/${item.target}` : 'Chưa bắt đầu'; }
+    function render() {
+      const data=loadMissions(); document.getElementById('missionDate').textContent=now.toLocaleDateString('vi-VN',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'});
+      document.getElementById('requiredSummary').textContent=`${data.required.filter(done).length}/${data.required.length} hoàn thành`;
+      renderList('requiredMissions',data.required,false); renderList('optionalMissions',data.optional,true); document.getElementById('optionalEmpty').hidden=!!data.optional.length;
+    }
+    function renderList(id, items, optional) { document.getElementById(id).innerHTML=items.map((item,index)=>{ const link=missionLinks[item.mode]; return `<div class="mission-item ${done(item)?'done':''}"><button class="mission-check" data-toggle="${optional?'optional':'required'}" data-index="${index}">${done(item)?'✓':''}</button><div><div class="mission-title">${item.title}</div><div class="mission-progress">${progress(item)}${item.mode?' · '+item.mode:''}</div></div>${!done(item)&&link?`<a class="mission-go" href="${link}">Làm ngay →</a>`:optional?`<button class="mission-delete" data-delete="${index}">Xóa</button>`:''}</div>`;}).join(''); document.querySelectorAll('[data-toggle]').forEach(button=>button.onclick=()=>{const data=loadMissions(),list=button.dataset.toggle==='optional'?data.optional:data.required,item=list[Number(button.dataset.index)]; item.done=!done(item); item.progress=item.done?item.target:0; saveMissions(data); render();}); document.querySelectorAll('[data-delete]').forEach(button=>button.onclick=()=>{const data=loadMissions();data.optional.splice(Number(button.dataset.delete),1);saveMissions(data);render();}); }
+    document.getElementById('addMissionBtn').onclick=()=>{document.getElementById('missionForm').hidden=false;document.getElementById('missionTitleInput').focus();};
+    document.getElementById('cancelMissionBtn').onclick=()=>{document.getElementById('missionForm').hidden=true;document.getElementById('missionForm').reset();};
+    document.getElementById('missionForm').onsubmit=(event)=>{event.preventDefault();const title=document.getElementById('missionTitleInput').value.trim();if(!title)return;const data=loadMissions();data.optional.push({id:`optional_${Date.now()}`,title,mode:document.getElementById('missionModeInput').value,target:Number(document.getElementById('missionTargetInput').value)||1,progress:0,done:false});saveMissions(data);document.getElementById('missionForm').hidden=true;event.target.reset();render();};
+    const missionCalendar = document.getElementById('missionCalendar');
+    const missionCalendarDetail = document.getElementById('missionProgressDetail');
+    const missionToday = new Date(); missionToday.setHours(0,0,0,0);
+    let missionVisibleMonth = new Date(missionToday.getFullYear(), missionToday.getMonth(), 1);
+    const missionDateKey = date => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+    function renderMissionCalendar() { const year=missionVisibleMonth.getFullYear(), month=missionVisibleMonth.getMonth(); missionCalendar.innerHTML=['T2','T3','T4','T5','T6','T7','CN'].map(day=>`<div class="progress-weekday">${day}</div>`).join(''); document.getElementById('missionCalendarMonth').textContent=missionVisibleMonth.toLocaleDateString('vi-VN',{month:'short',year:'numeric'}); const first=(new Date(year,month,1).getDay()+6)%7; for(let i=0;i<first;i++) missionCalendar.insertAdjacentHTML('beforeend','<div class="progress-day empty"></div>'); const days=new Date(year,month+1,0).getDate(); for(let day=1;day<=days;day++){const date=new Date(year,month,day);date.setHours(0,0,0,0);const key=missionDateKey(date);let data=null;try{data=JSON.parse(localStorage.getItem(`missions_${key}`)||'null');}catch(error){}const items=data?.required||[],completed=items.length===5&&items.every(done);const button=document.createElement('button');button.type='button';button.className=`progress-day${completed?' complete':data?' activity':''}${date.getTime()===missionToday.getTime()?' today':''}${date>missionToday?' future':''}`;button.textContent=day;if(date<=missionToday)button.onclick=()=>{document.querySelectorAll('.progress-day.selected').forEach(item=>item.classList.remove('selected'));button.classList.add('selected');missionCalendarDetail.textContent=`${key.split('-').reverse().join('/')} · ${items.filter(done).length}/5 nhiệm vụ hoàn thành`;};missionCalendar.appendChild(button);}}
+    document.getElementById('previousMissionMonth').onclick=()=>{missionVisibleMonth=new Date(missionVisibleMonth.getFullYear(),missionVisibleMonth.getMonth()-1,1);renderMissionCalendar();};
+    document.getElementById('nextMissionMonth').onclick=()=>{const next=new Date(missionVisibleMonth.getFullYear(),missionVisibleMonth.getMonth()+1,1);if(next<=new Date(missionToday.getFullYear(),missionToday.getMonth(),1)){missionVisibleMonth=next;renderMissionCalendar();}};
+    function refreshMissionView() { render(); renderMissionCalendar(); }
+    window.addEventListener('storage', event => { if (event.key === storageKey) refreshMissionView(); });
+    window.addEventListener('missionprogresschange', refreshMissionView);
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') refreshMissionView(); });
+    render();
+    renderMissionCalendar();
+  </script>
+</body>
+</html>

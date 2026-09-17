@@ -4,8 +4,6 @@
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#386641">
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="apple-touch-icon" href="/static/pictures/Logo_White.png">
   <link rel="stylesheet" href="/static/css/theme.css">
 
   <style>
@@ -17,6 +15,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      background: #FFFFFF;
     }
 
     /* ── Header ── */
@@ -41,6 +40,9 @@
     }
     .brand { display: flex; align-items: center; gap: 6px; cursor: pointer; }
     .brand-logo { height: 44px; width: auto; display: block; object-fit: contain; }
+    .profile-link { display:inline-flex; align-items:center; gap:9px; color:var(--text-sec); font-weight:700; text-decoration:none; }
+    .profile-link:hover { color:var(--accent); }
+    .profile-avatar { width:34px; height:34px; display:grid; place-items:center; border-radius:50%; background:var(--accent-lt); color:var(--accent-dk); font-size:.78rem; font-weight:900; }
 
     .logout-btn {
       font-family: inherit;
@@ -111,16 +113,30 @@
       margin-bottom: 28px;
       z-index: 1;
     }
+    .home-hero-icon::before {
+      content: '';
+      position: absolute;
+      inset: -36px;
+      background: radial-gradient(circle, rgba(82,183,136,0.32) 0%, rgba(116,198,157,0.12) 45%, transparent 70%);
+      border-radius: 50%;
+      z-index: -1;
+      animation: pulseGlow 3.5s ease-in-out infinite;
+      pointer-events: none;
+    }
     .home-hero-icon img {
       width: 120px;
       height: 120px;
       border-radius: 28px;
-      box-shadow: 0 20px 50px rgba(45,106,79,0.18), 0 2px 10px rgba(0,0,0,0.08);
+      box-shadow: 0 20px 50px rgba(45,106,79,0.22), 0 2px 10px rgba(0,0,0,0.08), 0 0 0 8px rgba(216,243,220,0.5);
       animation: heroFloat 4s ease-in-out infinite;
     }
     @keyframes heroFloat {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-8px); }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.7; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.08); }
     }
     .home-hero h1 {
       font-size: 2.5rem;
@@ -147,111 +163,99 @@
       z-index: 1;
       position: relative;
     }
-    .hero-status {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(140px, 1fr));
-      gap: 16px;
-      margin-top: 32px;
-      z-index: 1;
-      position: relative;
-    }
-    
-    .hero-status-card strong {
-      display: block;
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: #174c36;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-    }
-    .hero-status-card span {
-      color: var(--text-ter);
-      font-size: 0.82rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-    .hero-status-card .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      background: rgba(82,183,136,0.12);
-      color: #1f4d3d;
-      width: fit-content;
-    }
-
    
 
     /* ── HOME: Mode cards ── */
     .mode-selector {
       display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .mode-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 20px;
     }
     .mode-card {
-      background: var(--surface);
+      background: linear-gradient(180deg, #ffffff 0%, #f7fbf8 100%);
       border: 1.5px solid var(--border);
       border-radius: 22px;
-      padding: 34px 26px 30px;
+      padding: 32px 24px 28px;
       text-align: left;
       cursor: pointer;
-      transition: transform 0.22s cubic-bezier(.34,1.56,.64,1), box-shadow 0.22s ease, border-color 0.2s;
+      transition: transform 0.28s cubic-bezier(.34,1.56,.64,1), box-shadow 0.28s ease, border-color 0.2s;
       display: flex;
       flex-direction: column;
       gap: 14px;
-      box-shadow: var(--shadow);
+      box-shadow: 0 4px 20px rgba(45,106,79,0.07), 0 1px 3px rgba(0,0,0,0.04);
       position: relative;
       overflow: hidden;
     }
+    .mode-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 90% 10%, rgba(82,183,136,0.08) 0%, transparent 50%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .mode-card:hover::before { opacity: 1; }
     .mode-card::after {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 3px;
-      background: var(--card-accent, var(--accent));
-      border-radius: var(--radius) var(--radius) 0 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--card-accent, var(--accent)), color-mix(in srgb, var(--card-accent, var(--accent)) 60%, white));
+      border-radius: 22px 22px 0 0;
       transform: scaleX(0);
       transform-origin: left;
-      transition: transform 0.25s ease;
+      transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
     }
     .mode-card:hover::after { transform: scaleX(1); }
     .mode-card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-hover);
-      border-color: var(--card-accent, var(--accent));
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(45,106,79,0.14), 0 8px 16px rgba(0,0,0,0.06);
+      border-color: color-mix(in srgb, var(--card-accent, var(--accent)) 40%, transparent);
     }
     .mode-card:nth-child(1) { --card-accent: var(--c1); }
     .mode-card:nth-child(2) { --card-accent: var(--c2); }
     .mode-card:nth-child(3) { --card-accent: var(--c3); }
     .mode-card:nth-child(4) { --card-accent: var(--c4); }
+    .mode-card:nth-child(5) { --card-accent: #c2410c; }
 
     .mode-card-icon {
-      width: 56px; height: 56px;
+      width: 58px; height: 58px;
       border-radius: 18px;
       display: flex; align-items: center; justify-content: center;
       font-size: 28px;
       flex-shrink: 0;
+      transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     }
-    .mode-card:nth-child(1) .mode-card-icon { background: var(--c1-lt); }
-    .mode-card:nth-child(2) .mode-card-icon { background: var(--c2-lt); }
-    .mode-card:nth-child(3) .mode-card-icon { background: var(--c3-lt); }
-    .mode-card:nth-child(4) .mode-card-icon { background: var(--c4-lt); }
+    .mode-card-icon svg {
+      display: block;
+      width: 28px;
+      height: 28px;
+    }
+    .mode-card:hover .mode-card-icon { transform: scale(1.08) rotate(-3deg); }
+    .mode-card:nth-child(1) .mode-card-icon { background: linear-gradient(135deg, #d8f3dc, #b7e4c7); }
+    .mode-card:nth-child(2) .mode-card-icon { background: linear-gradient(135deg, #d9eef9, #a5d8f0); }
+    .mode-card:nth-child(3) .mode-card-icon { background: linear-gradient(135deg, #ede9fe, #c4b5fd); }
+    .mode-card:nth-child(4) .mode-card-icon { background: linear-gradient(135deg, #fef3c7, #fcd34d); }
+    .mode-card:nth-child(5) .mode-card-icon { background: linear-gradient(135deg, #ffedd5, #fdba74); }
 
     .mode-card h3 {
-      font-size: 1.1rem;
+      font-size: 1.12rem;
       font-weight: 700;
       color: var(--text-pri);
       margin: 0;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.015em;
     }
     .mode-card p {
       font-size: 0.88rem;
       color: var(--text-sec);
-      line-height: 1.6;
+      line-height: 1.65;
       margin: 0;
       flex: 1;
     }
@@ -260,7 +264,7 @@
       align-items: center;
       gap: 6px;
       padding: 12px 20px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.1) 100%), var(--card-accent, var(--accent));
+      background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, rgba(0,0,0,0.08) 100%), var(--card-accent, var(--accent));
       color: #fff;
       border: none;
       border-radius: 20px;
@@ -268,123 +272,31 @@
       font-weight: 700;
       font-family: inherit;
       cursor: pointer;
-      transition: all 0.18s;
+      transition: all 0.2s;
       letter-spacing: 0.01em;
       align-self: flex-start;
       margin-top: 4px;
       box-shadow: 
-        0 1px 0 rgba(255,255,255,0.4) inset,
-        0 -2px 0 rgba(0,0,0,0.15) inset,
-        0 12px 24px rgba(0,0,0,0.15),
-        0 4px 8px rgba(0,0,0,0.12);
+        0 1px 0 rgba(255,255,255,0.35) inset,
+        0 -2px 0 rgba(0,0,0,0.12) inset,
+        0 10px 20px rgba(0,0,0,0.12);
       transform: translateY(-1px);
     }
-    .mode-card-btn:hover { opacity: 0.96; transform: translateY(-2px); box-shadow: 
-        0 1px 0 rgba(255,255,255,0.4) inset,
-        0 -2px 0 rgba(0,0,0,0.15) inset,
-        0 16px 32px rgba(0,0,0,0.18),
-        0 6px 12px rgba(0,0,0,0.14); }
-    .mode-card-btn:active { transform: translateY(2px); box-shadow: 
-        0 1px 0 rgba(255,255,255,0.2) inset,
-        0 -2px 0 rgba(0,0,0,0.15) inset,
-        0 4px 8px rgba(0,0,0,0.1); }
-
-    .mode-selector {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 20px;
-    }
-    .mode-card {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px 24px 28px;
-      text-align: left;
-      cursor: pointer;
-      transition: transform 0.22s cubic-bezier(.34,1.56,.64,1), box-shadow 0.22s ease, border-color 0.2s;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-    }
-    .mode-card::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: var(--card-accent, var(--accent));
-      border-radius: var(--radius) var(--radius) 0 0;
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.25s ease;
-    }
-    .mode-card:hover::after { transform: scaleX(1); }
-    .mode-card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-hover);
-      border-color: var(--card-accent, var(--accent));
-    }
-    .mode-card:nth-child(1) { --card-accent: var(--c1); }
-    .mode-card:nth-child(2) { --card-accent: var(--c2); }
-    .mode-card:nth-child(3) { --card-accent: var(--c3); }
-    .mode-card:nth-child(4) { --card-accent: var(--c4); }
-
-    .mode-card-icon {
-      width: 56px; height: 56px;
-      border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 28px;
-      flex-shrink: 0;
-    }
-    .mode-card:nth-child(1) .mode-card-icon { background: var(--c1-lt); }
-    .mode-card:nth-child(2) .mode-card-icon { background: var(--c2-lt); }
-    .mode-card:nth-child(3) .mode-card-icon { background: var(--c3-lt); }
-    .mode-card:nth-child(4) .mode-card-icon { background: var(--c4-lt); }
-
-    .mode-card h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text-pri);
-      margin: 0;
-      letter-spacing: -0.01em;
-    }
-    .mode-card p {
-      font-size: 0.88rem;
-      color: var(--text-sec);
-      line-height: 1.6;
-      margin: 0;
-      flex: 1;
-    }
-    .mode-card-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 18px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.1) 100%), var(--card-accent, var(--accent));
-      color: #fff;
-      border: none;
-      border-radius: 99px;
-      font-size: 0.88rem;
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
-      transition: all 0.18s;
-      letter-spacing: 0.01em;
-      align-self: flex-start;
-      margin-top: 4px;
+    .mode-card-btn:hover { 
+      opacity: 0.97; 
+      transform: translateY(-3px) translateX(2px); 
       box-shadow: 
         0 1px 0 rgba(255,255,255,0.4) inset,
-        0 -2px 0 rgba(0,0,0,0.15) inset,
-        0 12px 24px rgba(0,0,0,0.15),
-        0 4px 8px rgba(0,0,0,0.12);
+        0 -2px 0 rgba(0,0,0,0.12) inset,
+        0 14px 28px rgba(0,0,0,0.16);
     }
-    .mode-card-btn:hover { opacity: 0.96; transform: translateX(3px); box-shadow: 
-        0 1px 0 rgba(255,255,255,0.4) inset,
-        0 -2px 0 rgba(0,0,0,0.15) inset,
-        0 16px 32px rgba(0,0,0,0.18),
-        0 6px 12px rgba(0,0,0,0.14); }
+    .mode-card-btn:active { 
+      transform: translateY(1px); 
+      box-shadow: 
+        0 1px 0 rgba(255,255,255,0.2) inset,
+        0 -1px 0 rgba(0,0,0,0.1) inset,
+        0 4px 8px rgba(0,0,0,0.1); 
+    }
 
     /* ── Back button ── */
     .home-back-btn {
@@ -498,103 +410,200 @@
       display: flex;
       gap: 0;
       background: var(--surface);
-      border-radius: var(--radius-sm);
+      border-radius: 16px;
       border: 1.5px solid var(--border);
       overflow: hidden;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 16px rgba(45,106,79,0.06);
     }
     .score-item {
       flex: 1; text-align: center;
-      padding: 16px 10px;
+      padding: 14px 10px 12px;
       border-right: 1px solid var(--border);
       transition: background 0.18s;
+      position: relative;
     }
     .score-item:last-child { border-right: none; }
+    .score-item .score-icon {
+      font-size: 0.85rem;
+      margin-bottom: 2px;
+      opacity: 0.7;
+      line-height: 1;
+    }
     .score-item .num {
-      font-size: 1.9rem; font-weight: 700;
+      font-size: 1.85rem; font-weight: 800;
       letter-spacing: -0.04em; line-height: 1;
+      transition: transform 0.25s cubic-bezier(.34,1.56,.64,1);
+    }
+    .score-item .num.pop {
+      animation: numPop 0.4s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes numPop {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.25); }
+      100% { transform: scale(1); }
     }
     .score-item .lbl {
-      font-size: 0.68rem; font-weight: 700;
-      color: var(--text-ter); margin-top: 5px;
+      font-size: 0.66rem; font-weight: 700;
+      color: var(--text-ter); margin-top: 4px;
       text-transform: uppercase; letter-spacing: 0.06em;
     }
     .score-item.correct .num { color: var(--green); }
+    .score-item.correct .score-icon { color: var(--green); opacity: 1; }
     .score-item.wrong   .num { color: var(--red); }
+    .score-item.wrong   .score-icon { color: var(--red); opacity: 1; }
     .score-item.streak  .num { color: var(--amber); }
+    .score-item.streak  .score-icon { color: var(--amber); opacity: 1; }
+    .score-item.streak.has-streak .score-icon { animation: flame 0.8s ease infinite alternate; }
+    @keyframes flame {
+      from { transform: scale(1) rotate(-4deg); }
+      to   { transform: scale(1.15) rotate(4deg); }
+    }
     .score-item.total   .num { color: var(--accent); }
     .progress-wrap {
       flex: 2; display: flex; flex-direction: column;
       justify-content: center; gap: 8px;
-      padding: 16px 22px; border-right: 1px solid var(--border);
+      padding: 14px 22px; border-right: 1px solid var(--border);
+      background: linear-gradient(180deg, #f8fbf9 0%, #fff 100%);
     }
     .progress-wrap .lbl { font-size: 0.75rem; font-weight: 600; color: var(--text-sec); }
     .progress-bar {
-      height: 8px; background: var(--bg2);
+      height: 9px; background: var(--bg2);
       border-radius: 99px; overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
     }
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--green) 0%, #52B788 100%);
+      background: linear-gradient(90deg, #1A7A4A 0%, #52B788 60%, #74c69d 100%);
       border-radius: 99px;
-      transition: width 0.5s cubic-bezier(.34,1.56,.64,1);
+      transition: width 0.55s cubic-bezier(.34,1.56,.64,1);
+      position: relative;
+    }
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+      animation: shimmer 2s infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
     }
 
     /* ── Question card ── */
     .card {
-      background: var(--surface);
+      background: 
+        linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(250,252,251,0.95) 100%),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 27px,
+          rgba(45,106,79,0.025) 27px,
+          rgba(45,106,79,0.025) 28px
+        );
       border: 1.5px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: 20px;
       padding: 36px;
       position: relative;
-      box-shadow: var(--shadow);
+      box-shadow: 0 6px 28px rgba(45,106,79,0.07), 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: 0.7;
     }
     .chapter-badge {
       display: inline-flex; align-items: center; gap: 6px;
       font-size: 0.72rem; font-weight: 700;
       color: var(--accent);
-      background: var(--accent-lt);
-      padding: 5px 14px;
+      background: linear-gradient(135deg, #d8f3dc, #e8f8ef);
+      padding: 6px 14px;
       border-radius: 99px;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       margin-bottom: 22px;
-      border: 1px solid rgba(45,106,79,0.15);
+      border: 1px solid rgba(45,106,79,0.18);
+      box-shadow: 0 2px 6px rgba(45,106,79,0.08);
     }
     .question-text {
       font-family: 'NeueHaasGroteskDisplay', Arial, Helvetica, sans-serif;
-      font-size: 1.3rem; line-height: 1.8;
+      font-size: 1.32rem; line-height: 1.85;
       color: var(--text-pri); margin-bottom: 30px;
     }
     .blank {
-      display: inline-block; min-width: fit-content;
-      padding: 2px 10px; margin: 0 2px;
-      background: var(--accent-lt);
-      border-bottom: 2.5px solid var(--accent);
-      color: var(--accent); font-style: italic;
-      border-radius: 4px 4px 0 0;
+      display: inline-block;
+      min-width: 72px;
+      padding: 3px 12px;
+      margin: 0 3px;
+      background: linear-gradient(180deg, #e8f8ef 0%, #d8f3dc 100%);
+      border: 1.5px dashed var(--accent);
+      border-radius: 8px;
+      color: var(--accent);
+      font-weight: 600;
+      font-style: normal;
       white-space: nowrap;
+      transition: all 0.3s cubic-bezier(.34,1.56,.64,1);
+      position: relative;
+    }
+    .blank.filled {
+      background: linear-gradient(180deg, #d8f3dc 0%, #b7e4c7 100%);
+      border-style: solid;
+      border-color: var(--green);
+      color: var(--green);
+      animation: blankFill 0.45s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes blankFill {
+      0% { transform: scale(0.92); opacity: 0.6; }
+      60% { transform: scale(1.06); }
+      100% { transform: scale(1); opacity: 1; }
     }
 
     /* ── Answer input ── */
-    .answer-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .answer-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
     input[type="text"] {
       flex: 1; min-width: 200px;
       background: var(--surface);
       border: 1.5px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       color: var(--text-pri);
-      font-size: 0.95rem; font-family: inherit; font-weight: 500;
-      padding: 11px 16px; outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
+      font-size: 0.98rem; font-family: inherit; font-weight: 500;
+      padding: 13px 18px; outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s, transform 0.15s;
     }
     input[type="text"]::placeholder { color: var(--text-ter); }
     input[type="text"]:focus {
       border-color: var(--accent);
       box-shadow: 0 0 0 4px var(--accent-glow);
+      transform: translateY(-1px);
     }
-    input[type="text"].correct { border-color: var(--green); background: var(--green-lt); box-shadow: none; }
-    input[type="text"].wrong   { border-color: var(--red); background: var(--red-lt); box-shadow: none; }
+    input[type="text"].correct { 
+      border-color: var(--green); 
+      background: var(--green-lt); 
+      box-shadow: 0 0 0 3px rgba(26,122,74,0.15);
+      animation: inputSuccess 0.4s ease;
+    }
+    input[type="text"].wrong { 
+      border-color: var(--red); 
+      background: var(--red-lt); 
+      box-shadow: 0 0 0 3px rgba(185,28,28,0.12);
+      animation: inputShake 0.4s ease;
+    }
+    @keyframes inputSuccess {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+    @keyframes inputShake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
 
     .btn {
       padding: 11px 24px; border: none; border-radius: 99px;
@@ -630,17 +639,41 @@
 
     /* ── Feedback ── */
     .feedback {
-      margin-top: 18px; padding: 16px 20px; border-radius: var(--radius-sm);
-      font-size: 0.9rem; font-weight: 500; line-height: 1.6; display: none;
+      margin-top: 18px; padding: 16px 20px; border-radius: 12px;
+      font-size: 0.92rem; font-weight: 500; line-height: 1.6; display: none;
     }
-    .feedback.show { display: block; animation: fadeSlideUp 0.25s ease; }
+    .feedback.show { display: block; animation: fadeSlideUp 0.3s cubic-bezier(.34,1.56,.64,1); }
     @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(10px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
     }
-    .feedback.correct-fb { background: var(--green-lt); border: 1px solid rgba(26,122,74,0.25); color: var(--green); }
-    .feedback.wrong-fb   { background: var(--red-lt);   border: 1px solid rgba(185,28,28,0.2); color: var(--red); }
+    .feedback.correct-fb { 
+      background: linear-gradient(135deg, #d8f3dc 0%, #e8f8ef 100%); 
+      border: 1.5px solid rgba(26,122,74,0.28); 
+      color: var(--green); 
+      box-shadow: 0 4px 14px rgba(26,122,74,0.1);
+    }
+    .feedback.wrong-fb { 
+      background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%); 
+      border: 1.5px solid rgba(185,28,28,0.22); 
+      color: var(--red); 
+      box-shadow: 0 4px 14px rgba(185,28,28,0.08);
+    }
     .answer-reveal { font-weight: 700; }
+
+    /* Confetti particles */
+    .confetti-piece {
+      position: fixed;
+      width: 8px; height: 8px;
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 9999;
+      animation: confettiFall 1.1s ease-out forwards;
+    }
+    @keyframes confettiFall {
+      0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+      100% { opacity: 0; transform: translateY(120px) rotate(720deg) scale(0.4); }
+    }
 
     /* ── Divider ── */
     .section-label {
@@ -826,33 +859,301 @@
     /* ── Range inputs ── */
     .range-input-group.hidden { display: none !important; }
 
+    /* ── Streak Toast ── */
+    .streak-toast {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: linear-gradient(135deg, #1B4332 0%, #2D6A4F 100%);
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 99px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      box-shadow: 0 12px 32px rgba(45,106,79,0.35), 0 0 0 4px rgba(216,243,220,0.4);
+      z-index: 10000;
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.4s cubic-bezier(.34,1.56,.64,1);
+    }
+    .streak-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .streak-toast .streak-emoji { font-size: 1.3rem; }
+
     /* ── Responsive ── */
     @media (max-width: 768px) {
       header { padding: 0 16px; }
       .header-inner { height: 56px; }
-      .container { padding: 24px 16px 48px; }
-      .home-hero { padding: 40px 16px 32px; }
-      .home-hero h1 { font-size: 1.75rem; }
+      .container { padding: 24px 16px 100px; }
+      .home-hero { padding: 36px 12px 28px; }
+      .home-hero h1 { font-size: 1.7rem; }
+      .home-hero p { font-size: 0.95rem; }
       .mode-selector { grid-template-columns: 1fr; gap: 14px; }
-      .score-bar { flex-direction: column; }
-      .score-item, .progress-wrap { border-right: none !important; border-bottom: 1px solid var(--border); }
-      .card { padding: 20px; }
-      .answer-row { flex-direction: column; }
+      .mode-card { padding: 24px 20px 22px; }
+      .mode-card-icon { width: 52px; height: 52px; }
+      .score-bar { 
+        flex-wrap: wrap; 
+        border-radius: 14px;
+      }
+      .score-item { 
+        flex: 1 1 30%; 
+        min-width: 70px;
+        border-right: none !important; 
+        border-bottom: 1px solid var(--border); 
+        padding: 12px 8px;
+      }
+      .progress-wrap { 
+        flex: 1 1 100%; 
+        border-right: none !important;
+        border-bottom: 1px solid var(--border);
+        order: -1;
+        padding: 12px 16px;
+      }
+      .card { padding: 22px 18px; }
+      .answer-row { flex-direction: column; gap: 10px; }
       input[type="text"] { min-width: 100%; width: 100%; }
-      .btn { min-height: 44px; }
-      .question-text { font-size: 1.1rem; line-height: 1.65; }
+      .btn { min-height: 46px; width: 100%; justify-content: center; }
+      .btn-next { width: 100%; }
+      .question-text { font-size: 1.12rem; line-height: 1.7; }
       .typing-stats { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-      .controls { padding: 12px 14px; gap: 10px; }
+      .controls { 
+        padding: 12px 14px; 
+        gap: 10px 12px; 
+        border-radius: 14px;
+      }
+      .controls label { font-size: 0.68rem; }
+      .level-btn { padding: 6px 12px; font-size: 0.78rem; }
+      .streak-toast { top: 70px; font-size: 0.88rem; padding: 12px 22px; }
     }
     @media (max-width: 480px) {
-      .container { padding: 12px 10px 32px; }
-      .card { padding: 16px; }
-      .question-text { font-size: 1rem; }
-      .home-hero-icon img { width: 90px; height: 90px; }
+      .container { padding: 14px 12px 110px; }
+      .card { padding: 18px 14px; }
+      .question-text { font-size: 1.02rem; }
+      .home-hero-icon img { width: 88px; height: 88px; }
+      .home-hero h1 { font-size: 1.5rem; }
+      .score-item .num { font-size: 1.5rem; }
       .typing-stats { gap: 8px; }
-      .typing-stat-value { font-size: 1.4rem; }
+      .typing-stat-value { font-size: 1.35rem; }
+      .mode-card h3 { font-size: 1.05rem; }
+      .mode-card p { font-size: 0.84rem; }
     }
     /* .bottom-nav / .nav-btn now come from theme.css; body gets padding via .has-bottom-nav */
+
+    /* Premium learning dashboard surface */
+    body { background: #F7F4EF; color: var(--text-pri); }
+    header { background: rgba(255,255,255,0.82); border-bottom-color: rgba(0,0,0,0.04); }
+    .container { max-width: 1180px; padding: 34px 28px 96px; gap: 18px; }
+    .home-hero { max-width: none; margin: 0; padding: 20px 0 8px; text-align: left; }
+    .home-hero::before, .home-hero-icon::before { display: none; }
+    .home-hero-icon { display: none; }
+    .greeting-kicker, .section-eyebrow {
+      display: block; color: var(--accent); font-size: .7rem; font-weight: 800;
+      letter-spacing: .14em; text-transform: uppercase; margin-bottom: 10px;
+    }
+    .home-hero h1 { font-size: clamp(2rem, 4vw, 3.05rem); letter-spacing: -.035em; margin-bottom: 10px; }
+    .home-hero h1 span { background: none; -webkit-text-fill-color: initial; color: var(--accent); }
+    .home-hero p { margin: 0; max-width: 620px; color: var(--text-sec); font-size: 1rem; }
+    .home-hero { padding-bottom: 2px; }
+    .mission-banner {
+      width:100%; display:flex; align-items:center; gap:12px; padding:15px 18px;
+      margin:10px 0 8px; border-radius:18px; background:#fff; color:var(--text-pri);
+      text-decoration:none; box-shadow:0 8px 28px rgba(0,0,0,.06);
+      transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .mission-banner:hover { transform:translateY(-3px); background:var(--surface2); box-shadow:0 14px 30px rgba(0,0,0,.09); }
+    .mission-banner-icon { width:34px; height:34px; flex:0 0 34px; display:grid; place-items:center; border-radius:11px; background:var(--accent-lt); color:var(--accent); font-weight:900; }
+    .mission-banner > span:nth-child(2) { min-width:0; display:flex; flex-direction:column; gap:3px; }
+    .mission-banner strong { font-size:.92rem; }
+    .mission-banner small { color:var(--text-sec); font-size:.77rem; line-height:1.3; }
+    .mission-banner-arrow { margin-left:auto; color:var(--accent); font-size:1.25rem; font-weight:800; }
+    .section-heading-row { display:flex; align-items:end; justify-content:space-between; gap:16px; }
+    .section-heading-row h2, .learning-section-heading h2 { color:var(--text-pri); }
+    .mission-date { color:var(--text-sec); font-size:.82rem; font-weight:700; white-space:nowrap; }
+    .missions-section { margin-top: 12px; }
+    .mission-groups { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:16px; margin-top:14px; }
+    .mission-group { background:rgba(255,255,255,.78); border-radius:20px; padding:18px; box-shadow:0 8px 28px rgba(0,0,0,.05); }
+    .mission-group-title { display:flex; align-items:center; justify-content:space-between; gap:12px; color:var(--text-pri); font-size:.92rem; font-weight:800; margin-bottom:10px; }
+    .mission-group-title > span:first-child::before { content:'✦'; color:var(--accent); margin-right:7px; }
+    .mission-group-title > span:last-child { color:var(--text-ter); font-size:.75rem; font-weight:700; }
+    .add-mission-btn, .mission-cancel-btn { border:0; background:transparent; color:var(--accent); font:inherit; font-size:.78rem; font-weight:800; cursor:pointer; }
+    .add-mission-btn:hover, .mission-cancel-btn:hover { color:var(--accent-dk); }
+    .mission-list { display:grid; gap:8px; }
+    .mission-item { display:grid; grid-template-columns:28px minmax(0,1fr) auto; align-items:center; gap:10px; padding:12px 10px; border-radius:14px; background:var(--surface); transition:background .18s, opacity .18s; }
+    .mission-item:hover { background:var(--surface2); }
+    .mission-item.done { opacity:.62; }
+    .mission-check { width:22px; height:22px; border:2px solid var(--text-ter); border-radius:50%; display:grid; place-items:center; color:#fff; font-size:.72rem; cursor:pointer; background:transparent; }
+    .mission-item.done .mission-check { border-color:var(--accent); background:var(--accent); }
+    .mission-copy { min-width:0; }
+    .mission-title { color:var(--text-pri); font-size:.86rem; font-weight:700; line-height:1.35; }
+    .mission-item.done .mission-title { text-decoration:line-through; }
+    .mission-progress { color:var(--text-ter); font-size:.73rem; font-weight:700; margin-top:3px; }
+    .mission-go { color:var(--accent); font-size:.72rem; font-weight:800; text-decoration:none; white-space:nowrap; }
+    .mission-go:hover { color:var(--accent-dk); }
+    .mission-delete { border:0; background:transparent; color:var(--text-ter); cursor:pointer; font-size:1rem; padding:2px; }
+    .mission-empty { color:var(--text-ter); font-size:.8rem; padding:14px 10px 6px; }
+    .mission-form { display:grid; grid-template-columns:minmax(0,2fr) 1fr 90px auto auto; gap:8px; margin-top:10px; padding:12px; background:var(--surface); border-radius:14px; box-shadow:var(--shadow); }
+    .mission-form input, .mission-form select { width:100%; min-height:38px; border:1px solid rgba(0,0,0,.08); border-radius:10px; padding:8px 10px; font:inherit; color:var(--text-pri); background:var(--bg2); }
+    .mission-save-btn { border:0; border-radius:99px; padding:8px 14px; background:var(--accent); color:#fff; font:inherit; font-size:.78rem; font-weight:800; cursor:pointer; }
+    .mission-save-btn:hover { background:var(--accent-dk); }
+    .fill-session-head { display:flex; align-items:center; justify-content:space-between; gap:16px; margin:6px 0 14px; }
+    .fill-session-progress { display:flex; align-items:center; gap:10px; min-width:190px; color:var(--text-sec); font-size:.8rem; }
+    .fill-session-progress strong { white-space:nowrap; }
+    .fill-session-track { width:104px; height:5px; overflow:hidden; border-radius:99px; background:rgba(45,106,79,.12); }
+    .fill-session-track i { display:block; width:0; height:100%; border-radius:inherit; background:var(--accent); transition:width .3s ease; }
+    .fill-controls { display:grid; grid-template-columns:minmax(220px,1fr) auto auto; align-items:end; gap:12px; padding:14px; border:0; border-radius:18px; box-shadow:0 8px 28px rgba(0,0,0,.05); }
+    .control-field { display:grid; gap:6px; }
+    .control-field label { margin:0; color:var(--text-ter); font-size:.68rem; font-weight:800; letter-spacing:.04em; text-transform:none; }
+    .fill-controls select, .fill-options-panel input { height:40px; min-height:40px; box-sizing:border-box; }
+    .fill-controls select { width:100%; }
+    .fill-controls .level-selector { height:40px; }
+    .fill-controls .level-btn { height:40px; min-width:48px; padding:7px 13px; }
+    .fill-options-toggle { min-height:40px; padding:8px 13px; border:1px solid rgba(0,0,0,.08); border-radius:99px; background:var(--bg2); color:var(--text-sec); font:inherit; font-size:.8rem; font-weight:800; cursor:pointer; }
+    .fill-options-toggle:hover { color:var(--accent); background:var(--accent-lt); }
+    .fill-options-panel { grid-column:1 / -1; display:flex; align-items:end; gap:18px; padding:15px 14px 3px; border-top:1px solid rgba(45,106,79,.14); background:linear-gradient(180deg, rgba(216,243,220,.2), transparent); }
+    .fill-options-panel .mode-field { width:200px; }
+    .fill-options-panel .scope-field { display:flex; align-items:center; gap:8px; }
+    .fill-options-panel .scope-field > label { color:var(--text-sec); font-size:.8rem; white-space:nowrap; }
+    .fill-options-panel .scope-input { display:flex; align-items:center; gap:7px; }
+    .fill-options-panel .scope-input input { width:64px; padding:7px 8px; border:1px solid rgba(45,106,79,.18); border-radius:10px; background:var(--surface); color:var(--text-pri); font:inherit; text-align:center; }
+    .fill-options-panel select { border:1px solid rgba(45,106,79,.18); border-radius:10px; background:var(--surface); color:var(--text-pri); padding:0 11px; font:inherit; font-size:.82rem; font-weight:700; outline:none; }
+    .fill-options-panel select:focus, .fill-options-panel input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(45,106,79,.1); }
+    .fill-options-panel .scope-input span { color:var(--text-ter); font-size:.78rem; font-weight:700; }
+    .fill-options-panel[hidden], .fill-score-cluster[hidden] { display:none; }
+    .fill-options-panel .range-input-group { padding-bottom:1px; }
+    .fill-score-cluster { display:flex; align-items:center; flex-wrap:wrap; gap:7px; margin:14px 0; padding:9px 12px; background:rgba(255,255,255,.72); border-radius:16px; box-shadow:0 5px 18px rgba(0,0,0,.04); }
+    .score-chip { display:inline-flex; align-items:center; gap:5px; padding:6px 9px; border-radius:99px; background:var(--bg2); color:var(--text-sec); }
+    .score-chip span { font-size:.82rem; font-weight:900; }
+    .score-chip strong { font-size:1rem; line-height:1; color:var(--text-pri); }
+    .score-chip strong.pop { animation:numPop .4s cubic-bezier(.34,1.56,.64,1); }
+    .score-chip small { font-size:.66rem; font-weight:800; color:var(--text-ter); }
+    .score-chip.correct span, .score-chip.correct strong { color:var(--green); }
+    .score-chip.wrong span, .score-chip.wrong strong { color:var(--red); }
+    .score-chip.streak span, .score-chip.streak strong { color:var(--amber); }
+    .score-chip.total span, .score-chip.total strong { color:var(--accent); }
+    .fill-accuracy-line { flex:1; min-width:55px; height:4px; border-radius:99px; background:var(--bg2); overflow:hidden; }
+    .fill-accuracy-line i { display:block; width:0; height:100%; border-radius:inherit; background:var(--green); transition:width .3s ease; }
+    .fill-question-card { padding:32px; border:0; background:#fff; box-shadow:0 8px 28px rgba(0,0,0,.06); }
+    .fill-question-card .chapter-badge { margin-bottom:8px; }
+    .fill-question-card .level-badge { margin:0 0 20px 4px; }
+    .fill-question-card .question-text { font-size:clamp(1.18rem,2vw,1.4rem); line-height:1.85; margin-bottom:26px; }
+    .fill-question-card .blank { min-width:88px; background:var(--accent-lt); border:1.5px dashed var(--accent); color:var(--accent-dk); }
+    .fill-question-card .answer-row { display:flex; flex-direction:column; align-items:stretch; gap:10px; }
+    .fill-question-card .answer-input-row { width:100%; }
+    .fill-question-card input[type="text"], .fill-question-card textarea { display:block; width:100%; min-height:48px; box-sizing:border-box; }
+    .fill-question-card .answer-actions { display:flex; gap:10px; width:100%; }
+    .fill-question-card .answer-actions .btn-check, .fill-question-card .answer-actions .btn-next { flex:1; min-width:0; min-height:46px; }
+    .fill-question-card .btn-next.is-ready { background:var(--accent-lt); border-color:var(--accent); color:var(--accent-dk); box-shadow:0 0 0 3px rgba(45,106,79,.08); }
+    @media (min-width:960px) {
+      #fillTab[style*="display: block"] { display:grid !important; grid-template-columns:minmax(250px, .78fr) minmax(0, 1.5fr); column-gap:22px; align-items:start; }
+      #fillTab > .fill-session-head, #fillTab > #historySection { grid-column:1 / -1; }
+      #fillTab > .fill-controls { grid-column:1; grid-row:2 / span 2; position:sticky; top:84px; }
+      #fillTab > #cardArea { grid-column:2; grid-row:2; min-width:0; }
+      #fillTab > #fillScoreCluster { grid-column:2; grid-row:3; min-width:0; }
+      #fillTab > #historySection { grid-row:4; }
+    }
+    @media (max-width:700px) {
+      .fill-session-head { align-items:flex-start; }
+      .fill-session-progress { min-width:0; flex-direction:column; align-items:flex-end; gap:5px; }
+      .fill-controls { grid-template-columns:1fr 1fr; align-items:stretch; }
+      .chapter-field { grid-column:1 / -1; }
+      .fill-options-toggle { grid-column:1 / -1; }
+      .fill-options-panel { flex-direction:column; align-items:stretch; gap:10px; padding:12px 0 2px; }
+      .fill-options-panel .mode-field, .fill-options-panel .scope-field { width:100%; }
+      .fill-options-panel .scope-field { align-items:center; }
+      .fill-question-card { padding:22px 16px; }
+      .fill-question-card .answer-actions { display:flex; }
+      .fill-accuracy-line { flex-basis:100%; }
+    }
+    @media (max-width:359px) {
+      .fill-question-card .answer-actions { flex-direction:column; }
+    }
+    .fill-settings-card { background:var(--surface); border-radius:18px; padding:18px; box-shadow:0 8px 28px rgba(0,0,0,.06); min-width:0; }
+    .fill-settings-title { color:var(--text-pri); font-size:1.05rem; font-weight:800; margin-bottom:14px; }
+    .fill-settings-card .fill-controls { display:flex; flex-direction:column; align-items:stretch; gap:14px; padding:0; border-radius:0; box-shadow:none; }
+    .fill-settings-card .chapter-field, .fill-settings-card .control-field { width:100%; }
+    .fill-settings-card .level-selector { display:flex; width:100%; gap:6px; overflow:visible; }
+    .fill-settings-card .level-btn { flex:1 1 0; min-width:0; padding-left:8px; padding-right:8px; white-space:nowrap; }
+    .fill-settings-card .fill-options-toggle { width:100%; text-align:left; }
+    .fill-settings-card .fill-options-panel { display:flex; flex-direction:column; align-items:stretch; gap:12px; width:100%; margin-top:0; padding:14px 0 0; background:transparent; }
+    .fill-settings-card .fill-options-panel[hidden] { display:none; }
+    .fill-settings-card .fill-options-panel .mode-field, .fill-settings-card .fill-options-panel .scope-field { width:100%; }
+    .fill-settings-card .fill-options-panel .scope-field { align-items:flex-start; flex-direction:column; gap:6px; }
+    .fill-settings-card .fill-options-panel .scope-input { width:100%; }
+    .fill-settings-card .fill-options-panel .scope-input input { flex:1; width:auto; min-width:0; }
+    .fill-study-column { min-width:0; }
+    .fill-meta-row { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:48px; margin-bottom:12px; }
+    .fill-meta-row .fill-session-head { flex:0 0 auto; margin:0; }
+    .fill-meta-row .fill-score-cluster { flex:1 1 auto; justify-content:flex-end; margin:0; padding:0; background:transparent; box-shadow:none; }
+    .fill-meta-row .score-chip { padding:5px 7px; }
+    @media (min-width:960px) {
+      #fillTab[style*="display: block"] { display:block !important; }
+      #fillTab[style*="display: block"] .fill-layout { display:grid; grid-template-columns:280px minmax(0,1fr); gap:20px; align-items:start; }
+      #fillTab[style*="display: block"] .fill-settings-card { position:sticky; top:84px; }
+      #fillTab[style*="display: block"] #historySection { width:100%; margin-top:20px; }
+    }
+    @media (max-width:959px) {
+      .fill-meta-row { align-items:flex-start; flex-direction:column; gap:8px; }
+      .fill-meta-row .fill-score-cluster { width:100%; justify-content:flex-start; }
+      .fill-settings-card { margin-bottom:16px; }
+    }
+    /* Final settings-card guard: keep the controls stacked and contained on narrow screens. */
+    #fillTab .fill-settings-card { box-sizing:border-box; width:100%; overflow:visible; }
+    #fillTab .fill-settings-card .fill-controls { display:flex !important; flex-direction:column !important; width:100%; min-width:0; }
+    #fillTab .fill-settings-card .level-selector { display:flex !important; flex-wrap:nowrap; width:100%; min-width:0; overflow:visible; }
+    #fillTab .fill-settings-card .level-btn { flex:1 1 0; width:auto; min-width:0; max-width:none; overflow:visible; text-overflow:clip; white-space:nowrap; border-radius:999px; }
+    #fillTab .fill-settings-card .fill-options-toggle { display:flex; align-items:center; justify-content:space-between; width:100%; }
+    .learning-section-heading { display: flex; align-items: end; justify-content: space-between; margin: 16px 0 2px; }
+    .learning-section-heading h2 { margin: 0; color: var(--text-pri); font-size: 1.55rem; letter-spacing: -.025em; }
+    .section-eyebrow { margin-bottom: 6px; color: var(--text-ter); font-size: .64rem; }
+    .section-count { color: var(--text-ter); font-size: .82rem; font-weight: 700; padding-bottom: 3px; }
+    .mode-selector { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+    .mode-card {
+      grid-column: span 2; min-height: 330px; padding: 24px 22px 20px; border: 0; border-radius: 20px;
+      box-shadow: 0 8px 28px rgba(0,0,0,.06); gap: 11px;
+    }
+    .mode-card:nth-child(4) { grid-column: 2 / span 2; }
+    .mode-card:nth-child(5) { grid-column: 4 / span 2; }
+    .mode-card::before, .mode-card::after { display: none; }
+    .mode-card:hover { transform: translateY(-5px); border-color: transparent; box-shadow: 0 16px 34px rgba(0,0,0,.10); }
+    .mode-card:nth-child(1) { --card-accent: #2D6A4F; background: #E8F5E9; }
+    .mode-card:nth-child(2) { --card-accent: #1D6FA5; background: #E3F2FD; }
+    .mode-card:nth-child(3) { --card-accent: #7C3AED; background: #F3E5F5; }
+    .mode-card:nth-child(4) { --card-accent: #B45309; background: #FFF8E1; }
+    .mode-card:nth-child(5) { --card-accent: #C2410C; background: #FBE9E7; }
+    .mode-card-icon, .mode-card:nth-child(n) .mode-card-icon { background: rgba(255,255,255,.76); box-shadow: none; }
+    .mode-card-icon svg { stroke: var(--card-accent); }
+    .mode-category { color: var(--card-accent); font-size: .68rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    .mode-card h3 { font-size: 1.18rem; }
+    .mode-card p { font-size: .86rem; line-height: 1.55; }
+    .mode-meta { color: var(--text-sec); font-size: .76rem; font-weight: 700; opacity: .8; }
+    .mode-card-btn {
+      margin-top: auto; padding: 10px 16px; border-radius: 99px; background: var(--card-accent); box-shadow: none;
+      transform: none; font-size: .82rem;
+    }
+    .mode-card-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,0,0,.12); }
+    @media (max-width: 900px) {
+      .mode-selector { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .mode-card, .mode-card:nth-child(4), .mode-card:nth-child(5) { grid-column: auto; }
+    }
+    @media (max-width: 560px) {
+      .container { padding: 24px 16px 104px; }
+      .section-heading-row { align-items:flex-start; flex-direction:column; gap:4px; }
+      .mission-groups { grid-template-columns:1fr; }
+      .mission-form { grid-template-columns:1fr 1fr; }
+      .mission-form input:first-child { grid-column:1 / -1; }
+      .mission-save-btn, .mission-cancel-btn { min-height:38px; }
+      .mode-selector { grid-template-columns: 1fr; }
+      .mode-card { min-height: 270px; }
+      .learning-section-heading { align-items: start; flex-direction: column; gap: 4px; }
+      .section-count { padding: 0; }
+    }
+
     #badgeToastContainer {
       position: fixed;
       top: 20px;
@@ -929,6 +1230,9 @@
   .badge-toast.rarity-legendary { border-color: #ffd24f; }
   </style>
   <link rel="stylesheet" href="/static/css/mobile-responsive.css">
+  <style>
+    body.index-page { background: #FFFFFF; }
+  </style>
 
   <script src="/static/js/session-refresh.js"></script>
   <script src="/static/js/sw-register.js"></script>
@@ -966,20 +1270,23 @@
   </script>
   </head>
 
-  <body class="has-bottom-nav">
+  <body class="has-bottom-nav index-page">
   <div id="badgeToastContainer"></div>
 
 
   <header>
     <div class="header-inner">
       <!-- Icon đổi thành Logo chữ ASH, bọc sự kiện click về UI chính -->
-      <div class="brand" onclick="window.location.href='{{ url_for("index") }}'" style="cursor:pointer;">
+      <a class="brand" href="{{ url_for('index') }}" style="cursor:pointer;">
         <img src="{{ url_for('static', filename='pictures/Logo2.png') }}" alt="Always Stay Hydrated Logo"width="120">
-      </div>
+      </a>
         
       <div style="display:flex; gap:12px; align-items:center;">
         {% if session.get('user') %}
-          <div style="color:var(--text-sec); font-weight:600;">Xin chào, {{ session.get('user') }}</div>
+          <a class="profile-link" href="{{ url_for('profile') }}" aria-label="Mở trang cá nhân">
+            <span class="profile-avatar">{{ session.get('user', 'B')[:2]|upper }}</span>
+            <span>Xin chào, {{ session.get('user') }}</span>
+          </a>
           <a href="{{ url_for('logout') }}" class="logout-btn" onclick="clearAshCaches()">Đăng Xuất</a>
         {% else %}
           <a href="/login" class="tab-btn">Đăng nhập</a>
@@ -999,49 +1306,107 @@
         <div class="home-hero-icon">
           <img src="{{ url_for('static', filename='pictures/Icon.png') }}" alt="Always Stay Hydrated Logo">
         </div>
-        <h1>Đóng Ấn <span>Ngôi Lời</span><br>Vào Trong Lòng</h1>
-        <p>Chọn cách học bạn muốn để ghi khắc sách Khải Huyền<br>Từng câu, từng chữ, từng ngày.</p>
+        <div class="greeting-kicker">Đóng Ấn Ngôi Lời</div>
+        <h1>Xin chào, {{ session.get('user', 'bạn') }} <span>👋</span></h1>
+        <p>Tiếp tục hành trình ghi khắc sách Khải Huyền, từng câu từng chữ mỗi ngày.</p>
+
       </div>
 
+      <a class="mission-banner" href="{{ url_for('missions') }}">
+        <span class="mission-banner-icon">✓</span>
+        <span><strong>Nhiệm vụ hôm nay</strong><small id="homeMissionSummary">Đang tải tiến độ…</small></span>
+        <span class="mission-banner-arrow">→</span>
+      </a>
+
+      <a class="mission-banner" href="{{ url_for('timeline') }}" style="border-color: rgba(45,106,79,.2); background: linear-gradient(100deg, #f5fbf6, #fff);">
+        <span class="mission-banner-icon" style="background:#D8F3DC; color:#1B4332;">↗</span>
+        <span><strong>Dòng chảy ứng nghiệm Khải Huyền</strong><small>Bối cảnh lịch sử và ghi chú học tập đa chiều</small></span>
+        <span class="mission-banner-arrow">→</span>
+      </a>
+
+      <a class="mission-banner" href="{{ url_for('read_bible') }}" style="border-color: rgba(45,106,79,.24); background: linear-gradient(100deg, #edf8ef, #fff);">
+        <span class="mission-banner-icon" style="background:#c9e8d2; color:#1B4332;">◉</span>
+        <span><strong>Đọc Khải Huyền</strong><small>Mở sách, chọn chương và ghi dấu những câu muốn nhớ</small></span>
+        <span class="mission-banner-arrow">→</span>
+      </a>
+
+
+      <div class="learning-section-heading">
+        <div>
+          <span class="section-eyebrow">HỌC THEO CÁCH CỦA BẠN</span>
+          <h2>Chế độ học</h2>
+        </div>
+        <span class="section-count">5 cách luyện tập</span>
+      </div>
 
       <div class="mode-selector">
         <!-- Mode 1: Điền chỗ trống -->
         <div class="mode-card" onclick="selectMode('fill')">
-          <div class="mode-card-icon">📝</div>
+          <div class="mode-card-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1B4332" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+            </svg>
+          </div>
+          <span class="mode-category">Học thuộc</span>
           <h3>Điền vào Chỗ Trống</h3>
           <p>Hoàn thành câu Kinh thánh bằng cách điền từ hoặc cụm từ còn thiếu. Ghi khắc Ngôi lời trọn vẹn qua từng lần thực hành.</p>
+          <span class="mode-meta">22 đoạn · 3 cấp độ</span>
           <button class="mode-card-btn">Bắt đầu →</button>
         </div>
 
         <!-- Mode 2: Luyện gõ 10 ngón -->
         <div class="mode-card" onclick="selectMode('typing')">
-          <div class="mode-card-icon">⌨️</div>
+          <div class="mode-card-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#124867" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M6 16h12"/>
+            </svg>
+          </div>
+          <span class="mode-category">Luyện kỹ năng</span>
           <h3>Luyện Gõ 10 Ngón</h3>
           <p>Gõ lại câu Kinh thánh chính xác nhất. Đo tốc độ (WPM) và độ chính xác — vừa học Khải Huyền, vừa luyện đánh máy.</p>
+          <span class="mode-meta">Tốc độ · Độ chính xác</span>
           <button class="mode-card-btn">Bắt đầu →</button>
         </div>
 
         <!-- Mode 3: Flashcard -->
         <div class="mode-card" onclick="selectMode('flashcard')">
-          <div class="mode-card-icon">📖</div>
+          <div class="mode-card-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5B21B6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
+          </div>
+          <span class="mode-category">Ghi nhớ</span>
           <h3>Flashcard — Thẻ Ghi Nhớ</h3>
           <p>Học bằng thẻ 4 mặt: Tiêu đề, Trích đoạn, Giải nghĩa và Gợi ý Speech. Theo dõi tiến độ và đánh dấu những phần cần ôn tập.</p>
+          <span class="mode-meta">Thẻ 4 mặt · Theo dõi tiến độ</span>
           <button class="mode-card-btn">Bắt đầu →</button>
         </div>
 
         <!-- Mode 4: Kiểm tra đóng ấn -->
         <div class="mode-card" onclick="window.location.href='/exam_library'">
-          <div class="mode-card-icon">✍🏻</div>
+          <div class="mode-card-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#92400E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+            </svg>
+          </div>
+          <span class="mode-category">Đánh giá</span>
           <h3>Kiểm Tra Đóng Ấn</h3>
           <p>Kiểm tra kiến thức qua bài thi điền thông tin. Nộp bài để xem kết quả chi tiết từng câu và theo dõi tiến bộ.</p>
+          <span class="mode-meta">Bài thi · Kết quả chi tiết</span>
           <button class="mode-card-btn">Vào Làm Bài →</button>
         </div>
 
-        <!-- Mode 5: Đấu trường Khải Huyền -->
+        <!-- Mode 5: Đấu Trường -->
         <div class="mode-card" onclick="window.location.href='/multiplayer'">
-          <div class="mode-card-icon">🎮</div>
+          <div class="mode-card-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9A3412" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><rect x="2" y="6" width="20" height="12" rx="2"/>
+            </svg>
+          </div>
+          <span class="mode-category">Thi đấu</span>
           <h3>Đấu Trường Khải Huyền</h3>
           <p>Thi đấu trực tiếp cùng bạn bè bằng những câu hỏi Khải Huyền và cùng xem bảng xếp hạng.</p>
+          <span class="mode-meta">Cùng bạn bè · Bảng xếp hạng</span>
           <button class="mode-card-btn">Vào Đấu Trường →</button>
         </div>
       </div>
@@ -1049,76 +1414,43 @@
 
     <!-- Tab 1: Fill in the blank -->
     <div id="fillTab">
-      <button class="home-back-btn" onclick="switchTab('home')">← Quay lại</button>
+      <div class="fill-layout">
+        <aside class="fill-settings-card">
+          <div class="fill-settings-title">Cài đặt bài</div>
+          <div class="fill-controls controls">
+            <div class="control-field chapter-field"><label for="chapterSelect">Đoạn học</label><select id="chapterSelect" aria-label="Chọn đoạn học" onchange="toggleRangeInputs('fill')"><option value="random">Ngẫu nhiên — tất cả 22 đoạn</option></select></div>
+            <div class="control-field"><label>Độ khó</label><div class="level-selector" aria-label="Chọn độ khó"><button class="level-btn active-lv1" id="lvBtn1" onclick="setFillLevel(1)" title="Ẩn 3–5 từ">Lv 1</button><button class="level-btn" id="lvBtn2" onclick="setFillLevel(2)" title="Ẩn 10–15 từ">Lv 2</button><button class="level-btn" id="lvBtn3" onclick="setFillLevel(3)" title="Điền cả câu">Lv 3</button></div></div>
+            <button type="button" class="fill-options-toggle" onclick="toggleFillOptions()" aria-expanded="false">⚙ Tùy chọn <span>⌄</span></button>
+            <div id="fillOptions" class="fill-options-panel" hidden>
+              <div class="control-field mode-field"><label for="fillModeSelect">Chế độ</label><select id="fillModeSelect" aria-label="Chế độ học" onchange="handleFillModeChange()"><option value="random">Ngẫu nhiên</option><option value="sequential">Tuần tự</option></select></div>
+              <div id="fillRangeGroup" class="range-input-group scope-field hidden"><label>Câu</label><div class="scope-input"><input type="number" id="fillStartVerse" aria-label="Câu bắt đầu" min="1" value="1"><span>–</span><input type="number" id="fillEndVerse" aria-label="Câu kết thúc" min="1" value="10"></div></div>
+            </div>
+          </div>
+        </aside>
 
-    <!-- Controls -->
-    <div class="controls">
-      <label>CHỌN ĐOẠN</label>
-      <select id="chapterSelect" onchange="toggleRangeInputs('fill')">
-        <option value="random">Ngẫu nhiên — tất cả 22 đoạn</option>
-      </select>
-      
-      <label>CHẾ ĐỘ</label>
-      <select id="fillModeSelect" onchange="handleFillModeChange()">
-        <option value="random">Ngẫu nhiên</option>
-        <option value="sequential">Tuần tự</option>
-      </select>
-      
-      <div id="fillRangeGroup" class="range-input-group hidden">
-        <label>Từ câu</label>
-        <input type="number" id="fillStartVerse" min="1" value="1">
-        <label>Đến câu</label>
-        <input type="number" id="fillEndVerse" min="1" value="10">
-      </div>
+        <section class="fill-study-column">
+          <div class="fill-meta-row">
+            <div class="fill-session-head"><button class="home-back-btn" onclick="switchTab('home')">← Quay lại</button><div class="fill-session-progress"><strong id="fillSessionProgress">Phiên học</strong><span class="fill-session-track"><i id="fillSessionProgressBar"></i></span></div></div>
+            <div class="fill-score-cluster" id="fillScoreCluster" aria-label="Điểm phiên học" hidden>
+        <div class="score-chip correct"><span>✓</span><strong id="scoreCorrect">0</strong><small>Đúng</small></div>
+        <div class="score-chip wrong"><span>✗</span><strong id="scoreWrong">0</strong><small>Sai</small></div>
+        <div class="score-chip streak" id="streakItem"><span id="streakIcon">⚡</span><strong id="scoreStreak">0</strong><small>Liên tiếp</small></div>
+        <div class="score-chip accuracy"><span>◔</span><strong id="accuracyLabel">—</strong><small>Chính xác</small></div>
+        <div class="score-chip total"><span>Σ</span><strong id="scoreTotal">0</strong><small>Tổng</small></div>
+        <span class="fill-accuracy-line"><i id="progressFill"></i></span>
+            </div>
+          </div>
 
-      <!-- Level selector -->
-      <label>ĐỘ KHÓ</label>
-      <div class="level-selector">
-        <button class="level-btn active-lv1" id="lvBtn1" onclick="setFillLevel(1)" title="Ẩn 3–5 từ">Lv 1</button>
-        <button class="level-btn" id="lvBtn2" onclick="setFillLevel(2)" title="Ẩn 10–15 từ">Lv 2</button>
-        <button class="level-btn" id="lvBtn3" onclick="setFillLevel(3)" title="Điền cả câu">Lv 3</button>
+          <div class="card fill-question-card" id="cardArea">
+            <div class="welcome">
+              <div class="welcome-icon">📖</div>
+              <h2>Sẵn sàng ghi khắc?</h2>
+              <p>Chọn đoạn muốn ôn tập hoặc để chế độ <strong>Ngẫu nhiên</strong> để luyện toàn bộ 22 đoạn Khải Huyền.</p>
+              <button class="btn-start" onclick="loadQuestion()">Bắt đầu học ngay →</button>
+            </div>
+          </div>
+        </section>
       </div>
-
-      <button class="btn btn-next" onclick="loadQuestion()" style="margin-left:auto;">
-        Câu tiếp theo →
-      </button>
-    </div>
-
-    <!-- Score bar -->
-    <div class="score-bar">
-      <div class="score-item correct">
-        <div class="num" id="scoreCorrect">0</div>
-        <div class="lbl">Đúng</div>
-      </div>
-      <div class="score-item wrong">
-        <div class="num" id="scoreWrong">0</div>
-        <div class="lbl">Sai</div>
-      </div>
-      <div class="score-item streak">
-        <div class="num" id="scoreStreak">0</div>
-        <div class="lbl">Liên tiếp</div>
-      </div>
-      <div class="progress-wrap">
-        <div class="lbl" id="accuracyLabel">Độ chính xác: —</div>
-        <div class="progress-bar">
-          <div class="progress-fill" id="progressFill" style="width:0%"></div>
-        </div>
-      </div>
-      <div class="score-item total">
-        <div class="num" id="scoreTotal">0</div>
-        <div class="lbl">Tổng</div>
-      </div>
-    </div>
-
-    <!-- Question card -->
-    <div class="card" id="cardArea">
-      <div class="welcome">
-        <div class="welcome-icon">📖</div>
-        <h2>Ready to start?</h2>
-        <p>Chọn đoạn muốn ôn tập hoặc để chế độ <strong>Ngẫu nhiên</strong> để luyện toàn bộ 22 đoạn Khải Huyền.</p>
-        <button class="btn-start" onclick="loadQuestion()">Bắt đầu học ngay →</button>
-      </div>
-    </div>
 
     <!-- History -->
     <div id="historySection" style="display:none">
@@ -1172,35 +1504,143 @@
 
   </div>
 
-  <nav class="bottom-nav" aria-label="Điều hướng chính">
-    <button type="button" class="nav-btn active" data-page="home" onclick="switchTab('home')">
-      <span class="nav-icon">🏠</span>
-      <span class="nav-label">Trang chủ</span>
-    </button>
-    <button type="button" class="nav-btn" data-page="fill" onclick="switchTab('fill')">
-      <span class="nav-icon">📝</span>
-      <span class="nav-label">Điền</span>
-    </button>
-    <button type="button" class="nav-btn" data-page="typing" onclick="switchTab('typing')">
-      <span class="nav-icon">⌨️</span>
-      <span class="nav-label">Gõ</span>
-    </button>
-    <button type="button" class="nav-btn" data-page="flashcard" onclick="window.location.href='/flashcard/login'">
-      <span class="nav-icon">📖</span>
-      <span class="nav-label">Flashcard</span>
-    </button>
-    <button type="button" class="nav-btn" data-page="exam" onclick="window.location.href='/exam_library'">
-      <span class="nav-icon">✍️</span>
-      <span class="nav-label">Kiểm tra</span>
-    </button>
-    <button type="button" class="nav-btn" data-page="multiplayer" onclick="window.location.href='/multiplayer'">
-      <span class="nav-icon">🎮</span>
-      <span class="nav-label">Đấu trường</span>
-    </button>
-  </nav>
+  {% include "_bottom_nav.html" %}
 
 
   <script>
+    // Daily missions are intentionally client-side until a server activity log exists.
+    const missionPool = [
+      { id: 'fill_streak_10', title: 'Trả lời đúng 10 câu liên tiếp không sai', mode: 'fill', target: 10, metric: 'consecutive_correct' },
+      { id: 'typing_acc_5', title: 'Gõ 5 câu liên tiếp đạt ≥ 90% accuracy', mode: 'typing', target: 5, metric: 'accuracy_ge_90' },
+      { id: 'flashcard_review_1', title: 'Review lại ít nhất 1 thẻ đã đánh dấu cần ôn', mode: 'flashcard', target: 1, metric: 'reviewed_marked' },
+      { id: 'exam_once', title: 'Hoàn thành 1 bài Kiểm tra đóng ấn', mode: 'exam', target: 1, metric: 'exam_submitted' },
+      { id: 'multiplayer_once', title: 'Tham gia 1 ván Đấu trường', mode: 'multiplayer', target: 1, metric: 'match_played' },
+      { id: 'fill_accuracy_8', title: 'Trả lời đúng 8 câu điền chỗ trống', mode: 'fill', target: 8, metric: 'correct_answers' },
+      { id: 'typing_speed_10', title: 'Luyện gõ 10 câu với độ chính xác từ 85%', mode: 'typing', target: 10, metric: 'accuracy_ge_85' },
+      { id: 'flashcard_review_3', title: 'Ôn lại 3 thẻ ghi nhớ trong ngày', mode: 'flashcard', target: 3, metric: 'reviewed_any' },
+      { id: 'exam_score_80', title: 'Đạt từ 80% trong một bài kiểm tra', mode: 'exam', target: 1, metric: 'exam_score_ge_80' },
+      { id: 'multiplayer_win', title: 'Giành 1 chiến thắng tại Đấu trường', mode: 'multiplayer', target: 1, metric: 'match_won' }
+    ];
+    const localDateKey = (() => {
+      const date = new Date();
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    })();
+    const missionDateKey = localDateKey;
+    const missionStorageKey = `missions_${missionDateKey}`;
+    const missionLinks = { fill: '/home?tab=fill', typing: '/home?tab=typing', flashcard: '/flashcard/login', exam: '/exam_library', multiplayer: '/multiplayer' };
+
+    function chooseDailyMissions() {
+      const pool = [...missionPool]; let seed = [...missionDateKey].reduce((sum, character) => sum + character.charCodeAt(0), 0); const selected = [];
+      while (selected.length < 5 && pool.length) { seed = (seed * 9301 + 49297) % 233280; selected.push(pool.splice(seed % pool.length, 1)[0]); }
+      return selected;
+    }
+    function loadDailyMissions() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(missionStorageKey) || 'null');
+        if (saved && saved.version === 2 && saved.required?.length === 5 && Array.isArray(saved.optional)) return saved;
+      } catch (error) { /* Ignore malformed local data and start fresh. */ }
+      const fresh = { version: 2, required: chooseDailyMissions().map(mission => ({ ...mission, progress: 0, done: false })), optional: [] };
+      localStorage.setItem(missionStorageKey, JSON.stringify(fresh));
+      return fresh;
+    }
+
+    function saveDailyMissions(missions) {
+      localStorage.setItem(missionStorageKey, JSON.stringify(missions));
+      localStorage.setItem(`activity_${missionDateKey}`, '1');
+    }
+
+    function missionIsDone(mission) { return mission.done || mission.progress >= mission.target; }
+    function missionProgressText(mission) {
+      if (missionIsDone(mission)) return 'Hoàn thành';
+      return mission.progress ? `${mission.progress}/${mission.target}` : 'Chưa bắt đầu';
+    }
+
+    function renderMissionList(elementId, missions, optional = false) {
+      const list = document.getElementById(elementId);
+      if (!list) return;
+      list.innerHTML = missions.map((mission, index) => {
+        const done = missionIsDone(mission);
+        const link = missionLinks[mission.mode];
+        return `<div class="mission-item${done ? ' done' : ''}">
+          <button type="button" class="mission-check" data-mission-toggle="${optional ? 'optional' : 'required'}" data-mission-index="${index}" aria-label="Đánh dấu nhiệm vụ">${done ? '✓' : ''}</button>
+          <div class="mission-copy"><div class="mission-title">${mission.title}</div><div class="mission-progress">${missionProgressText(mission)}${mission.mode ? ` · ${mission.mode}` : ''}</div></div>
+          ${link && !done ? `<a class="mission-go" href="${link}">Làm ngay →</a>` : optional ? `<button type="button" class="mission-delete" data-mission-delete="${index}" aria-label="Xóa nhiệm vụ">×</button>` : ''}
+        </div>`;
+      }).join('');
+    }
+
+    function renderMissions() {
+      if (!document.getElementById('requiredMissions')) return;
+      const missions = loadDailyMissions();
+      const date = new Date();
+      document.getElementById('missionDate').textContent = date.toLocaleDateString('vi-VN', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
+      renderMissionList('requiredMissions', missions.required);
+      renderMissionList('optionalMissions', missions.optional, true);
+      document.getElementById('optionalEmpty').hidden = missions.optional.length > 0;
+      const completed = missions.required.filter(missionIsDone).length;
+      document.getElementById('requiredMissionSummary').textContent = `${completed}/${missions.required.length} hoàn thành`;
+      document.querySelectorAll('[data-mission-toggle]').forEach(button => button.addEventListener('click', () => {
+        const collection = button.dataset.missionToggle === 'optional' ? missions.optional : missions.required;
+        const mission = collection[Number(button.dataset.missionIndex)];
+        if (!mission) return;
+        mission.done = !missionIsDone(mission);
+        if (mission.done) mission.progress = mission.target;
+        else mission.progress = 0;
+        saveDailyMissions(missions); renderMissions();
+      }));
+      document.querySelectorAll('[data-mission-delete]').forEach(button => button.addEventListener('click', () => {
+        missions.optional.splice(Number(button.dataset.missionDelete), 1); saveDailyMissions(missions); renderMissions();
+      }));
+    }
+
+    function updateMissionProgress(mode, amount = 1, metric = '') {
+      const missions = loadDailyMissions();
+      let changed = false;
+      [...missions.required, ...missions.optional].forEach(mission => {
+        if (mission.mode !== mode || (metric && mission.metric !== metric) || missionIsDone(mission)) return;
+        mission.progress = Math.min(mission.target, (mission.progress || 0) + amount);
+        mission.done = mission.progress >= mission.target;
+        changed = true;
+      });
+      if (changed) { saveDailyMissions(missions); renderMissions(); }
+    }
+
+    function resetMissionProgress(mode, metric) {
+      const missions = loadDailyMissions();
+      let changed = false;
+      [...missions.required, ...missions.optional].forEach(mission => {
+        if (mission.mode === mode && mission.metric === metric && mission.progress) {
+          mission.progress = 0; mission.done = false; changed = true;
+        }
+      });
+      if (changed) { saveDailyMissions(missions); renderMissions(); }
+    }
+
+    function openMissionForm() { document.getElementById('missionForm').hidden = false; document.getElementById('missionTitleInput').focus(); }
+    function closeMissionForm() { document.getElementById('missionForm').hidden = true; document.getElementById('missionForm').reset(); }
+    function initMissions() {
+      if (!document.getElementById('missionForm')) {
+        const missions = loadDailyMissions();
+        const remaining = missions.required.filter(mission => !missionIsDone(mission)).length;
+        const summary = document.getElementById('homeMissionSummary');
+        if (summary) summary.textContent = remaining ? `Còn ${remaining} nhiệm vụ bắt buộc hôm nay →` : 'Đã hoàn thành các nhiệm vụ bắt buộc hôm nay';
+        return;
+      }
+      renderMissions();
+      document.getElementById('addMissionBtn').addEventListener('click', openMissionForm);
+      document.getElementById('cancelMissionBtn').addEventListener('click', closeMissionForm);
+      document.getElementById('missionForm').addEventListener('submit', event => {
+        event.preventDefault();
+        const title = document.getElementById('missionTitleInput').value.trim();
+        if (!title) return;
+        const missions = loadDailyMissions();
+        missions.optional.push({ id: `optional_${Date.now()}`, title, mode: document.getElementById('missionModeInput').value, target: Number(document.getElementById('missionTargetInput').value) || 1, progress: 0, done: false });
+        saveDailyMissions(missions); closeMissionForm(); renderMissions();
+      });
+    }
+
+    initMissions();
+
     const state = {
       correct: 0, wrong: 0, streak: 0, total: 0,
       currentAnswer: null,
@@ -1277,21 +1717,73 @@
 
     function launchConfetti() {
       const body = document.body;
-      const colors = ['#F59E0B', '#10B981', '#6366F1', '#EF4444', '#14B8A6'];
-      for (let i = 0; i < 24; i++) {
+      const colors = ['#F59E0B', '#10B981', '#52B788', '#74c69d', '#D4A017', '#EF4444'];
+      for (let i = 0; i < 18; i++) {
         const confetti = document.createElement('div');
         confetti.className = 'confetti-piece';
-        const size = Math.random() * 10 + 6;
+        const size = Math.random() * 8 + 5;
         confetti.style.width = `${Math.round(size)}px`;
-        confetti.style.height = `${Math.round(size * 1.4)}px`;
-        confetti.style.left = `${Math.random() * 100}%`;
-        confetti.style.top = `${Math.random() * 20}%`;
+        confetti.style.height = `${Math.round(size * 1.3)}px`;
+        confetti.style.left = `${40 + Math.random() * 20}%`;
+        confetti.style.top = `${30 + Math.random() * 15}%`;
         confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-        confetti.style.animationDelay = `${Math.random() * 0.35}s`;
-        confetti.style.opacity = '0';
+        confetti.style.animationDelay = `${Math.random() * 0.2}s`;
+        confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
         body.appendChild(confetti);
-        setTimeout(() => confetti.remove(), 2600);
+        setTimeout(() => confetti.remove(), 1300);
       }
+    }
+
+    function popScore(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove('pop');
+      void el.offsetWidth; // force reflow
+      el.classList.add('pop');
+    }
+
+    function updateStreakUI() {
+      const item = document.getElementById('streakItem');
+      const icon = document.getElementById('streakIcon');
+      if (!item || !icon) return;
+      if (state.streak >= 3) {
+        item.classList.add('has-streak');
+        icon.textContent = '🔥';
+      } else {
+        item.classList.remove('has-streak');
+        icon.textContent = '⚡';
+      }
+    }
+
+    const STREAK_MILESTONES = [5, 10, 15, 20, 30, 50];
+    function showStreakToast(streak) {
+      if (!STREAK_MILESTONES.includes(streak)) return;
+      // Remove existing toast if any
+      const old = document.querySelector('.streak-toast');
+      if (old) old.remove();
+
+      const messages = {
+        5:  'Chuỗi 5 câu! Giữ vững nhé 🔥',
+        10: 'Chuỗi 10 câu! Xuất sắc quá 💪',
+        15: 'Chuỗi 15 câu! Bạn đang cháy! 🚀',
+        20: 'Chuỗi 20 câu! Không thể cản được 🏆',
+        30: 'Chuỗi 30 câu! Huyền thoại! 👑',
+        50: 'Chuỗi 50 câu! Bạn là cao thủ Khải Huyền! 🌟'
+      };
+
+      const toast = document.createElement('div');
+      toast.className = 'streak-toast';
+      toast.innerHTML = `<span class="streak-emoji">🔥</span> ${messages[streak] || `Chuỗi ${streak} câu!`}`;
+      document.body.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => toast.classList.add('show'));
+      });
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+      }, 2800);
     }
 
     // Ẩn/Hiện nhóm nhập Từ câu -> Đến câu tùy thuộc vào việc chọn Đoạn cụ thể hay Ngẫu nhiên
@@ -1319,6 +1811,16 @@
           document.getElementById('typingEndVerse').max = maxCount;
         }
       }
+    }
+
+    function toggleFillOptions() {
+      const panel = document.getElementById('fillOptions');
+      const button = document.querySelector('.fill-options-toggle');
+      if (!panel || !button) return;
+      const isHidden = panel.hasAttribute('hidden');
+      panel.toggleAttribute('hidden', !isHidden);
+      button.setAttribute('aria-expanded', String(isHidden));
+      button.innerHTML = isHidden ? 'Tùy chọn <span>⌃</span>' : 'Tùy chọn <span>⌄</span>';
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -1518,9 +2020,13 @@
       };
 
       // Thêm indicator "Câu X / Y" nếu ở chế độ tuần tự
-      const indexIndicator = currentIndex && totalQuestions 
-        ? `<div style="font-size: 0.85rem; color: var(--text-ter); margin-bottom: 10px; text-align: center;">Câu ${currentIndex} / ${totalQuestions}</div>` 
-        : '';
+      const indexIndicator = currentIndex && totalQuestions
+        ? `Câu ${currentIndex} / ${totalQuestions}`
+        : `Câu ${state.total + 1}`;
+      const sessionProgress = document.getElementById('fillSessionProgress');
+      const sessionProgressBar = document.getElementById('fillSessionProgressBar');
+      if (sessionProgress) sessionProgress.textContent = indexIndicator;
+      if (sessionProgressBar) sessionProgressBar.style.width = currentIndex && totalQuestions ? `${(currentIndex / totalQuestions) * 100}%` : '0%';
 
       // Level 3 dùng textarea để dễ gõ dài
       const inputEl = level === 3
@@ -1538,12 +2044,13 @@
       document.getElementById('cardArea').innerHTML = `
         <div class="chapter-badge">Khải Huyền ${data.chapter}:${data.verse}</div>
         ${levelBadge}
-        ${indexIndicator}
         ${questionHTML}
         <div class="${answerRowClass}">
-          ${inputEl}
-          <button class="btn btn-check" id="checkBtn" onclick="checkAnswer()">Kiểm tra</button>
-          <button class="btn btn-next" onclick="loadQuestion()">Câu tiếp →</button>
+          <div class="answer-input-row">${inputEl}</div>
+          <div class="answer-actions">
+            <button class="btn btn-check" id="checkBtn" onclick="checkAnswer()">Kiểm tra</button>
+            <button class="btn btn-next" id="nextQuestionBtn" onclick="loadQuestion()">Câu tiếp →</button>
+          </div>
         </div>
         <div class="feedback" id="feedback"></div>
       `;
@@ -1575,6 +2082,7 @@
 
       state.answered = true;
       state.total++;
+      document.getElementById('fillScoreCluster')?.removeAttribute('hidden');
       document.getElementById('scoreTotal').textContent = state.total;
 
       const correct = normalize(userAns) === normalize(state.currentAnswer);
@@ -1588,6 +2096,11 @@
         fb.innerHTML = `✓ <strong>Chính xác!</strong> Đáp án: <span class="answer-reveal">${state.currentAnswer}</span>`;
         addHistory(true, userAns);
         launchConfetti();
+        popScore('scoreCorrect');
+        popScore('scoreStreak');
+        showStreakToast(state.streak);
+        updateMissionProgress('fill', 1, 'consecutive_correct');
+        updateMissionProgress('fill', 1, 'correct_answers');
       } else {
         state.wrong++;
         state.streak = 0;
@@ -1595,17 +2108,22 @@
         fb.className = 'feedback show wrong-fb';
         fb.innerHTML = `✗ <strong>Chưa đúng.</strong> Đáp án: <span class="answer-reveal">${state.currentAnswer}</span>`;
         addHistory(false, userAns);
+        popScore('scoreWrong');
+        resetMissionProgress('fill', 'consecutive_correct');
       }
 
       document.getElementById('scoreCorrect').textContent = state.correct;
       document.getElementById('scoreWrong').textContent = state.wrong;
       document.getElementById('scoreStreak').textContent = state.streak;
+      document.getElementById('scoreTotal').textContent = state.total;
+      updateStreakUI();
 
       const pct = Math.round(state.correct / state.total * 100);
-      document.getElementById('accuracyLabel').textContent = `Độ chính xác: ${pct}%`;
+      document.getElementById('accuracyLabel').textContent = `${pct}%`;
       document.getElementById('progressFill').style.width = pct + '%';
 
       document.getElementById('checkBtn').disabled = true;
+      document.getElementById('nextQuestionBtn')?.classList.add('is-ready');
       inp.readOnly = true;
     }
 
@@ -1879,6 +2397,10 @@
             typingState.sameVersePerfectStreak = 0;
             typingState.lastPerfectVerse = null;
           }
+          if (result.new_achievements && result.new_achievements.length) {
+            showBadgeToasts(result.new_achievements);
+          }
+
           const resultDiv = document.getElementById('typingResult');
           resultDiv.classList.add('show');
 
@@ -1900,6 +2422,10 @@
               Tốc độ: <strong>${result.wpm} WPM</strong> · Thời gian: <strong>${result.time_seconds}s</strong>
             `;
           }
+          if (Number(result.accuracy) >= 90) updateMissionProgress('typing', 1, 'accuracy_ge_90');
+          else resetMissionProgress('typing', 'accuracy_ge_90');
+          if (Number(result.accuracy) >= 85) updateMissionProgress('typing', 1, 'accuracy_ge_85');
+          else resetMissionProgress('typing', 'accuracy_ge_85');
         })
         .catch(err => {
           console.error(err);

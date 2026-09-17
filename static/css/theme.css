@@ -1,8 +1,4 @@
-/* ==========================================================================
-   Always Stay Hydrated — Shared Design System
-   One token set + one header + one bottom-nav, used on every page so the
-   app feels like a single product instead of a stack of separate screens.
-   ========================================================================== */
+/* Always Stay Hydrated — Shared Design System (White bg + Pro Bottom Nav) */
 
 @font-face {
   font-family: 'NeueHaasGroteskDisplay';
@@ -36,30 +32,23 @@
 }
 
 :root {
-  /* -- Surfaces & text (parchment + deep leaf) -- */
-  --bg:            #F7F3E8;
-  --bg2:           #EDE8D8;
+  --bg:            #FFFFFF;
+  --bg2:           #F5F7F5;
   --surface:       #FFFFFF;
   --surface2:      #F0FBF4;
-  --border:        rgba(56, 102, 65, 0.16);
+  --border:        rgba(56, 102, 65, 0.14);
   --border-solid:  #386641;
   --text-pri:      #0D2B1E;
   --text-sec:      #3D6B55;
   --text-ter:      #7EA98D;
-
-  /* -- Primary accent: leaf green -- */
   --accent:        #2D6A4F;
   --accent-lt:     #D8F3DC;
   --accent-dk:     #1B4332;
   --accent-glow:   rgba(45, 106, 79, 0.15);
-
-  /* -- Secondary accent: water blue (the "hydrated" signature) -- */
   --water:         #1D6FA5;
   --water-lt:      #D9EEF9;
   --water-dk:      #124867;
   --water-glow:    rgba(29, 111, 165, 0.16);
-
-  /* -- Status colors -- */
   --green:         #1A7A4A;
   --green-lt:      #D8F3DC;
   --red:           #B91C1C;
@@ -68,19 +57,15 @@
   --amber-lt:      #FEF3C7;
   --gold:          #D4A017;
   --gold-lt:       #FDF3D8;
-
-  /* -- Module accent colors (fill / typing / flashcard / exam) -- */
   --c1: #2D6A4F; --c1-lt: #D8F3DC;
   --c2: #1D6FA5; --c2-lt: #D9EEF9;
   --c3: #7C3AED; --c3-lt: #EDE9FE;
   --c4: #B45309; --c4-lt: #FEF3C7;
-
-  /* -- Shape & elevation -- */
   --radius:       16px;
   --radius-sm:    10px;
   --radius-lg:    22px;
-  --shadow:       0 4px 24px rgba(0,0,0,0.07);
-  --shadow-hover: 0 12px 40px rgba(0,0,0,0.13);
+  --shadow:       0 4px 20px rgba(0,0,0,0.06);
+  --shadow-hover: 0 12px 36px rgba(0,0,0,0.10);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -89,12 +74,14 @@ body {
   font-family: 'NeueHaasGroteskDisplay', system-ui, -apple-system, sans-serif;
   background: var(--bg);
   color: var(--text-pri);
+  min-height: 100vh;
+  margin: 0;
 }
 
-/* ── Shared top header ───────────────────────────────────────────────── */
+/* Header */
 .site-header {
   width: 100%;
-  background: rgba(255,255,255,0.88);
+  background: rgba(255,255,255,0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
@@ -120,7 +107,6 @@ body {
   color: var(--text-pri);
 }
 .site-header .brand-logo { height: 40px; width: auto; display: block; object-fit: contain; }
-.site-header .brand-name { font-weight: 800; font-size: 1.02rem; letter-spacing: -0.01em; }
 .site-header .header-right { display: flex; align-items: center; gap: 10px; }
 
 .btn-pill {
@@ -144,63 +130,94 @@ body {
 .btn-pill.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
 .btn-pill.primary:hover { background: var(--accent-dk); border-color: var(--accent-dk); }
 
-/* ── Shared bottom navigation ────────────────────────────────────────── */
-body.has-bottom-nav { padding-bottom: 112px; }
+/* Bottom Nav — Professional floating bar */
+body.has-bottom-nav { padding-bottom: 96px; }
 
 .bottom-nav {
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255,255,255,0.96);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-top: 1px solid var(--border);
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  width: min(calc(100% - 24px), 680px);
+  max-width: 680px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.98);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   display: flex;
   justify-content: space-around;
-  gap: 8px;
-  padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
+  align-items: center;
+  gap: 2px;
+  padding: 8px 10px;
   z-index: 999;
-  box-shadow: 0 -8px 24px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  transform: translateY(0);
+  transition: transform 0.28s ease, opacity 0.28s ease, box-shadow 0.28s ease;
 }
+
+@media (hover: hover) and (pointer: fine) {
+  .bottom-nav.nav-auto-hidden {
+    transform: translateY(calc(100% + 20px));
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .bottom-nav.nav-auto-hidden:hover,
+  .bottom-nav:not(.nav-auto-hidden):hover {
+    box-shadow: 0 12px 36px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.04);
+  }
+}
+
 .nav-btn {
   flex: 1;
   min-width: 0;
-  max-width: 96px;
+  max-width: 86px;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 3px;
-  padding: 9px 6px;
-  border-radius: 16px;
-  border: 1.5px solid transparent;
+  padding: 8px 4px;
+  border-radius: 14px;
+  border: none;
   background: transparent;
-  color: var(--text-sec);
-  font-size: 0.72rem;
+  color: var(--text-ter);
+  font-size: 0.65rem;
   font-weight: 700;
   font-family: inherit;
   text-decoration: none;
-  transition: all 0.18s ease;
+  transition: all 0.2s ease;
   cursor: pointer;
+  position: relative;
 }
-.nav-btn .nav-icon { font-size: 1.25rem; line-height: 1; display: block; }
-.nav-btn .nav-label { white-space: nowrap; }
-.nav-btn:hover { background: var(--surface2); transform: translateY(-1px); }
-.nav-btn.active {
-  background: linear-gradient(180deg, var(--accent), #52b788);
-  color: #fff;
-  border-color: rgba(45,106,79,0.22);
-  box-shadow: 0 12px 26px var(--accent-glow);
+.nav-btn .nav-icon { font-size: 1.2rem; line-height: 1; display: block; transition: transform 0.2s ease; }
+.nav-btn .nav-icon svg { width: 20px; height: 20px; display: block; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.nav-btn .nav-label { white-space: nowrap; letter-spacing: 0.01em; }
+.nav-btn:hover { color: var(--accent); background: var(--accent-lt); }
+.nav-btn:hover .nav-icon { transform: translateY(-1px); }
+.nav-btn.active { color: var(--accent); background: var(--accent-lt); }
+.nav-btn.active::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 99px;
 }
-.nav-btn.active:hover { background: linear-gradient(180deg, var(--accent), #52b788); }
+.nav-btn.active .nav-icon { transform: scale(1.05); }
 
 @media (max-width: 420px) {
-  .nav-btn { font-size: 0.66rem; padding: 8px 4px; }
-  .nav-btn .nav-icon { font-size: 1.15rem; }
+  .bottom-nav { left: 8px; right: 8px; bottom: 8px; width: calc(100% - 16px); padding: 6px; border-radius: var(--radius); }
+  .nav-btn { font-size: 0.6rem; padding: 6px 2px; }
+  .nav-btn .nav-icon { font-size: 1.1rem; }
+  .nav-btn .nav-icon svg { width: 18px; height: 18px; }
 }
 
-/* ── Shared card / panel primitives ──────────────────────────────────── */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -210,8 +227,4 @@ body.has-bottom-nav { padding-bottom: 112px; }
 .card:hover { box-shadow: var(--shadow-hover); }
 
 ::selection { background: var(--accent-lt); color: var(--accent-dk); }
-
-:focus-visible {
-  outline: 2.5px solid var(--water);
-  outline-offset: 2px;
-}
+:focus-visible { outline: 2.5px solid var(--water); outline-offset: 2px; }

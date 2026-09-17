@@ -1,8 +1,9 @@
-const CACHE_NAME = 'ash-v6';
+const CACHE_NAME = 'ash-v8';
 const ASSETS = [
   '/offline.html',
   '/manifest.json',
   '/static/manifest.json',
+  '/static/css/theme.css',
   '/static/css/mobile-responsive.css',
   '/static/js/pwa-install.js',
   '/static/js/sw-register.js',
@@ -34,6 +35,17 @@ function isAuthHtmlRequest(url) {
   const path = getPath(url);
   return AUTH_HTML_PREFIXES.some(
     (p) => path === p || path.startsWith(p)
+  );
+}
+
+function isFreshUiAsset(url) {
+  const path = getPath(url);
+  return (
+    path.startsWith('/static/css/') ||
+    path.startsWith('/static/js/') ||
+    path.startsWith('/static/fonts/') ||
+    path.startsWith('/static/pictures/') ||
+    path.startsWith('/static/logo')
   );
 }
 
@@ -74,6 +86,15 @@ self.addEventListener('message', (event) => {
 
 self.addEventListener('fetch', (event) => {
   const { request } = event;
+
+  if (request.method === 'GET' && isFreshUiAsset(request.url)) {
+    event.respondWith(
+      fetch(new Request(request, { cache: 'no-store' }))
+        .then((response) => response)
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
 
   if (isApiRequest(request.url)) {
     event.respondWith(networkOnly(request));

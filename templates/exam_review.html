@@ -9,55 +9,72 @@
   <style>
     * { box-sizing: border-box; }
     body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--text-pri); font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif; }
-    .header { background: rgba(255,255,255,.94); border-bottom: 1px solid var(--border); padding: 0 24px; }
+    .header { background: linear-gradient(100deg, rgba(255,255,255,.98), rgba(239,249,240,.94)); border-bottom: 1px solid var(--border); padding: 0 24px; position: sticky; top: 0; z-index: 10; }
     .header-inner { max-width: 860px; height: 64px; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    .brand img { width: 112px; display: block; }
-    .back { color: var(--accent-dk); text-decoration: none; font-weight: 700; font-size: .86rem; }
-    .main { max-width: 760px; margin: auto; padding: 34px 20px 90px; }
-    .eyebrow { color: var(--accent); font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 10px; }
-    h1 { margin: 0 0 8px; font-size: 2rem; }
-    .subtitle { color: var(--text-sec); line-height: 1.55; margin: 0 0 24px; }
-    .stats { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
-    .stat { background: var(--surface); border: 1px solid var(--border-lt); border-radius: 12px; padding: 10px 14px; color: var(--text-sec); font-size: .84rem; }
-    .stat strong { color: var(--accent-dk); font-size: 1.05rem; margin-right: 4px; }
-    .toolbar { display: flex; gap: 8px; margin-bottom: 18px; }
-    .mode-toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-    .mode-label { align-self: center; color: var(--text-ter); font-size: .8rem; font-weight: 700; margin-right: 2px; }
-    .filter { border: 1px solid var(--border); background: var(--surface); color: var(--text-sec); border-radius: 10px; padding: 9px 14px; font: inherit; font-weight: 700; cursor: pointer; }
+    .brand img { width: 112px; display: block; animation: brandIn .45s ease both; }
+    @keyframes brandIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+    .back { color: var(--accent-dk); text-decoration: none; font-weight: 800; font-size: .9rem; padding: 9px 14px; border: 1px solid var(--border); border-radius: 10px; transition: .18s ease; }
+    .back:hover { background: var(--accent); color: #fff; transform: translateY(-1px); box-shadow: var(--shadow); }
+    .progress-strip { height: 5px; background: rgba(56,102,65,.12); }
+    .progress-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), #52B788); transition: width .35s ease; }
+    .main { max-width: 820px; margin: auto; padding: 36px 20px 90px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 7px; color: var(--accent-dk); background: var(--accent-lt); border: 1px solid #B7D8C0; border-radius: 99px; padding: 6px 11px; font-size: .76rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 12px; }
+    .eyebrow::before { content: '◈'; color: var(--amber); }
+    h1 { margin: 0 0 8px; font-size: 2.15rem; line-height: 1.18; }
+    .subtitle { display: flex; gap: 8px; color: var(--text-sec); line-height: 1.55; margin: 0 0 22px; }
+    .subtitle::before { content: '✦'; color: var(--amber); font-weight: 800; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 22px; }
+    .stat { min-height: 82px; display: grid; grid-template-columns: 34px 1fr; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border-lt); border-radius: 14px; padding: 12px 14px; color: var(--text-sec); font-size: .82rem; box-shadow: 0 8px 22px rgba(27,67,50,.06); }
+    .stat::before { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 10px; font-size: 1rem; }
+    .stat:nth-child(1)::before { content: '✓'; background: var(--green-lt); color: var(--green); }
+    .stat:nth-child(2)::before { content: '↻'; background: var(--amber-lt); color: var(--amber); }
+    .stat:nth-child(3)::before { content: '☷'; background: #E7F0F7; color: #27658B; }
+    .stat strong { display: block; color: var(--accent-dk); font-size: 1.35rem; line-height: 1.1; margin-bottom: 3px; }
+    .toolbar, .mode-toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .mode-toolbar { padding: 4px; background: rgba(226,232,220,.72); border: 1px solid var(--border); border-radius: 12px; }
+    .mode-label { color: var(--text-ter); font-size: .8rem; font-weight: 700; margin: 0 4px 0 7px; }
+    .filter, .mode-btn { border: 1px solid var(--border); background: var(--surface); color: var(--text-sec); border-radius: 9px; padding: 9px 13px; font: inherit; font-weight: 700; cursor: pointer; transition: .18s ease; }
+    .filter:hover, .mode-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
     .filter.active, .filter:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .mode-btn { border: 1px solid var(--border); background: var(--surface); color: var(--text-sec); border-radius: 10px; padding: 9px 14px; font: inherit; font-weight: 700; cursor: pointer; }
-    .mode-btn.active, .mode-btn:hover { background: var(--accent-lt); color: var(--accent-dk); border-color: var(--accent); }
-    .review-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 18px; box-shadow: var(--shadow); overflow: hidden; }
-    .card-top { padding: 20px 22px 12px; display: flex; justify-content: space-between; gap: 12px; color: var(--text-ter); font-size: .82rem; font-weight: 700; }
-    .question { padding: 0 22px 20px; font-size: 1.05rem; line-height: 1.65; font-weight: 700; }
+    .mode-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 4px 12px rgba(45,106,79,.2); }
+    .review-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 18px; box-shadow: 0 16px 34px rgba(27,67,50,.10); overflow: hidden; animation: cardIn .3s ease both; }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+    .card-top { padding: 18px 22px 12px; display: flex; justify-content: space-between; gap: 12px; color: var(--text-ter); font-size: .84rem; font-weight: 700; }
+    .card-top span:last-child { padding: 5px 9px; border-radius: 99px; background: var(--green-lt); color: var(--green); }
+    .question { padding: 0 22px 20px; font-size: 1.1rem; line-height: 1.65; font-weight: 800; }
     .blank-guide { margin: -4px 22px 18px; padding: 14px 16px; border-radius: 12px; background: #fffaf0; border: 1px solid rgba(200,146,26,.25); color: var(--text-sec); line-height: 1.8; }
     .blank-chip { display: inline-block; min-width: 88px; margin: 0 3px; border-bottom: 2px solid var(--accent); color: var(--accent); letter-spacing: .08em; }
     .answer-box { margin: 0 22px 18px; padding: 16px; border-radius: 12px; background: var(--accent-lt); border: 1px solid rgba(46,125,79,.2); line-height: 1.65; }
     .answer-label { color: var(--accent-dk); font-size: .72rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 6px; }
     .answer-box[hidden] { display: none; }
-    .user-answer { width: calc(100% - 44px); margin: 0 22px 16px; min-height: 88px; resize: vertical; border: 1px solid var(--border); border-radius: 10px; padding: 12px; font: inherit; color: var(--text-pri); background: var(--bg); }
+    .user-answer { width: calc(100% - 44px); margin: 0 22px 16px; min-height: 112px; resize: vertical; border: 1px solid var(--border); border-radius: 10px; padding: 14px; font: inherit; color: var(--text-pri); background: var(--bg); transition: .18s ease; }
+    .user-answer:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 0 4px var(--accent-lt); }
     .check-result { margin: 0 22px 16px; padding: 11px 14px; border-radius: 10px; font-weight: 700; line-height: 1.5; }
     .check-result[hidden] { display: none; }
     .check-result.correct { background: #e4f5e9; color: #17643a; border: 1px solid #a8d9b7; }
     .check-result.wrong { background: #fff2e4; color: #9a5b12; border: 1px solid #edc68d; }
     .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 0 22px 22px; }
+    .action-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .action-group.evaluate { margin-left: auto; }
     button { font: inherit; font-weight: 700; cursor: pointer; }
-    .primary, .secondary, .status { border-radius: 10px; padding: 9px 12px; border: 1px solid transparent; font-size: .86rem; white-space: nowrap; }
-    .primary { background: var(--accent); color: #fff; }
+    .primary, .secondary, .status { border-radius: 10px; padding: 10px 13px; border: 1px solid transparent; font-size: .86rem; white-space: nowrap; transition: .18s ease; }
+    .primary:hover, .secondary:hover, .status:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+    .primary { background: linear-gradient(135deg, var(--accent), #3D8B61); color: #fff; }
     .secondary { background: var(--surface); border-color: var(--border); color: var(--text-sec); }
     .status { flex: 0 1 auto; min-width: 0; }
     .remember { background: #e4f5e9; color: #17643a; border-color: #a8d9b7; }
     .again { background: #fff2e4; color: #9a5b12; border-color: #edc68d; }
     .empty { background: var(--surface); border: 1px dashed var(--border); border-radius: 16px; padding: 44px 22px; text-align: center; color: var(--text-sec); }
     .error { color: var(--red); padding: 30px 0; }
-    @media (max-width: 560px) { h1 { font-size: 1.65rem; } .header { padding: 0 16px; } .main { padding: 28px 14px 70px; } .actions { gap: 7px; } .actions > button { flex: 1 1 calc(50% - 7px); } .actions .status { flex-basis: calc(50% - 7px); } }
+    @media (max-width: 560px) { h1 { font-size: 1.7rem; } .header { padding: 0 16px; } .main { padding: 28px 14px 70px; } .stats { grid-template-columns: 1fr; } .stat { min-height: 62px; } .actions { gap: 7px; } .action-group, .action-group.evaluate { width: 100%; margin-left: 0; } .actions button { flex: 1 1 calc(50% - 7px); } .mode-toolbar { align-items: stretch; } .mode-label { width: 100%; } }
   </style>
 </head>
-<body>
+<body class="has-bottom-nav">
   <header class="header"><div class="header-inner">
     <a class="brand" href="/exam_library"><img src="{{ url_for('static', filename='pictures/Logo2.png') }}" alt="Always Stay Hydrated"></a>
-    <a class="back" href="/exam_library">← Thư viện</a>
+    <a class="back" href="/exam_library">← &nbsp;Thư viện</a>
   </div></header>
+  <div class="progress-strip" aria-label="Tiến độ ôn tập"><div class="progress-fill" id="review-progress-fill"></div></div>
   <main class="main">
     <div id="loading">Đang tải nội dung ôn tập...</div>
     <section id="content" hidden>
@@ -65,8 +82,8 @@
       <h1 id="title">—</h1>
       <p class="subtitle">Tự suy nghĩ trước, sau đó xem đáp án và đánh dấu mức độ ghi nhớ của bạn.</p>
       <div class="stats"><div class="stat"><strong id="mastered-count">0</strong>đã nhớ</div><div class="stat"><strong id="review-count">0</strong>cần ôn lại</div><div class="stat"><strong id="total-count">0</strong>tổng câu</div></div>
-      <div class="mode-toolbar"><span class="mode-label">Cách ôn:</span><button class="mode-btn active" data-mode="full">Ôn cả câu</button><button class="mode-btn" data-mode="blank">Ôn phần điền chỗ trống</button></div>
-      <div class="toolbar"><button class="filter active" data-filter="all">Tất cả</button><button class="filter" data-filter="review">Cần ôn lại</button></div>
+      <div class="mode-toolbar"><span class="mode-label">Cách ôn:</span><button class="mode-btn active" data-mode="full">▣ &nbsp;Ôn cả câu</button><button class="mode-btn" data-mode="blank">✎ &nbsp;Ôn chỗ trống</button></div>
+      <div class="toolbar"><button class="filter active" data-filter="all">☷ &nbsp;Tất cả</button><button class="filter" data-filter="review">↻ &nbsp;Cần ôn lại <strong id="review-filter-count">0</strong></button></div>
       <div id="review-area"></div>
     </section>
   </main>
@@ -80,6 +97,8 @@ let position = 0;
 let answerVisible = false;
 let draftAnswer = '';
 let checkResult = null;
+const RANDOM_BLANK_TAB = 'tab_tua_de_khai_huyen';
+const randomBlankTemplates = {};
 
 async function loadReview() {
   try {
@@ -108,21 +127,39 @@ function filteredCards() {
 function escapeHtml(value) {
   return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
+function getBlankTemplate(card) {
+  if (TAB_ID !== RANDOM_BLANK_TAB) return String(card.blank || '');
+  if (randomBlankTemplates[card.id]) return randomBlankTemplates[card.id];
+
+  const answer = String(card.answer || '');
+  const words = [...answer.matchAll(/\S+/g)];
+  if (words.length < 3) return answer;
+
+  const count = Math.min(words.length - 2, Math.max(1, Math.floor(Math.random() * 3) + 1));
+  const start = 1 + Math.floor(Math.random() * (words.length - count - 1));
+  const from = words[start].index;
+  const to = words[start + count - 1].index + words[start + count - 1][0].length;
+  randomBlankTemplates[card.id] = `${answer.slice(0, from)}___${answer.slice(to)}`;
+  return randomBlankTemplates[card.id];
+}
 function renderStats() {
   const mastered = cards.filter(card => statuses[card.id]?.status === 'mastered').length;
   document.getElementById('mastered-count').textContent = mastered;
   document.getElementById('review-count').textContent = cards.length - mastered;
   document.getElementById('total-count').textContent = cards.length;
+  document.getElementById('review-filter-count').textContent = cards.length - mastered;
+  document.getElementById('review-progress-fill').style.width = `${cards.length ? (mastered / cards.length) * 100 : 0}%`;
 }
 function renderBlankGuide(card) {
-  if (!card.blank) return '<div class="blank-guide">Câu này chưa có mẫu chỗ trống.</div>';
-  return `<div class="blank-guide">${card.blank.split(/_{3,}/).map((part, index, parts) => `${escapeHtml(part)}${index < parts.length - 1 ? '<span class="blank-chip">____</span>' : ''}`).join('')}</div>`;
+  const blank = getBlankTemplate(card);
+  if (!blank) return '<div class="blank-guide">Câu này chưa có mẫu chỗ trống.</div>';
+  return `<div class="blank-guide">${blank.split(/_{3,}/).map((part, index, parts) => `${escapeHtml(part)}${index < parts.length - 1 ? '<span class="blank-chip">____</span>' : ''}`).join('')}</div>`;
 }
 function normalizeText(value) {
   return String(value || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase().replace(/\s+/g, ' ').replace(/["']/g, '').replace(/[-–—]/g, ' ').replace(/[.,;:!?()]/g, '');
 }
 function extractBlankAnswers(card) {
-  const parts = String(card.blank || '').split(/_{3,}/).map(part => part.trim()).filter(Boolean);
+  const parts = getBlankTemplate(card).split(/_{3,}/).map(part => part.trim()).filter(Boolean);
   const answer = String(card.answer || '');
   const expected = [];
   let searchIndex = 0;
@@ -177,12 +214,18 @@ function render() {
       ${resultHtml}
       <div class="answer-box" id="answer-box" ${answerVisible ? '' : 'hidden'}><div class="answer-label">${answerLabel}</div>${escapeHtml(card.answer)}</div>
       <div class="actions">
-        <button class="primary" onclick="checkAnswer()">✓ Kiểm tra</button>
-        <button class="secondary" onclick="toggleAnswer()">${answerVisible ? 'Ẩn đáp án' : 'Xem đáp án'}</button>
-        <button class="status remember" onclick="saveStatus('mastered')">✓ Đã nhớ</button>
-        <button class="status again" onclick="saveStatus('review')">↻ Cần ôn lại</button>
-        <button class="secondary" onclick="move(-1)" ${position === 0 ? 'disabled' : ''}>← Câu trước</button>
-        <button class="primary" onclick="move(1)" ${position === list.length - 1 ? 'disabled' : ''}>Câu tiếp →</button>
+        <div class="action-group">
+          <button class="primary" onclick="checkAnswer()">✓ &nbsp;Kiểm tra</button>
+          <button class="secondary" onclick="toggleAnswer()">${answerVisible ? 'Ẩn đáp án' : 'Xem đáp án'}</button>
+        </div>
+        <div class="action-group evaluate">
+          <button class="status remember" onclick="saveStatus('mastered')">✓ &nbsp;Đã nhớ</button>
+          <button class="status again" onclick="saveStatus('review')">↻ &nbsp;Cần ôn lại</button>
+        </div>
+        <div class="action-group navigation">
+          <button class="secondary" onclick="move(-1)" ${position === 0 ? 'disabled' : ''}>← &nbsp;Trước</button>
+          <button class="primary" onclick="move(1)" ${position === list.length - 1 ? 'disabled' : ''}>Sau &nbsp;→</button>
+        </div>
       </div>
     </article>`;
 }
@@ -194,7 +237,8 @@ async function saveStatus(status) {
   try {
     const response = await apiFetch(`/api/exam/tabs/${TAB_ID}/review-progress`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ card_id: card.id, status }) });
     if (!response.ok) throw new Error('save failed');
-    statuses[card.id] = await response.json().then(data => data.status);
+    const savedStatus = await response.json();
+    statuses[card.id] = savedStatus.status;
     draftAnswer = '';
     checkResult = null;
     const list = filteredCards();
@@ -212,5 +256,6 @@ document.querySelectorAll('.mode-btn').forEach(button => button.addEventListener
 }));
 loadReview();
 </script>
+{% include "_bottom_nav.html" %}
 </body>
 </html>

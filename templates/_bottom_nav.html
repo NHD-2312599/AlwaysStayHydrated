@@ -1,0 +1,87 @@
+<nav class="bottom-nav" aria-label="Điều hướng chính">
+  <a href="{{ url_for('index') }}" class="nav-btn{% if active_page|default('') == 'home' %} active{% endif %}" data-page="home">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V21h13V9.5M9.5 21v-6h5v6"/></svg></span>
+    <span class="nav-label">Trang chủ</span>
+  </a>
+  <a href="{{ url_for('index') }}?tab=fill" class="nav-btn{% if active_page|default('') == 'fill' %} active{% endif %}" data-page="fill">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+    <span class="nav-label">Điền</span>
+  </a>
+  <a href="{{ url_for('index') }}?tab=typing" class="nav-btn{% if active_page|default('') == 'typing' %} active{% endif %}" data-page="typing">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M6 10h.01M9 10h.01M12 10h.01M15 10h.01M18 10h.01M7 14h10"/></svg></span>
+    <span class="nav-label">Gõ</span>
+  </a>
+  <a href="{{ url_for('read_bible') }}" class="nav-btn{% if active_page|default('') == 'read' %} active{% endif %}" data-page="read">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 5.5v16M8 7h8M8 11h8"/></svg></span>
+    <span class="nav-label">Đọc</span>
+  </a>
+  <a href="{{ url_for('missions') }}" class="nav-btn{% if active_page|default('') == 'missions' %} active{% endif %}" data-page="missions">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="m8 9 1.5 1.5L12 8M8 14h8M8 17h6"/></svg></span>
+    <span class="nav-label">Nhiệm vụ</span>
+  </a>
+  <a href="{{ url_for('timeline') }}" class="nav-btn{% if active_page|default('') == 'timeline' %} active{% endif %}" data-page="timeline">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 4v16M6 7h7a3 3 0 0 1 0 6H6M13 13l5 7"/></svg></span>
+    <span class="nav-label">Timeline</span>
+  </a>
+  <a href="{{ url_for('flashcard_login') }}" class="nav-btn{% if active_page|default('') == 'flashcard' %} active{% endif %}" data-page="flashcard">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 5.5v16M8 7h8"/></svg></span>
+    <span class="nav-label">Flashcard</span>
+  </a>
+  <a href="{{ url_for('exam_library') }}" class="nav-btn{% if active_page|default('') == 'exam' %} active{% endif %}" data-page="exam">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3h12v18H6zM9 7h6M9 11h6M9 15h4"/></svg></span>
+    <span class="nav-label">Kiểm tra</span>
+  </a>
+  <a href="{{ url_for('multiplayer') }}" class="nav-btn{% if active_page|default('') == 'multiplayer' %} active{% endif %}" data-page="multiplayer">
+    <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 8h10a4 4 0 0 1 3.8 5.2l-1.2 4A2.5 2.5 0 0 1 15 18l-2-2H11l-2 2a2.5 2.5 0 0 1-4.6-.8l-1.2-4A4 4 0 0 1 7 8z"/><path d="M7 12v3M5.5 13.5h3M16.5 13h.01M18.5 15h.01"/></svg></span>
+    <span class="nav-label">Đấu trường</span>
+  </a>
+</nav>
+
+<script>
+(() => {
+  const bottomNav = document.querySelector('.bottom-nav');
+  const path = window.location.pathname;
+  const tab = new URLSearchParams(window.location.search).get('tab');
+  let activePage = '';
+
+  if (path === '/' || path === '/home') {
+    activePage = ['fill', 'typing'].includes(tab) ? tab : 'home';
+  } else if (path.startsWith('/flashcard')) {
+    activePage = 'flashcard';
+  } else if (path.startsWith('/read')) {
+    activePage = 'read';
+  } else if (path.startsWith('/missions')) {
+    activePage = 'missions';
+  } else if (path.startsWith('/timeline')) {
+    activePage = 'timeline';
+  } else if (path.startsWith('/exam')) {
+    activePage = 'exam';
+  } else if (path.startsWith('/multiplayer')) {
+    activePage = 'multiplayer';
+  }
+
+  document.querySelectorAll('.bottom-nav .nav-btn').forEach((item) => {
+    item.classList.toggle('active', item.dataset.page === activePage);
+  });
+
+  if (bottomNav && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let hideTimer;
+    const showNav = () => {
+      window.clearTimeout(hideTimer);
+      bottomNav.classList.remove('nav-auto-hidden');
+    };
+    const hideNav = () => {
+      window.clearTimeout(hideTimer);
+      hideTimer = window.setTimeout(() => bottomNav.classList.add('nav-auto-hidden'), 900);
+    };
+
+    bottomNav.classList.add('nav-auto-hidden');
+    document.addEventListener('pointermove', (event) => {
+      if (event.clientY >= window.innerHeight - 90) showNav();
+      else if (!bottomNav.matches(':hover')) hideNav();
+    }, { passive: true });
+    bottomNav.addEventListener('pointerenter', showNav);
+    bottomNav.addEventListener('pointerleave', hideNav);
+  }
+})();
+</script>

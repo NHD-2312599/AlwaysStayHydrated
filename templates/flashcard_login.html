@@ -5,6 +5,7 @@
 <meta name="theme-color" content="#386641">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/static/css/theme.css">
 <title>Khải Huyền — Flashcard</title>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -36,10 +37,12 @@
 }
 
 :root {
-  --bg:        #F7F3E8;
+  --bg:        #FFFFFF;
+  --bg2:       #F5F7F5;
   --surface:   #FFFFFF;
-  --border:    rgba(56,102,65,0.18);
-  --border-solid: #2D6A4F;
+  --surface2:  #F0FBF4;
+  --border:    rgba(56,102,65,0.14);
+  --border-solid: #386641;
   --text:      #0D2B1E;
   --text-2:    #3D6B55;
   --text-3:    #7EA98D;
@@ -529,11 +532,46 @@ input[type="password"].error {
   .form-panel { padding: 36px 20px; }
   .form-inner { max-width: 100%; }
 }
+
+/* Shared white app surface: keep the login split layout card-like. */
+body.has-bottom-nav { background: var(--bg); }
+.split-layout { gap: 28px; padding: 32px; min-height: calc(100vh - 64px); }
+.hero-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  color: var(--text-pri);
+  padding: 56px 52px;
+}
+.hero-panel::before, .hero-panel::after, .particle { display: none; }
+.hero-title { color: var(--text-pri); }
+.hero-title span { background: none; -webkit-text-fill-color: var(--accent); color: var(--accent); }
+.hero-desc, .hero-feat { color: var(--text-sec); }
+.hero-feat { background: var(--surface2); border-color: var(--border); }
+.hero-eyebrow, .hero-verse cite { color: var(--accent); }
+.hero-eyebrow::before { background: var(--accent); }
+.hero-verse { border-top-color: var(--border); }
+.hero-verse p { color: var(--text-sec); }
+.hero-logo-box { background: var(--accent-lt); border-color: var(--border); box-shadow: var(--shadow); }
+.form-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+.form-panel::before { background: var(--accent); }
+.form-heading { color: var(--text-pri); }
+.form-sub, .security-note { color: var(--text-ter); }
+.submit-btn { background: var(--accent); box-shadow: 0 4px 16px var(--accent-glow); }
+.submit-btn:hover { background: var(--accent-dk); box-shadow: 0 8px 24px var(--accent-glow); }
+@media (max-width: 900px) {
+  .split-layout { padding: 20px; }
+  .hero-panel, .form-panel { border-radius: var(--radius); }
+}
+@media (max-width: 480px) {
+  .split-layout { padding: 12px; gap: 12px; }
+}
 </style>
 <script src="/static/js/session-refresh.js"></script>
 <script src="/static/js/sw-register.js"></script>
 </head>
-<body>
+<body class="has-bottom-nav">
 
 <header>
   <div class="header-inner">
@@ -650,5 +688,6 @@ input[type="password"].error {
   window.addEventListener('load', handleLoginError);
 </script>
 <script src="/static/js/pwa-install.js"></script>
+{% include "_bottom_nav.html" %}
 </body>
 </html>

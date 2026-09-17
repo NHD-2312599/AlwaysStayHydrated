@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trang cá nhân | Đóng Ấn Ngôi Lời</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+  <style>
+    body { background:#FFFFFF; }
+    .profile-page { width:min(100% - 32px, 980px); margin:0 auto; padding:34px 0 110px; }
+    .profile-header { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:22px; }
+    .profile-title h1 { margin:0; color:var(--text-pri); font-size:clamp(1.8rem,4vw,2.6rem); }
+    .profile-title p { margin:7px 0 0; color:var(--text-sec); }
+    .profile-header .tab-btn { display:inline-flex; align-items:center; padding:10px 16px; border-radius:99px; background:#fff; border:1px solid rgba(0,0,0,.06); color:var(--accent); text-decoration:none; font-size:.82rem; font-weight:800; box-shadow:0 4px 14px rgba(0,0,0,.05); transition:transform .18s, background .18s, box-shadow .18s; }
+    .profile-header .tab-btn:hover { transform:translateY(-2px); background:var(--accent-lt); box-shadow:0 8px 20px rgba(0,0,0,.08); }
+    .profile-card { background:#fff; border-radius:20px; box-shadow:0 8px 28px rgba(0,0,0,.06); padding:24px; }
+    .account-card { display:flex; align-items:center; gap:18px; margin-bottom:18px; }
+    .avatar { width:72px; height:72px; flex:0 0 72px; display:grid; place-items:center; border:5px solid #fff; border-radius:24px; background:var(--accent-lt); color:var(--accent-dk); font-size:1.45rem; font-weight:900; box-shadow:0 0 0 1px rgba(45,106,79,.12), 0 8px 18px rgba(45,106,79,.12); }
+    .account-copy { min-width:0; flex:1; }
+    .account-copy h2 { margin:0; color:var(--text-pri); font-size:1.3rem; }
+    .account-copy p { display:inline-flex; margin:5px 0 7px; padding:4px 9px; border-radius:99px; background:var(--accent-lt); color:var(--accent-dk); font-size:.72rem; font-weight:800; }
+    .account-copy small { display:block; color:var(--text-ter); }
+    .account-stats { display:flex; gap:8px; margin-left:auto; }
+    .account-stat { min-width:76px; padding:9px 10px; border-radius:13px; background:var(--bg2); text-align:center; }
+    .account-stat strong { display:block; color:var(--text-pri); font-size:1.05rem; }
+    .account-stat span { display:block; margin-top:2px; color:var(--text-ter); font-size:.65rem; font-weight:800; }
+    .logout-link { display:inline-flex; padding:10px 16px; border-radius:99px; background:var(--accent); color:#fff; text-decoration:none; font-weight:800; font-size:.82rem; transition:transform .18s, background .18s; }
+    .logout-link:hover { transform:translateY(-2px); background:var(--accent-dk); }
+    .profile-grid { display:grid; grid-template-columns:1.05fr .95fr; gap:18px; }
+    .profile-card h2 { margin:0 0 16px; color:var(--text-pri); font-size:1.1rem; }
+    .stats-list { display:grid; gap:10px; }
+    .stat-line { display:flex; justify-content:space-between; gap:12px; padding:12px 14px; border-radius:13px; background:var(--bg2); color:var(--text-sec); font-size:.88rem; }
+    .stat-line strong { color:var(--text-pri); }
+    .calendar-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; color:var(--text-sec); font-weight:800; }
+    .calendar-nav { display:flex; align-items:center; gap:8px; }
+    .calendar-nav button { width:30px; height:30px; border:0; border-radius:50%; background:var(--bg2); color:var(--accent); font-weight:900; cursor:pointer; }
+    .calendar-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:7px; }
+    .weekday { color:var(--text-ter); font-size:.7rem; font-weight:800; text-align:center; padding-bottom:4px; }
+    .day { min-height:40px; border:0; border-radius:12px; display:grid; place-items:center; background:#F1F1F1; color:#9CA3AF; font-size:.78rem; cursor:pointer; }
+    .day.activity { background:#C8E6C9; color:#1B4332; }
+    .day.complete { background:#2D6A4F; color:#fff; font-weight:800; }
+    .day.today { outline:2px solid var(--accent); outline-offset:1px; }
+    .day.future { opacity:.45; pointer-events:none; }
+    .day.empty { background:transparent; cursor:default; }
+    .day.selected { outline:2px solid var(--water); outline-offset:1px; }
+    .calendar-legend { display:flex; flex-wrap:wrap; gap:10px 14px; margin-top:14px; color:var(--text-sec); font-size:.72rem; font-weight:700; }
+    .legend-item { display:inline-flex; align-items:center; gap:5px; }
+    .legend-dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+    .legend-dot.empty { background:#F1F1F1; } .legend-dot.activity { background:#C8E6C9; } .legend-dot.complete { background:#2D6A4F; } .legend-dot.today { background:#fff; outline:2px solid var(--accent); }
+    .day-detail { margin-top:14px; padding:13px; border-radius:13px; background:var(--bg2); color:var(--text-sec); font-size:.82rem; line-height:1.55; min-height:48px; }
+    @media (max-width:700px) { .profile-grid { grid-template-columns:1fr; } .account-card { align-items:flex-start; flex-wrap:wrap; } .account-stats { order:3; width:100%; margin-left:0; } .account-stat { flex:1; } .logout-link { margin-left:90px; margin-top:-8px; } }
+  </style>
+</head>
+<body class="has-bottom-nav">
+  <main class="profile-page">
+    <div class="profile-header">
+      <div class="profile-title"><h1>Trang cá nhân</h1><p>Theo dõi hành trình học thật của bạn.</p></div>
+      <a class="tab-btn" href="{{ url_for('index') }}">← Trang chủ</a>
+    </div>
+    <section class="profile-card account-card">
+      <div class="avatar">{{ initials }}</div>
+      <div class="account-copy">
+        <h2>{{ username }}</h2>
+        <p>Học viên Đóng Ấn Ngôi Lời</p>
+        {% if joined_at %}<small>Tham gia từ {{ joined_at }}</small>{% else %}<small>Ngày tham gia chưa có dữ liệu</small>{% endif %}
+      </div>
+      <div class="account-stats" aria-label="Tóm tắt học tập">
+        <div class="account-stat"><strong>{{ answered_count or 0 }}</strong><span>Câu đã làm</span></div>
+        <div class="account-stat"><strong>{{ correct_count or 0 }}</strong><span>Câu đúng</span></div>
+      </div>
+      <a class="logout-link" href="{{ url_for('logout') }}">Đăng xuất</a>
+    </section>
+    <div class="profile-grid">
+      <section class="profile-card">
+        <h2>Thống kê học tập</h2>
+        <div class="stats-list">
+          {% if answered_count is not none %}<div class="stat-line"><span>Câu đã có trạng thái</span><strong>{{ answered_count }}</strong></div>{% endif %}
+          {% if correct_count is not none %}<div class="stat-line"><span>Câu đã đánh dấu đúng</span><strong>{{ correct_count }}</strong></div>{% endif %}
+          <div class="stat-line"><span>Số ngày hoàn thành trong tháng</span><strong id="monthCompleted">Đang tính…</strong></div>
+          {% if answered_count is none and correct_count is none %}<div class="stat-line"><span>Dữ liệu học tập</span><strong>Chưa có dữ liệu</strong></div>{% endif %}
+        </div>
+      </section>
+      <section class="profile-card">
+        <div class="calendar-head"><h2>Lịch tiến độ</h2><div class="calendar-nav"><button type="button" id="previousMonth" aria-label="Tháng trước">‹</button><span id="calendarMonth"></span><button type="button" id="nextMonth" aria-label="Tháng sau">›</button></div></div>
+        <div id="calendar" class="calendar-grid"></div>
+        <div class="calendar-legend"><span class="legend-item"><i class="legend-dot empty"></i>Chưa hoạt động</span><span class="legend-item"><i class="legend-dot activity"></i>Có học</span><span class="legend-item"><i class="legend-dot complete"></i>Đủ nhiệm vụ</span><span class="legend-item"><i class="legend-dot today"></i>Hôm nay</span></div>
+        <div id="dayDetail" class="day-detail">Chọn một ngày để xem nhiệm vụ.</div>
+      </section>
+    </div>
+  </main>
+  {% include "_bottom_nav.html" %}
+  <script>
+    const calendar = document.getElementById('calendar');
+    const detail = document.getElementById('dayDetail');
+    const today = new Date(); today.setHours(0,0,0,0);
+    let visibleMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    const weekdays = ['T2','T3','T4','T5','T6','T7','CN'];
+    const dateKey = date => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
+    function dayData(key) { try { return JSON.parse(localStorage.getItem(`missions_${key}`) || 'null'); } catch (error) { return null; } }
+    function isComplete(data) { const required = data?.required || []; return required.length > 0 && required.every(item => item.done || item.progress >= item.target); }
+    function showDay(key) {
+      const data = dayData(key);
+      if (!data) { detail.textContent = `Nhiệm vụ ngày ${key.split('-').reverse().join('/')}: chưa có hoạt động.`; return; }
+      const all = [...(data.required || []), ...(data.optional || [])];
+      detail.innerHTML = `<strong>Nhiệm vụ ngày ${key.split('-').reverse().join('/')}</strong><br>` + (all.length ? all.map(item => `${item.done || item.progress >= item.target ? '✓' : '○'} ${item.title} · ${item.done || item.progress >= item.target ? 'Hoàn thành' : (item.progress ? `${item.progress}/${item.target}` : 'Chưa bắt đầu')}`).join('<br>') : 'Không có nhiệm vụ.');
+    }
+    function renderCalendar() {
+      calendar.innerHTML = '';
+      weekdays.forEach(day => { const el=document.createElement('div'); el.className='weekday'; el.textContent=day; calendar.appendChild(el); });
+      const year=visibleMonth.getFullYear(), month=visibleMonth.getMonth();
+      document.getElementById('calendarMonth').textContent=visibleMonth.toLocaleDateString('vi-VN',{month:'long',year:'numeric'});
+      const firstDay=(new Date(year,month,1).getDay()+6)%7;
+      for(let i=0;i<firstDay;i++){const el=document.createElement('div');el.className='day empty';calendar.appendChild(el);}
+      let completedDays=0; const daysInMonth=new Date(year,month+1,0).getDate();
+      for(let day=1;day<=daysInMonth;day++){
+        const date=new Date(year,month,day); date.setHours(0,0,0,0); const key=dateKey(date), data=dayData(key);
+        const el=document.createElement('button'); el.type='button'; el.className='day'; el.textContent=day;
+        if(date.getTime()===today.getTime()) el.classList.add('today');
+        if(date>today) el.classList.add('future');
+        if(data){ if(isComplete(data)){el.classList.add('complete');completedDays++;} else el.classList.add('activity'); }
+        if(date<=today) el.addEventListener('click',()=>{document.querySelectorAll('.day.selected').forEach(item=>item.classList.remove('selected'));el.classList.add('selected');showDay(key);});
+        calendar.appendChild(el);
+      }
+      if(year===today.getFullYear() && month===today.getMonth()) document.getElementById('monthCompleted').textContent=completedDays;
+    }
+    document.getElementById('previousMonth').onclick=()=>{visibleMonth=new Date(visibleMonth.getFullYear(),visibleMonth.getMonth()-1,1);renderCalendar();};
+    document.getElementById('nextMonth').onclick=()=>{const next=new Date(visibleMonth.getFullYear(),visibleMonth.getMonth()+1,1);if(next<=new Date(today.getFullYear(),today.getMonth(),1)){visibleMonth=next;renderCalendar();}};
+    renderCalendar();
+  </script>
+</body>
+</html>
