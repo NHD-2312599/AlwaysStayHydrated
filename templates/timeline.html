@@ -42,6 +42,8 @@
     .timeline-item.is-current .timeline-dot { background: #D97706; box-shadow: 0 0 0 3px #F2C078; }
     .timeline-card { padding: 22px 24px 20px; border: 1px solid rgba(45,106,79,.14); border-radius: 18px; background: #fff; box-shadow: 0 8px 24px rgba(27,67,50,.07); }
     .timeline-date { color: var(--timeline-soft); font-size: .78rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+    .timeline-topic { display:flex; align-items:center; gap:8px; margin-bottom:8px; color:var(--timeline-green); font-size:.8rem; font-weight:800; }
+    .timeline-topic-label { color:var(--timeline-soft); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; }
     .timeline-card h2 { margin: 7px 0 8px; color: var(--timeline-green); font-size: 1.25rem; line-height: 1.2; }
     .timeline-summary { margin: 0; color: var(--text-sec); line-height: 1.65; }
     .timeline-meta { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
@@ -53,6 +55,50 @@
     .timeline-cta { display: inline-flex; margin-top: 14px; color: var(--timeline-soft); font-size: .86rem; font-weight: 800; text-decoration: none; }
     .timeline-cta:hover { color: var(--timeline-green); }
     .timeline-empty { display: none; padding: 24px; border: 1px dashed #9BC7AA; border-radius: 16px; color: var(--text-sec); background: rgba(255,255,255,.55); text-align: center; }
+
+    /* Editorial timeline refinement */
+    body.timeline-page { background:#fbfcfa; color:#173b2b; }
+    .app-shell-header { background:rgba(255,255,255,.96); box-shadow:0 1px 0 rgba(23,59,43,.06); }
+    .timeline-shell { width:min(100% - 48px, 1180px); padding:44px 0 120px; }
+    .timeline-heading { max-width:900px; margin:0 auto 34px; }
+    .timeline-kicker { color:#2d6a4f; font-size:.72rem; letter-spacing:.14em; }
+    .timeline-heading h1 { margin:12px 0 12px; font-size:clamp(2.5rem,5vw,3.25rem); font-weight:700; letter-spacing:-.035em; line-height:1.08; }
+    .timeline-heading p { max-width:680px; color:#66756d; font-size:1rem; line-height:1.7; }
+    .timeline-note { position:relative; overflow:hidden; margin:26px 0 28px; padding:22px 24px 22px 52px; border:1px solid rgba(45,106,79,.12); border-left:3px solid #2d6a4f; border-radius:14px; background:#fff; box-shadow:0 8px 24px rgba(23,59,43,.045); }
+    .timeline-note::before { content:'“'; position:absolute; left:17px; top:3px; color:#d8f3dc; font-family:Georgia,serif; font-size:4.5rem; line-height:1; }
+    .timeline-filters { gap:9px; margin-bottom:42px; overflow-x:auto; padding:3px 2px 7px; scrollbar-width:none; }
+    .timeline-filters::-webkit-scrollbar { display:none; }
+    .timeline-filter { flex:0 0 auto; border:1px solid rgba(45,106,79,.16); border-radius:999px; padding:10px 16px; background:#fff; color:#60736a; font-size:.82rem; transition:transform .25s ease, box-shadow .25s ease, background .25s ease, color .25s ease; }
+    .timeline-filter:hover { transform:scale(1.03); box-shadow:0 5px 14px rgba(23,59,43,.08); }
+    .timeline-filter.is-active { background:#1b4332; border-color:#1b4332; color:#fff; box-shadow:0 5px 14px rgba(27,67,50,.16); }
+    .timeline-layout { grid-template-columns:190px minmax(0,760px); gap:56px; }
+    .timeline-rail-nav { top:88px; }
+    .timeline-rail-nav h2 { color:#9aa8a0; }
+    .timeline-rail-nav a { border-left-color:#dbe7df; color:#6c7d74; transition:color .2s ease, border-color .2s ease, padding .2s ease; }
+    .timeline-rail-nav a:hover { padding-left:14px; border-color:#2d6a4f; color:#1b4332; }
+    .timeline-list::before { left:15px; width:3px; background:#dce9e0; transform-origin:top; }
+    .timeline-list::after { content:''; position:absolute; top:10px; bottom:20px; left:15px; width:3px; background:#2d6a4f; transform:scaleY(var(--timeline-progress,0)); transform-origin:top; transition:transform .55s ease-out; }
+    .timeline-item { padding-left:52px; margin-bottom:32px; opacity:0; transform:translateY(14px); transition:opacity .4s ease, transform .4s ease; }
+    .timeline-item.is-visible { opacity:1; transform:none; }
+    .timeline-dot { top:24px; left:5px; width:22px; height:22px; border:5px solid #fbfcfa; background:#fff; box-shadow:0 0 0 2px #9bc7aa; transition:transform .25s ease, background .25s ease, box-shadow .25s ease; }
+    .timeline-item.is-current .timeline-dot, .timeline-item:hover .timeline-dot { transform:scale(1.22); background:#2d6a4f; box-shadow:0 0 0 3px #9bc7aa, 0 0 16px rgba(45,106,79,.22); }
+    .timeline-item.is-current .timeline-dot { background:#d97706; box-shadow:0 0 0 3px #f2c078, 0 0 16px rgba(217,119,6,.2); }
+    .timeline-card { padding:24px 26px 22px; border:1px solid rgba(23,59,43,.1); border-radius:16px; box-shadow:0 7px 22px rgba(23,59,43,.045); transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+    .timeline-card:hover { transform:translateY(-4px); border-color:rgba(45,106,79,.28); box-shadow:0 16px 34px rgba(23,59,43,.1); }
+    .timeline-topic { margin-bottom:9px; color:#61736a; font-size:.76rem; font-weight:700; letter-spacing:.01em; }
+    .timeline-topic-label { color:#9aa8a0; font-size:.66rem; letter-spacing:.12em; }
+    .timeline-date { color:#2d6a4f; font-size:.76rem; letter-spacing:.1em; }
+    .timeline-card h2 { margin:9px 0 9px; font-size:1.38rem; letter-spacing:-.018em; }
+    .timeline-summary { color:#5e7167; font-size:.95rem; line-height:1.65; }
+    .timeline-meta { gap:7px; margin-top:18px; }
+    .timeline-ref, .timeline-tag { min-height:27px; padding:5px 10px; font-size:.72rem; transition:background .2s ease, transform .2s ease; }
+    .timeline-ref:hover, .timeline-tag:hover { transform:translateY(-1px); }
+    .timeline-source { color:#899990; }
+    .timeline-cta { margin-top:16px; font-size:.8rem; transition:color .2s ease, transform .2s ease; }
+    .timeline-cta:hover { transform:translateX(3px); }
+    .timeline-list.is-switching .timeline-item { opacity:0; transform:translateY(8px); }
+    @media (max-width:959px) { .timeline-shell { width:min(100% - 36px,760px); } }
+    @media (max-width:560px) { .timeline-shell { width:min(100% - 24px,720px); padding-top:26px; } .timeline-heading h1 { font-size:2.15rem; } .timeline-note { padding:20px 18px 20px 44px; } .timeline-item { padding-left:38px; margin-bottom:24px; } .timeline-list::before, .timeline-list::after { left:10px; } .timeline-dot { left:0; width:20px; height:20px; } .timeline-card { padding:20px 18px 18px; } }
     @media (max-width: 959px) { .timeline-layout { display: block; } .timeline-rail-nav { display: none; } }
     @media (max-width: 560px) { .app-shell-header { height:56px; } .app-shell-inner { padding:0 14px; } .app-brand img { width:104px; } .profile-link > span:last-child { display:none; } .logout-btn { padding:7px 11px; } .timeline-shell { width: min(100% - 24px, 720px); padding-top: 16px; } .timeline-header { margin-bottom: 22px; } .timeline-header strong { font-size: .95rem; } .timeline-card { padding: 19px 17px 18px; } .timeline-item { padding-left: 35px; } .timeline-list::before { left: 10px; } .timeline-dot { left: 2px; } }
     @media (prefers-reduced-motion: no-preference) { .timeline-item { animation: timeline-in .45s ease both; } @keyframes timeline-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } } }
@@ -117,6 +163,7 @@
         <article class="timeline-item" id="${domId}" data-tags="${item.tags.join('|')}">
           <span class="timeline-dot" aria-hidden="true"></span>
           <div class="timeline-card">
+            <div class="timeline-topic"><span class="timeline-topic-label">Chủ đề</span><span>${item.id}</span></div>
             <div class="timeline-date">${item.date_label}</div>
             <h2>${item.title}</h2>
             <p class="timeline-summary">${item.summary}</p>
@@ -138,13 +185,30 @@
 
     function observeItems() {
       if (!('IntersectionObserver' in window)) return;
-      const observer = new IntersectionObserver((entries) => entries.forEach((entry) => entry.target.classList.toggle('is-current', entry.isIntersecting)), { rootMargin: '-25% 0px -60% 0px' });
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle('is-current', entry.isIntersecting);
+          if (entry.isIntersecting) entry.target.classList.add('is-visible');
+        });
+        const visibleItems = [...document.querySelectorAll('.timeline-item')];
+        const activeIndex = visibleItems.findIndex((item) => item.classList.contains('is-current'));
+        if (activeIndex >= 0) {
+          document.querySelector('.timeline-list').style.setProperty('--timeline-progress', `${(activeIndex + 1) / visibleItems.length}`);
+        }
+      }, { rootMargin: '-25% 0px -60% 0px' });
       document.querySelectorAll('.timeline-item').forEach((item) => observer.observe(item));
+      document.querySelectorAll('.timeline-item').forEach((item, index) => {
+        item.style.transitionDelay = `${Math.min(index * 70, 420)}ms`;
+      });
     }
 
     filters.forEach((button) => button.addEventListener('click', () => {
       filters.forEach((item) => item.classList.toggle('is-active', item === button));
-      renderTimeline(button.dataset.filter);
+      list.classList.add('is-switching');
+      window.setTimeout(() => {
+        renderTimeline(button.dataset.filter);
+        window.requestAnimationFrame(() => list.classList.remove('is-switching'));
+      }, 120);
     }));
     renderTimeline();
   </script>

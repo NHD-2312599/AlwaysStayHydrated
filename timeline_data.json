@@ -122,7 +122,7 @@
     "title": "NCCGU ra tù",
     "summary": "NCCGU ra tù, nhận án treo.",
     "chapter_refs": ["9:15", "12", "13"],
-    "tags": ["Phán xét"],
+    "tags": ["Huỷ diệt","Phán xét"],
     "image_url": null
   },
   {
@@ -131,7 +131,7 @@
     "title": "Sự kiện ngày, giờ, tháng, năm",
     "summary": "17 người được tay nhậm chức mục sư (nhận dấu 666) (2:00 PM, 20/09/1981)",
     "chapter_refs": ["9:15", "12", "13"],
-    "tags": ["Phán xét"],
+    "tags": ["Huỷ diệt","Phán xét"],
     "image_url": null
   },
   {
@@ -140,7 +140,7 @@
     "title": "Phát tờ rơi",
     "summary": "Phát tờ rơi cho các nhà quan tâm về Tôn giáo trên thế giới",
     "chapter_refs": [],
-    "tags": ["Phán xét"],
+    "tags": ["Huỷ diệt","Phán xét"],
     "image_url": null
   },
   {
@@ -149,7 +149,7 @@
     "title": "Lễ Thành Lập",
     "summary": "Thành Lập SCJ, Nơi thánh đền tạm chứng cớ",
     "chapter_refs": ["7", "14", "15"],
-    "tags": ["Phán xét"],
+    "tags": ["Huỷ diệt","Phán xét"],
     "image_url": null
   },
   {
@@ -182,7 +182,7 @@
   {
     "id": "Thời gian cứu rỗi(1000 năm) (14.03.1984 ~ hiện tại)",
     "date_label": "20/10/2022",
-    "title": "Lễ tốt nghiệp 100.000 người tiếp theo",
+    "title": "Lễ tốt nghiệp 100.000 người",
     "summary": "Lễ tốt nghiệp với 106.186 học viên khoá 113 tốt nghiệp từ trung tâm center truyền giáo Si-ôn",
     "chapter_refs": ["19"],
     "tags": ["Cứu rỗi"],
