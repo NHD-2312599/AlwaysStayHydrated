@@ -626,6 +626,37 @@ body.has-bottom-nav {
 @media (max-width: 480px) {
   .split-layout { width: calc(100% - 24px); margin: 12px auto; gap: 12px; }
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-panel, .form-panel { will-change:opacity, transform; animation:flashcard-panel-in .48s cubic-bezier(.16,1,.3,1) both; }
+  .form-panel { animation-delay:.06s; }
+  .hero-feat { will-change:opacity, transform; animation:flashcard-item-in .34s cubic-bezier(.16,1,.3,1) both; }
+  .hero-feat:nth-child(2) { animation-delay:.05s; }
+  .hero-feat:nth-child(3) { animation-delay:.1s; }
+  .hero-feat:nth-child(4) { animation-delay:.15s; }
+  .submit-btn { transition:transform .24s cubic-bezier(.16,1,.3,1), box-shadow .24s ease, background .2s ease; }
+  .submit-btn:hover { transform:translateY(-2px); }
+  .bottom-nav { animation:none; }
+  .bottom-nav .nav-btn { transition:color .22s ease, background .22s ease, transform .22s cubic-bezier(.16,1,.3,1); }
+  .bottom-nav .nav-btn:hover { transform:translateY(-2px); }
+  .bottom-nav .nav-btn .nav-icon { transition:transform .22s cubic-bezier(.16,1,.3,1); }
+  .bottom-nav .nav-btn:hover .nav-icon { transform:translateY(-1px) scale(1.05); }
+  @media (max-width:900px) {
+    .bottom-nav { animation:flashcard-nav-in .45s .1s cubic-bezier(.16,1,.3,1) both; }
+  }
+  @keyframes flashcard-panel-in {
+    from { opacity:0; transform:translate3d(0,8px,0); }
+    to { opacity:1; transform:none; }
+  }
+  @keyframes flashcard-item-in {
+    from { opacity:0; transform:translate3d(0,6px,0); }
+    to { opacity:1; transform:none; }
+  }
+  @keyframes flashcard-nav-in {
+    from { opacity:0; transform:translate3d(0,10px,0); }
+    to { opacity:1; transform:translate3d(0,0,0); }
+  }
+}
 </style>
 <script src="/static/js/session-refresh.js"></script>
 <script src="/static/js/sw-register.js"></script>
