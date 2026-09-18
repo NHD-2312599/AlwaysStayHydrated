@@ -11,6 +11,8 @@ from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError, InvalidHashError
 from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
 import shutil, pathlib
+from urllib.parse import quote
+from sqlalchemy import inspect, text
 from flashcard_models import db, User, Tab, Card, CardStatus, CardReviewSchedule, ExamReviewStatus, init_db
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-only-change-me")
@@ -49,6 +51,30 @@ db.init_app(app)
 init_db(app)
 
 
+def ensure_flashcard_tab_order():
+    """Add the tab ordering column to databases created before ordering existed."""
+    columns = {column['name'] for column in inspect(db.engine).get_columns('tabs')}
+    if 'order_index' in columns:
+        return
+
+    with db.engine.begin() as connection:
+        connection.execute(text(
+            'ALTER TABLE tabs ADD COLUMN order_index INTEGER NOT NULL DEFAULT 0'
+        ))
+        tab_ids = connection.execute(text(
+            'SELECT id FROM tabs ORDER BY created_at, id'
+        )).scalars().all()
+        for index, tab_id in enumerate(tab_ids):
+            connection.execute(
+                text('UPDATE tabs SET order_index = :order_index WHERE id = :tab_id'),
+                {'order_index': index, 'tab_id': tab_id},
+            )
+
+
+with app.app_context():
+    ensure_flashcard_tab_order()
+
+
 CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # async_mode="threading": không cần cài eventlet/gevent, chạy được cả trên
@@ -81,7 +107,64 @@ def after_request(response):
     return response
 
 with open(os.path.join(BASE_DIR, "khai_huyen_data.json"), encoding="utf-8") as f:
-    BIBLE_DATA = json.load(f)
+    BIBLE_BOOKS = json.load(f)
+
+BIBLE_DATA = BIBLE_BOOKS[-1].get("chapters", {}) if BIBLE_BOOKS else {}
+
+VERSE_IMAGE_KEYWORDS = {
+    "nature": "nature,landscape,greenery",
+    "creation": "nature,sky,landscape",
+    "desert": "desert,mountain,sunlight",
+    "wisdom": "forest,path,tree",
+    "worship": "mountains,sunrise,nature",
+    "gospel": "sunlight,sky,landscape",
+    "letters": "nature,light,landscape",
+    "revelation": "dramatic,sky,clouds,light",
+}
+
+
+def get_verse_image_keywords(book_number):
+    if book_number <= 5:
+        return VERSE_IMAGE_KEYWORDS["creation"] if book_number == 1 else VERSE_IMAGE_KEYWORDS["desert"]
+    if book_number <= 22:
+        return VERSE_IMAGE_KEYWORDS["worship"]
+    if book_number <= 39:
+        return VERSE_IMAGE_KEYWORDS["wisdom"]
+    if book_number <= 43:
+        return VERSE_IMAGE_KEYWORDS["gospel"]
+    if book_number <= 65:
+        return VERSE_IMAGE_KEYWORDS["letters"]
+    return VERSE_IMAGE_KEYWORDS["revelation"]
+
+def get_verse_of_day():
+    passages = []
+    for book_number, book in enumerate(BIBLE_BOOKS, 1):
+        for chapter_value, verses in book.get("chapters", {}).items():
+            if len(verses) >= 2:
+                passages.append((book_number, book, int(chapter_value), verses))
+
+    if not passages:
+        return None
+
+    date_key = datetime.now().date().isoformat()
+    daily_random = random.Random(date_key)
+    book_number, book, chapter, verses = daily_random.choice(passages)
+    passage_length = daily_random.randint(2, min(4, len(verses)))
+    start_index = daily_random.randint(0, len(verses) - passage_length)
+    selected_verses = verses[start_index:start_index + passage_length]
+    return {
+        "book": book_number,
+        "book_name": book.get("abbrev", "Kinh Thánh"),
+        "chapter": chapter,
+        "start_verse": selected_verses[0]["verse"],
+        "end_verse": selected_verses[-1]["verse"],
+        "verses": selected_verses,
+        "image_url": (
+            "https://loremflickr.com/1600/900/"
+            f"{quote(get_verse_image_keywords(book_number), safe=',')}"
+            f"?lock={date_key.replace('-', '')}"
+        ),
+    }
 
 USERS_FILE = os.path.join(os.path.dirname(__file__), "users.json")
 
@@ -351,21 +434,33 @@ def index():
     active_page = request.args.get("tab", "home")
     if active_page not in {"home", "fill", "typing"}:
         active_page = "home"
-    return render_template("index.html", active_page=active_page)
+    return render_template("index.html", active_page=active_page, verse_of_day=get_verse_of_day())
 
 @app.route('/read')
 @app.route('/read/<int:chapter>')
+@app.route('/read/<int:book>/<int:chapter>')
 @login_required
-def read_bible(chapter=1):
-    if chapter < 1 or chapter > 22:
-        return redirect(url_for('read_bible', chapter=1))
+def read_bible(book=66, chapter=1):
+    if book < 1 or book > len(BIBLE_BOOKS):
+        book = len(BIBLE_BOOKS)
 
-    verses = BIBLE_DATA.get(str(chapter), [])
+    selected_book = BIBLE_BOOKS[book - 1]
+    book_chapters = selected_book.get("chapters", {})
+    chapter_numbers = sorted(int(value) for value in book_chapters)
+    if not chapter_numbers:
+        return redirect(url_for('read_bible'))
+    if chapter not in chapter_numbers:
+        chapter = chapter_numbers[0]
+
+    verses = book_chapters.get(str(chapter), [])
     return render_template(
         "read.html",
+        book=book,
+        book_name=selected_book.get("abbrev", "Kinh Thánh"),
+        books=[{"number": index, "name": item.get("abbrev", "Kinh Thánh"), "chapters": sorted(int(value) for value in item.get("chapters", {}))} for index, item in enumerate(BIBLE_BOOKS, 1)],
         chapter=chapter,
         verses=verses,
-        chapters=list(range(1, 23)),
+        chapters=chapter_numbers,
     )
 
 @app.route('/timeline')
@@ -739,7 +834,7 @@ def get_flashcard_data():
     db.session.expire_all()  # Đảm bảo luôn đọc dữ liệu mới nhất từ DB
     user = get_api_user()
     data = []
-    for tab in Tab.query.order_by(Tab.created_at).all():
+    for tab in Tab.query.order_by(Tab.order_index, Tab.created_at, Tab.id).all():
         tab_dict = {'id': tab.id, 'name': tab.name, 'cards': []}
         for card in tab.cards:
             cd = card.to_dict(include_statuses=False)
@@ -775,10 +870,34 @@ def create_tab():
     if not name:
         return jsonify({'error': 'Tab name required'}), 400
     import uuid
-    tab = Tab(id=f"t{uuid.uuid4().hex[:8]}", name=name)
+    last_order = db.session.query(db.func.max(Tab.order_index)).scalar()
+    tab = Tab(
+        id=f"t{uuid.uuid4().hex[:8]}",
+        name=name,
+        order_index=(last_order if last_order is not None else -1) + 1,
+    )
     db.session.add(tab)
     db.session.commit()
     return jsonify(tab.to_dict()), 201
+
+
+@app.route("/api/flashcard/tabs/reorder", methods=["POST"])
+@flashcard_admin_required
+def reorder_tabs():
+    tab_ids = (request.json or {}).get('tab_ids')
+    if not isinstance(tab_ids, list):
+        return jsonify({'error': 'tab_ids must be a list'}), 400
+
+    tabs = Tab.query.all()
+    known_ids = {tab.id for tab in tabs}
+    if len(tab_ids) != len(known_ids) or set(tab_ids) != known_ids:
+        return jsonify({'error': 'tab_ids must contain every tab exactly once'}), 400
+
+    tabs_by_id = {tab.id: tab for tab in tabs}
+    for index, tab_id in enumerate(tab_ids):
+        tabs_by_id[tab_id].order_index = index
+    db.session.commit()
+    return jsonify({'message': 'Tab order updated'})
 
 @app.route("/api/flashcard/tabs/<tab_id>", methods=["PUT"])
 @flashcard_admin_required

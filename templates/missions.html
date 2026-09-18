@@ -86,19 +86,20 @@
       { id:'flashcard_review_1', title:'Review lại ít nhất 1 thẻ đã đánh dấu cần ôn', mode:'flashcard', target:1, metric:'reviewed_marked' },
       { id:'exam_once', title:'Hoàn thành 1 bài Kiểm tra đóng ấn', mode:'exam', target:1, metric:'exam_submitted' },
       { id:'multiplayer_once', title:'Tham gia 1 ván Đấu trường', mode:'multiplayer', target:1, metric:'match_played' },
+      { id:'read_once', title:'Đọc một phân đoạn Kinh Thánh hôm nay', mode:'read', target:1, metric:'read_chapter' },
       { id:'fill_accuracy_8', title:'Trả lời đúng 8 câu điền chỗ trống', mode:'fill', target:8, metric:'correct_answers' },
       { id:'typing_speed_10', title:'Luyện gõ 10 câu với độ chính xác từ 85%', mode:'typing', target:10, metric:'accuracy_ge_85' },
       { id:'flashcard_review_3', title:'Ôn lại 3 thẻ ghi nhớ trong ngày', mode:'flashcard', target:3, metric:'reviewed_any' },
       { id:'exam_score_80', title:'Đạt từ 80% trong một bài kiểm tra', mode:'exam', target:1, metric:'exam_score_ge_80' },
       { id:'multiplayer_win', title:'Giành 1 chiến thắng tại Đấu trường', mode:'multiplayer', target:1, metric:'match_won' }
     ];
-    const missionLinks = { fill:'/home?tab=fill', typing:'/home?tab=typing', flashcard:'/flashcard/login', exam:'/exam_library', multiplayer:'/multiplayer' };
+    const missionLinks = { fill:'/home?tab=fill', typing:'/home?tab=typing', flashcard:'/flashcard/login', exam:'/exam_library', multiplayer:'/multiplayer', read:'/read' };
     const now = new Date();
     const dateKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
     const storageKey = `missions_${dateKey}`;
     function dailySeed() { return [...dateKey].reduce((sum, character) => sum + character.charCodeAt(0), 0); }
     function chooseDailyMissions() { const pool=[...missionPool]; let seed=dailySeed(); const selected=[]; while(selected.length<5 && pool.length){ seed=(seed*9301+49297)%233280; const index=seed%pool.length; selected.push(pool.splice(index,1)[0]); } return selected; }
-    function loadMissions() { try { const data=JSON.parse(localStorage.getItem(storageKey)||'null'); if(data?.version===2 && data.required?.length===5 && data.optional) return data; } catch(error) {} const data={version:2,required:chooseDailyMissions().map(item=>({...item,progress:0,done:false})),optional:[]}; saveMissions(data); return data; }
+    function loadMissions() { try { const data=JSON.parse(localStorage.getItem(storageKey)||'null'); if(data?.version===2 && data.required?.length===5 && data.optional) { if(!data.required.some(item=>item.id==='read_once')) { data.required[data.required.length-1]={id:'read_once',title:'Đọc một phân đoạn Kinh Thánh hôm nay',mode:'read',target:1,metric:'read_chapter',progress:0,done:false}; saveMissions(data); } return data; } } catch(error) {} const data={version:2,required:chooseDailyMissions().map(item=>({...item,progress:0,done:false})),optional:[]}; if(!data.required.some(item=>item.id==='read_once')) data.required[data.required.length-1]={id:'read_once',title:'Đọc một phân đoạn Kinh Thánh hôm nay',mode:'read',target:1,metric:'read_chapter',progress:0,done:false}; saveMissions(data); return data; }
     function saveMissions(data) { localStorage.setItem(storageKey, JSON.stringify(data)); localStorage.setItem(`activity_${dateKey}`, '1'); }
     function done(item) { return item.done || item.progress >= item.target; }
     function progress(item) { return done(item) ? 'Hoàn thành' : item.progress ? `${item.progress}/${item.target}` : 'Chưa bắt đầu'; }

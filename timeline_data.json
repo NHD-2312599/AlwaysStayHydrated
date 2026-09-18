@@ -12,9 +12,9 @@
   {
     "id": "Thời gian bỏ đạo (1966 - 1980)",
     "date_label": "14/03/1966",
-    "title": "Hình thành đển tạm",
+    "title": "Hình thành đền tạm",
     "summary": "Hình thành đền tạm thứ nhất Jang Mak Song Jeon, dưới núi Chong-gye, thuộc địa phận Gwa-cheon, Đại Hàn Dân Quốc",
-    "chapter_refs": ["2-3"],
+    "chapter_refs": ["2", "3"],
     "tags": ["Bỏ đạo"],
     "source_note":"",
     "image_url": null
@@ -24,7 +24,7 @@
     "date_label": "1967",
     "title": "Bắt đầu có sự bỏ đạo",
     "summary": "7 Ngôi sao bắt đầu có sự bỏ đạo diễn ra trong đền tạm",
-    "chapter_refs": ["2-3"],
+    "chapter_refs": ["2", "3"],
     "tags": ["Bỏ đạo"],
     "source_note":"",
     "image_url": null
@@ -32,8 +32,8 @@
   {
     "id": "Thời gian bỏ đạo (1966 - 1980)",
     "date_label": "02/1967",
-    "title": "NCCGU bước vào đền tạm",
-    "summary": "Cùng thời điểm 7 Ngôi sao bỏ đạo, NCCGU bước vào đền tạm",
+    "title": "Giăng mới lên trời và cho thấy",
+    "summary": "Cùng thời điểm 7 Ngôi sao bỏ đạo, Giăng mới bước vào đền tạm",
     "chapter_refs": ["1:4", "1:11"],
     "tags": ["Bỏ đạo"],
     "source_note":"",
@@ -42,9 +42,9 @@
   {
     "id": "Thời gian bỏ đạo (1966 - 1980)",
     "date_label": "1971",
-    "title": "NCCGU rời khỏi đền tạm",
-    "summary": "Sau khi nhìn thấy được sự mục nát diễn ra trong đền tạm, NCCGU rời khỏi đền tạm và về quê Cheong-do vận động làng mới",
-    "chapter_refs": ["2-3"],
+    "title": "Giăng mới rời khỏi đền tạm",
+    "summary": "Sau khi nhìn thấy được sự mục nát diễn ra trong đền tạm, Giăng mới rời khỏi đền tạm và về quê Cheong-do vận động làng mới",
+    "chapter_refs": ["2", "3"],
     "tags": ["Bỏ đạo"],
     "source_note":"",
     "image_url": null
@@ -54,7 +54,7 @@
     "date_label": "1975",
     "title": "Nicola bước vào đền tạm",
     "summary": "Ông Oh (Nicola) bước vào đền tạm thứ nhất",
-    "chapter_refs": ["2-3"],
+    "chapter_refs": ["2", "3"],
     "tags": ["Bỏ đạo"],
     "source_note":"",
     "image_url": null
@@ -62,8 +62,8 @@
   {
     "id": "Thời gian bỏ đạo (1966 - 1980)",
     "date_label": "1977",
-    "title": "NCCGU được Chúa Jesus chọn",
-    "summary": "Tại cầu Hyeonli, thuộc Cheong-do, NCCGU được Chúa Jesus chọn để thực hiện sứ mệnh cứu rỗi",
+    "title": "Giăng mới được Chúa Jesus chọn",
+    "summary": "Tại cầu Hyeonli, thuộc Cheong-do, Giăng mới được Chúa Jesus chọn để thực hiện sứ mệnh cứu rỗi",
     "chapter_refs": ["1"],
     "tags": ["Bỏ đạo"],
     "source_note":"",
@@ -74,7 +74,7 @@
     "date_label": "1979",
     "title": "Gửi thư",
     "summary": "Sau hai năm quan sát, Giăng mới bắt đầu sứ mệnh gửi thư cho 7 sứ giả kêu gọi sự ăn năn",
-    "chapter_refs": ["2-3"],
+    "chapter_refs": ["2", "3"],
     "tags": ["Bỏ đạo"],
     "source_note": "Cấu trúc thư: 1. Sự ngươi đã thấy, 2. Việc nay hiện có, 3. Việc sau sẽ đến",
     "image_url": null
@@ -84,7 +84,7 @@
     "date_label": "1980",
     "title": "Giăng mới lên trời và cho thấy",
     "summary": "Giăng mới được lên trời và cho thấy cấu trúc Ngôi của Đức Chúa Trời, cũng như được nhận và nuốt quyển sách mở",
-    "chapter_refs": ["4", "5"],
+    "chapter_refs": ["4", "5", "10"],
     "tags": ["Huỷ diệt"],
     "source_note": "Quá trình truyền tải Khải thị: ĐCT -> Chúa Jesus -> Thiên sứ -> Giăng mới -> Các tôi tớ",
     "image_url": null
@@ -93,9 +93,117 @@
     "id": "Thời gian huỷ diệt (9.1980 - 3.1984)",
     "date_label": "03/1980",
     "title": "Ông Oh chiếm lấy đền tạm",
-    "summary": "Ông Oh trở thành người đứng đầu đền tạm thứ nhất và chiếm lấy đền tạm",
-    "chapter_refs": ["4, 5", "10"],
+    "summary": "Ông Oh trở thành người đứng đầu đền tạm thứ nhất.\nViện giáo dục thần học Chong Ji Gi (Ông Thak)", 
+    "chapter_refs": ["4", "5", "10"],
     "tags": ["Huỷ diệt"],
+    "image_url": null
+  },
+  {
+    "id": "Thời gian huỷ diệt (9.1980 - 3.1984)",
+    "date_label": "09/1980",
+    "title": "Đổi bảng hiệu đền tạm",
+    "summary": "Thay đổi bảng hiệu (Jang Mak Song Jeon) thành (Nhà thờ Y-sác)",
+    "chapter_refs": ["6:12-17"],
+    "tags": ["Huỷ diệt"],
+    "image_url": null
+  },
+  {
+    "id": "Thời gian huỷ diệt (9.1980 - 3.1984)",
+    "date_label": "27/10/1980",
+    "title": "NCCGU bị tạm giam",
+    "summary": "NCCGU bị tạm giam trong 100 ngày. \nKhoảng thời gian này, Ông Yoo hải ngoại sang Mỹ. \nCây sậy: Ông Hong (Hai chứng nhân)",
+    "chapter_refs": ["11"],
+    "tags": ["Huỷ diệt"],
+    "image_url": null
+  },
+  {
+    "id": "Thời gian phán xét (1984 - 1990)",
+    "date_label": "02/02/1981",
+    "title": "NCCGU ra tù",
+    "summary": "NCCGU ra tù, nhận án treo.",
+    "chapter_refs": ["9:15", "12", "13"],
+    "tags": ["Phán xét"],
+    "image_url": null
+  },
+  {
+    "id": "Thời gian phán xét (1984 - 1990)",
+    "date_label": "20/09/1981",
+    "title": "Sự kiện ngày, giờ, tháng, năm",
+    "summary": "17 người được tay nhậm chức mục sư (nhận dấu 666) (2:00 PM, 20/09/1981)",
+    "chapter_refs": ["9:15", "12", "13"],
+    "tags": ["Phán xét"],
+    "image_url": null
+  },
+  {
+    "id": "Thời gian phán xét (1984 - 1990)",
+    "date_label": "02/1984",
+    "title": "Phát tờ rơi",
+    "summary": "Phát tờ rơi cho các nhà quan tâm về Tôn giáo trên thế giới",
+    "chapter_refs": [],
+    "tags": ["Phán xét"],
+    "image_url": null
+  },
+  {
+    "id": "Thời gian phán xét (1984 - 1990)",
+    "date_label": "14/03/1984",
+    "title": "Lễ Thành Lập",
+    "summary": "Thành Lập SCJ, Nơi thánh đền tạm chứng cớ",
+    "chapter_refs": ["7", "14", "15"],
+    "tags": ["Phán xét"],
+    "image_url": null
+  },
+  {
+    "id": "Thời gian cứu rỗi(1000 năm) (14.03.1984 ~ hiện tại)",
+    "date_label": "06/1990",
+    "title": "Trung tâm center viện thần học Si-ôn",
+    "summary": "Thành lập trung tâm center viện thần học Si-ôn",
+    "chapter_refs": ["19"],
+    "tags": ["Cứu rỗi"],
+    "image_url": null
+  },
+  {
+    "id": "Thời gian cứu rỗi(1000 năm) (14.03.1984 ~ hiện tại)",
+    "date_label": "08/1990",
+    "title": "Trung tâm center viện thần học Si-ôn",
+    "summary": "Khải giảng đợt 1 của trung tâm center viện thần học Si-ôn",
+    "chapter_refs": ["19"],
+    "tags": ["Cứu rỗi"],
+    "image_url": null
+  },
+  {
+    "id": "Thời gian cứu rỗi(1000 năm) (14.03.1984 ~ hiện tại)",
+    "date_label": "04/1991",
+    "title": "Lễ tốt nghiệp đầu tiên",
+    "summary": "Lễ tốt nghiệp đầu tiên của trung tâm center truyền giáo Si-ôn (12 người tốt nghiệp)",
+    "chapter_refs": ["19"],
+    "tags": ["Cứu rỗi"],
+    "image_url": null
+  },
+  {
+    "id": "Thời gian cứu rỗi(1000 năm) (14.03.1984 ~ hiện tại)",
+    "date_label": "20/10/2022",
+    "title": "Lễ tốt nghiệp 100.000 người tiếp theo",
+    "summary": "Lễ tốt nghiệp với 106.186 học viên khoá 113 tốt nghiệp từ trung tâm center truyền giáo Si-ôn",
+    "chapter_refs": ["19"],
+    "tags": ["Cứu rỗi"],
+    "image_url": null
+  },
+  {
+    "id": "Thời gian cứu rỗi(1000 năm) (14.03.1984 ~ hiện tại)",
+    "date_label": "12/11/2023",
+    "title": "Lễ tốt nghiệp 100.000 người tiếp theo",
+    "summary": "Lễ tốt nghiệp với 108.084 học viên khoá 114 tốt nghiệp từ trung tâm center truyền giáo Si-ôn",
+    "chapter_refs": ["19"],
+    "tags": ["Cứu rỗi"],
+    "image_url": null
+  },
+  {
+    "id": "Thời gian cứu rỗi(1000 năm) (14.03.1984 ~ hiện tại)",
+    "date_label": "30/10/2024",
+    "title": "Lễ tốt nghiệp 110.000 người tiếp theo",
+    "summary": "Lễ tốt nghiệp với 111.628 học viên khoá 115 tốt nghiệp từ trung tâm center truyền giáo Si-ôn",
+    "chapter_refs": ["19"],
+    "tags": ["Cứu rỗi"],
     "image_url": null
   }
 ]

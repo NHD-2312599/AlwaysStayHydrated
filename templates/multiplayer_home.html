@@ -20,9 +20,36 @@
 *{box-sizing:border-box}
 body{
   margin:0; min-height:100vh; background:var(--bg); color:var(--text);
-  display:flex; align-items:center; justify-content:center; padding:32px 20px 120px;
+  padding:0 20px 120px;
 }
-.wrap{width:100%; max-width:900px; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:20px}
+header {
+  width: calc(100% + 40px);
+  margin-left: -20px;
+  min-height: 64px;
+  padding: 0 32px;
+  background: rgba(255,255,255,.82);
+  border-bottom: 1px solid rgba(0,0,0,.04);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.brand { display:flex; align-items:center; gap:6px; cursor:pointer; }
+.brand img { display:block; width:120px; height:auto; }
+.header-right { display:flex; align-items:center; gap:12px; }
+.profile-link { display:inline-flex; align-items:center; gap:9px; color:var(--text-sec); font-weight:700; text-decoration:none; }
+.profile-link:hover { color:var(--accent); }
+.profile-avatar { width:34px; height:34px; display:grid; place-items:center; border-radius:50%; background:var(--accent-lt); color:var(--accent-dk); font-size:.78rem; font-weight:900; }
+.logout-btn { font-family:inherit; font-size:.85rem; font-weight:600; padding:8px 18px; border-radius:99px; border:1.5px solid var(--border-solid); background:var(--surface); color:var(--accent); cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; }
+.logout-btn:hover { background:var(--accent); color:#fff; }
+.wrap{width:100%; max-width:900px; margin:0 auto; padding-top:32px; display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:20px}
 h1, .sub, .back { grid-column:1 / -1; }
 
 
@@ -73,6 +100,9 @@ input:focus, select:focus{outline:none; border-color:var(--water)}
 /* .bottom-nav / .nav-btn styles now come from theme.css */
 
 @media (max-width: 700px) {
+  header { padding:0 16px; }
+  .profile-link > span:last-child { display:none; }
+  .brand img { width:102px; }
   .wrap { grid-template-columns:1fr; max-width:500px; }
   h1, .sub, .back { grid-column:auto; }
   .panel { padding:20px; }
@@ -81,6 +111,20 @@ input:focus, select:focus{outline:none; border-color:var(--water)}
 </style>
 </head>
 <body class="has-bottom-nav">
+<header>
+  <div class="header-inner">
+    <a class="brand" href="{{ url_for('index') }}" style="cursor:pointer;">
+      <img src="{{ url_for('static', filename='pictures/Logo2.png') }}" alt="Always Stay Hydrated">
+    </a>
+    <div class="header-right">
+      <a class="profile-link" href="{{ url_for('profile') }}" aria-label="Mở trang cá nhân">
+        <span class="profile-avatar">{{ username[:2]|upper }}</span>
+        <span>Xin chào, {{ username }}</span>
+      </a>
+      <a href="{{ url_for('logout') }}" class="logout-btn" onclick="clearAshCaches()">Đăng Xuất</a>
+    </div>
+  </div>
+</header>
 <div class="wrap">
 
   <h1>Đấu Trường Khải Huyền</h1>

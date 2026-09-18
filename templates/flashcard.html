@@ -1301,6 +1301,12 @@ body {
   margin-bottom: 4px;
 }
 
+.library-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .library-title {
   font-size: 1.6rem;
   font-weight: 700;
@@ -1333,6 +1339,54 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 18px;
+}
+
+.tabs-grid.reordering .tab-card {
+  cursor: grab;
+  border-style: dashed;
+}
+
+.tabs-grid.reordering .tab-card:active {
+  cursor: grabbing;
+}
+
+.tab-card.dragging {
+  opacity: 0.45;
+}
+
+.btn-reorder-tab,
+.btn-save-order {
+  font-family: 'NeueHaasGroteskDisplay', Helvetica, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.btn-reorder-tab {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-sec);
+}
+
+.btn-reorder-tab:hover,
+.btn-reorder-tab.active {
+  border-color: var(--accent);
+  background: var(--accent-lt);
+  color: var(--accent-dk);
+}
+
+.btn-save-order {
+  border: none;
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-save-order:hover {
+  background: var(--accent-dk);
 }
 
 .tab-card {
@@ -1468,6 +1522,19 @@ body {
 
   .library-title {
     font-size: 1.3rem;
+  }
+
+  .library-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .library-actions {
+    width: 100%;
+  }
+
+  .library-actions button {
+    flex: 1;
   }
 
   .tabs-grid {
@@ -1621,9 +1688,15 @@ function showBadgeToasts(achievements) {
 <div id="library-view" class="library-container">
   <div class="library-header">
     <div class="library-title">📚 Thư Viện Học Phần</div>
+    <div class="library-actions">
+    {% if role == 'admin' %}
+    <button type="button" class="btn-reorder-tab" id="toggle-reorder" onclick="toggleTabReordering()">↕ Sắp xếp</button>
+    <button type="button" class="btn-save-order" id="save-order" onclick="saveTabOrder()" hidden>Lưu thứ tự</button>
+    {% endif %}
     {% if role == 'admin' %}
     <button type="button" class="btn-create-tab" onclick="showCreateTabModal()">+ Thêm Học Phần</button>
     {% endif %}
+    </div>
   </div>
   <div class="tabs-grid" id="tabs-grid"></div>
 </div>
@@ -1999,6 +2072,10 @@ let APP_DATA = {
   studyMode: 'cards'
 };
 
+let isReorderingTabs = false;
+let draggedTabId = null;
+let originalTabOrder = null;
+
 let SESSION = {
   cards: [],
   index: 0,
@@ -2062,6 +2139,12 @@ function renderLibrary() {
     
     const card = document.createElement('div');
     card.className = 'tab-card';
+    card.dataset.tabId = tab.id;
+    card.draggable = isReorderingTabs;
+    card.addEventListener('dragstart', handleTabDragStart);
+    card.addEventListener('dragover', handleTabDragOver);
+    card.addEventListener('drop', handleTabDrop);
+    card.addEventListener('dragend', handleTabDragEnd);
     
     // Create tab-card-header
     const header = document.createElement('div');
@@ -2109,6 +2192,84 @@ function updateViewUI() {
   document.getElementById('tabs-container').style.display = isStudyMode ? 'flex' : 'none';
   const btnBack = document.getElementById('btn-back-library');
   if (btnBack) btnBack.style.display = isStudyMode ? 'inline-block' : 'none';
+}
+
+function toggleTabReordering() {
+  if (!isReorderingTabs) {
+    originalTabOrder = APP_DATA.tabs.map(tab => tab.id);
+  }
+  isReorderingTabs = !isReorderingTabs;
+  if (!isReorderingTabs && originalTabOrder) {
+    const tabsById = new Map(APP_DATA.tabs.map(tab => [tab.id, tab]));
+    APP_DATA.tabs = originalTabOrder.map(tabId => tabsById.get(tabId));
+    originalTabOrder = null;
+  }
+  const grid = document.getElementById('tabs-grid');
+  const toggle = document.getElementById('toggle-reorder');
+  const save = document.getElementById('save-order');
+  grid.classList.toggle('reordering', isReorderingTabs);
+  toggle.classList.toggle('active', isReorderingTabs);
+  toggle.textContent = isReorderingTabs ? '× Hủy sắp xếp' : '↕ Sắp xếp';
+  save.hidden = !isReorderingTabs;
+  renderLibrary();
+}
+
+function handleTabDragStart(event) {
+  if (!isReorderingTabs) return;
+  draggedTabId = event.currentTarget.dataset.tabId;
+  event.currentTarget.classList.add('dragging');
+  event.dataTransfer.effectAllowed = 'move';
+  event.dataTransfer.setData('text/plain', draggedTabId);
+}
+
+function handleTabDragOver(event) {
+  if (!isReorderingTabs || !draggedTabId) return;
+  event.preventDefault();
+  event.dataTransfer.dropEffect = 'move';
+}
+
+function handleTabDrop(event) {
+  if (!isReorderingTabs) return;
+  event.preventDefault();
+  const targetId = event.currentTarget.dataset.tabId;
+  if (!draggedTabId || draggedTabId === targetId) return;
+
+  const fromIndex = APP_DATA.tabs.findIndex(tab => tab.id === draggedTabId);
+  const toIndex = APP_DATA.tabs.findIndex(tab => tab.id === targetId);
+  const [movedTab] = APP_DATA.tabs.splice(fromIndex, 1);
+  APP_DATA.tabs.splice(toIndex, 0, movedTab);
+  renderLibrary();
+}
+
+function handleTabDragEnd(event) {
+  event.currentTarget.classList.remove('dragging');
+  draggedTabId = null;
+}
+
+async function saveTabOrder() {
+  const save = document.getElementById('save-order');
+  save.disabled = true;
+  save.textContent = 'Đang lưu...';
+  try {
+    const response = await fetch('/api/flashcard/tabs/reorder', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tab_ids: APP_DATA.tabs.map(tab => tab.id) })
+    });
+    if (!response.ok) throw new Error('Không thể lưu thứ tự học phần');
+    isReorderingTabs = false;
+    document.getElementById('tabs-grid').classList.remove('reordering');
+    document.getElementById('toggle-reorder').classList.remove('active');
+    document.getElementById('toggle-reorder').textContent = '↕ Sắp xếp';
+    save.hidden = true;
+    originalTabOrder = null;
+  } catch (error) {
+    alert(error.message);
+  } finally {
+    save.disabled = false;
+    save.textContent = 'Lưu thứ tự';
+    renderLibrary();
+  }
 }
 
 function enterStudyMode(tabId) {

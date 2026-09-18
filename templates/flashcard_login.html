@@ -85,6 +85,10 @@ header {
 }
 .brand { display: flex; align-items: center; gap: 5px; cursor: pointer; }
 
+.profile-link { display:inline-flex; align-items:center; gap:9px; color:var(--text-2); font-weight:700; text-decoration:none; }
+.profile-link:hover { color:var(--accent); }
+.profile-avatar { width:34px; height:34px; display:grid; place-items:center; border-radius:50%; background:var(--accent-lt); color:var(--accent-dk); font-size:.78rem; font-weight:900; }
+
 .logout-btn {
   font-family: inherit;
   font-size: 0.85rem;
@@ -633,9 +637,12 @@ body.has-bottom-nav {
     <div class="brand" onclick="window.location.href='{{ url_for("index")}}'" style="cursor:pointer;">
       <img src="{{ url_for('static', filename='pictures/Logo2.png') }}" alt="Always Stay Hydrated Logo" width="120">
     </div>
-    <div style="display:flex; gap:12px; align-items:center;">
+      <div style="display:flex; gap:12px; align-items:center;">
       {% if session.get('user') %}
-        <div style="color:var(--text-2); font-weight:600;">Xin chào, {{ session.get('user') }}</div>
+        <a class="profile-link" href="{{ url_for('profile') }}" aria-label="Mở trang cá nhân">
+          <span class="profile-avatar">{{ session.get('user', 'B')[:2]|upper }}</span>
+          <span>Xin chào, {{ session.get('user') }}</span>
+        </a>
         <a href="{{ url_for('logout') }}" class="logout-btn" onclick="clearAshCaches()">Đăng Xuất</a>
       {% else %}
         <a href="/login" class="tab-btn">Đăng nhập</a>

@@ -31,7 +31,7 @@ body::before {
 }
 
 /* ── HEADER ── */
-.header {
+header {
   width: 100%;
   background: rgba(255,255,255,0.92);
   border-bottom: 1px solid var(--border);
@@ -44,7 +44,7 @@ body::before {
 }
 
 .header-inner {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -52,10 +52,31 @@ body::before {
   height: 64px;
 }
 
-.brand { display: flex; align-items: center; gap: 12px; cursor: pointer; transition: opacity 0.15s; }
-.brand:hover { opacity: 0.75; }
+.brand { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.brand:hover { opacity: 0.82; }
 
 .header-right { display: flex; align-items: center; gap: 10px; }
+
+.profile-link { display:inline-flex; align-items:center; gap:9px; color:var(--text-sec); font-weight:700; text-decoration:none; }
+.profile-link:hover { color:var(--accent); }
+.profile-avatar { width:34px; height:34px; display:grid; place-items:center; border-radius:50%; background:var(--accent-lt); color:var(--accent-dk); font-size:.78rem; font-weight:900; }
+
+.logout-btn {
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 99px;
+  border: 1.5px solid var(--border-solid);
+  background: var(--surface);
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.18s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+.logout-btn:hover { background: var(--accent); color: #fff; }
 
 .header-btn {
   font-family: 'NeueHaasGroteskDisplay', inherit;
@@ -700,7 +721,7 @@ body::before {
   .hero-title { font-size: 1.8rem; }
   .hero-stats { display: none; }
   .main { padding: 28px 16px 100px; }
-  .header { padding: 0 16px; }
+  header { padding: 0 16px; }
   .exam-grid { grid-template-columns: 1fr; }
   .modal-box { padding: 32px 24px; }
 }
@@ -718,17 +739,20 @@ body::before {
 <body class="has-bottom-nav">
 
 <!-- Header -->
-<div class="header">
+<header>
   <div class="header-inner">
     <a href="{{ url_for('index') }}" class="brand" style="cursor:pointer;">
       <img src="{{ url_for('static', filename='pictures/Logo2.png') }}" alt="Always Stay Hydrated Logo" width="120">
     </a>
     <div class="header-right">
-      <a href="{{ url_for('index') }}" class="header-btn">← Quay Lại</a>
-      <a href="{{ url_for('logout') }}" class="header-btn primary" onclick="clearAshCaches()">Đăng Xuất</a>
+      <a class="profile-link" href="{{ url_for('profile') }}" aria-label="Mở trang cá nhân">
+        <span class="profile-avatar">{{ session.get('user', 'B')[:2]|upper }}</span>
+        <span>Xin chào, {{ session.get('user') }}</span>
+      </a>
+      <a href="{{ url_for('logout') }}" class="logout-btn" onclick="clearAshCaches()">Đăng Xuất</a>
     </div>
   </div>
-</div>
+</header>
 
 <!-- Hero Banner -->
 <div class="hero-banner">

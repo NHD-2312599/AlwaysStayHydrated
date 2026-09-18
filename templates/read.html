@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#2D6A4F">
-  <title>Đọc Khải Huyền {{ chapter }} | Đóng Ấn Ngôi Lời</title>
+  <title>Đọc {{ book_name }} {{ chapter }} | Đóng Ấn Ngôi Lời</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
   <style>
     :root { --reader-bg:#fff; --reader-text:#0D2B1E; --reader-muted:#789080; --reader-accent:#2D6A4F; --reader-accent-dark:#1B4332; --reader-surface:#fff; --reader-line:rgba(13,43,30,.12); --reader-size:19px; --reader-leading:1.82; }
@@ -58,33 +58,35 @@
     @media (max-width:520px) { body { padding-bottom:116px; } .app-shell-header { height:56px; } .app-shell-inner { padding:0 14px; } .app-brand img { width:104px; } .profile-link > span:last-child { display:none; } .logout-btn { padding:7px 11px; } .reader-header { top:56px; height:58px; } .reader-header-inner { padding:0 12px; } .reader-main { padding:42px 18px 24px; } .reader-intro { margin-bottom:36px; } .verse { grid-template-columns:25px minmax(0,1fr); gap:10px; margin:0 -5px 12px; padding:6px 5px; } .reader-bottom { margin-top:38px; } .chapter-nav { padding:0 10px; font-size:.77rem; } .chapter-grid { grid-template-columns:repeat(5,1fr); } }
   </style>
 </head>
-<body data-chapter="{{ chapter }}">
+<body data-book="{{ book }}" data-chapter="{{ chapter }}">
   <header class="app-shell-header"><div class="app-shell-inner">
     <a class="app-brand" href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='pictures/Logo2.png') }}" alt="Always Stay Hydrated"></a>
     <div style="display:flex; gap:12px; align-items:center;"><a class="profile-link" href="{{ url_for('profile') }}" aria-label="Mở trang cá nhân"><span class="profile-avatar">{{ session.get('user', 'B')[:2]|upper }}</span><span>Xin chào, {{ session.get('user', 'bạn') }}</span></a><a class="logout-btn" href="{{ url_for('logout') }}">Đăng Xuất</a></div>
   </div></header>
   <header class="reader-header"><div class="reader-header-inner">
     <a class="reader-icon-btn" href="{{ url_for('index') }}" aria-label="Quay lại trang chủ"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M10 7l-5 5 5 5"/></svg></a>
-    <button class="reader-title" id="chapterPickerButton" type="button">Khải Huyền {{ chapter }}</button>
+    <button class="reader-title" id="chapterPickerButton" type="button">{{ book_name }} {{ chapter }}</button>
     <div class="reader-actions"><button class="reader-icon-btn" id="settingsButton" type="button" aria-label="Điều chỉnh đọc"><span class="aa-glyph" aria-hidden="true">Aa</span></button><button class="reader-icon-btn" id="menuButton" type="button" aria-label="Mục lục"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="19" r="1" fill="currentColor" stroke="none"/></svg></button></div>
   </div></header>
 
   <main class="reader-main">
-    <div class="reader-intro"><h1 class="reader-heading">Khải Huyền {{ chapter }}</h1><p class="reader-subtitle">VIE 1925</p></div>
-    <section id="verses" aria-label="Nội dung Khải Huyền chương {{ chapter }}">
+    <div class="reader-intro"><h1 class="reader-heading">{{ book_name }} {{ chapter }}</h1><p class="reader-subtitle">VIE 1925</p></div>
+    <section id="verses" aria-label="Nội dung {{ book_name }} chương {{ chapter }}">
       {% for verse in verses %}<article class="verse" id="verse-{{ verse.verse }}" data-verse="{{ verse.verse }}" tabindex="0"><span class="verse-number">{{ verse.verse }}</span><p class="verse-text">{{ verse.text }}</p></article>{% else %}<p class="reader-empty">Nội dung chương {{ chapter }} đang được cập nhật.</p>{% endfor %}
     </section>
-    <nav class="reader-bottom" aria-label="Điều hướng chương"><a class="chapter-nav{% if chapter == 1 %} disabled{% endif %}" href="{{ url_for('read_bible', chapter=chapter - 1) }}">← Chương trước</a><span class="chapter-count">{{ chapter }} / 22</span><a class="chapter-nav{% if chapter == 22 %} disabled{% endif %}" href="{{ url_for('read_bible', chapter=chapter + 1) }}">Chương sau →</a></nav>
+    <nav class="reader-bottom" aria-label="Điều hướng chương"><a class="chapter-nav{% if chapter == chapters[0] %} disabled{% endif %}" href="{{ url_for('read_bible', book=book, chapter=chapter - 1) }}">← Chương trước</a><span class="chapter-count">{{ chapter }} / {{ chapters[-1] }}</span><a class="chapter-nav{% if chapter == chapters[-1] %} disabled{% endif %}" href="{{ url_for('read_bible', book=book, chapter=chapter + 1) }}">Chương sau →</a></nav>
     <section class="study-cta"><strong>Học chương này</strong><div class="study-links"><a href="{{ url_for('index', tab='fill') }}">Điền chỗ trống</a><a class="secondary" href="{{ url_for('flashcard') }}">Flashcard</a></div></section>
   </main>
 
-  <div class="sheet-backdrop" id="actionSheet"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="actionTitle"><div class="sheet-title"><span id="actionTitle">Khải Huyền {{ chapter }}</span><button type="button" data-close="actionSheet" aria-label="Đóng">×</button></div><div class="action-row"><button class="action-btn" id="copyVerse" type="button">Sao chép</button><button class="action-btn" id="noteVerse" type="button">Ghi chú</button><button class="action-btn" id="clearHighlight" type="button" hidden>Bỏ highlight</button></div><div class="highlight-row" aria-label="Chọn màu highlight"><button class="color-dot yellow" data-color="yellow" aria-label="Highlight vàng"></button><button class="color-dot mint" data-color="mint" aria-label="Highlight mint"></button><button class="color-dot blue" data-color="blue" aria-label="Highlight xanh"></button><button class="color-dot pink" data-color="pink" aria-label="Highlight hồng"></button></div></div></div>
-  <div class="modal" id="pickerModal"><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="pickerTitle"><div class="modal-head"><h2 id="pickerTitle">Chọn chương</h2><button type="button" data-close="pickerModal" aria-label="Đóng">×</button></div><div class="chapter-grid">{% for item in chapters %}<a class="{% if item == chapter %}current{% endif %}" href="{{ url_for('read_bible', chapter=item) }}">{{ item }}</a>{% endfor %}</div></div></div>
+  <div class="sheet-backdrop" id="actionSheet"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="actionTitle"><div class="sheet-title"><span id="actionTitle">{{ book_name }} {{ chapter }}</span><button type="button" data-close="actionSheet" aria-label="Đóng">×</button></div><div class="action-row"><button class="action-btn" id="copyVerse" type="button">Sao chép</button><button class="action-btn" id="noteVerse" type="button">Ghi chú</button><button class="action-btn" id="clearHighlight" type="button" hidden>Bỏ highlight</button></div><div class="highlight-row" aria-label="Chọn màu highlight"><button class="color-dot yellow" data-color="yellow" aria-label="Highlight vàng"></button><button class="color-dot mint" data-color="mint" aria-label="Highlight mint"></button><button class="color-dot blue" data-color="blue" aria-label="Highlight xanh"></button><button class="color-dot pink" data-color="pink" aria-label="Highlight hồng"></button></div></div></div>
+  <div class="modal" id="pickerModal"><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="pickerTitle"><div class="modal-head"><h2 id="pickerTitle">Chọn sách và đoạn</h2><button type="button" data-close="pickerModal" aria-label="Đóng">×</button></div><label class="setting-label" for="bookSelect">Bước 1: Chọn sách</label><select id="bookSelect" style="width:100%;padding:11px;border:1px solid var(--reader-line);border-radius:9px;background:transparent;color:inherit;font:inherit;margin-bottom:18px">{% for item in books %}<option value="{{ item.number }}" data-chapters="{{ item.chapters|tojson|forceescape }}"{% if item.number == book %} selected{% endif %}>{{ item.number }}. {{ item.name }}</option>{% endfor %}</select><span class="setting-label">Bước 2: Chọn đoạn</span><div class="chapter-grid" id="chapterGrid">{% for item in chapters %}<a class="{% if item == chapter %}current{% endif %}" href="{{ url_for('read_bible', book=book, chapter=item) }}">{{ item }}</a>{% endfor %}</div></div></div>
   <div class="modal" id="settingsModal"><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="modal-head"><h2 id="settingsTitle">Điều chỉnh đọc</h2><button type="button" data-close="settingsModal" aria-label="Đóng">×</button></div><div class="settings"><div><span class="setting-label">Cỡ chữ</span><div class="choice-row" data-setting="size"><button class="choice" data-value="16">16</button><button class="choice" data-value="18">18</button><button class="choice" data-value="20">20</button><button class="choice" data-value="22">22</button><button class="choice" data-value="24">24</button></div></div><div><span class="setting-label">Giãn dòng</span><div class="choice-row" data-setting="leading"><button class="choice" data-value="1.55">Chặt</button><button class="choice" data-value="1.8">Vừa</button><button class="choice" data-value="2.05">Rộng</button></div></div></div></div></div>
   <div class="modal" id="noteModal"><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="noteTitle"><div class="modal-head"><h2 id="noteTitle">Ghi chú câu <span id="noteVerseNumber"></span></h2><button type="button" data-close="noteModal" aria-label="Đóng">×</button></div><textarea id="noteText" rows="6" style="width:100%;padding:12px;border:1px solid var(--reader-line);border-radius:9px;background:transparent;color:inherit;font:inherit;resize:vertical" placeholder="Điều bạn muốn ghi nhớ..."></textarea><button id="saveNote" type="button" style="margin-top:12px;width:100%;padding:11px;border:0;border-radius:9px;background:var(--reader-accent);color:#fff;font:inherit;font-weight:700">Lưu ghi chú</button></div></div>
   {% include "_bottom_nav.html" %}
   <script>
+    const readerBook = Number(document.body.dataset.book);
     const readerChapter = Number(document.body.dataset.chapter);
+    const readerBookName = {{ book_name|tojson }};
     let selectedVerse = null;
     const prefKey = 'ash-reader-preferences';
     const markKey = 'ash-reader-highlights';
@@ -96,24 +98,43 @@
     prefs.leading = [1.55, 1.8, 2.05].includes(Number(prefs.leading)) ? Number(prefs.leading) : 1.8;
     const highlights = readJson(markKey, {});
     const notes = readJson(noteKey, {});
+    const missionDate = (() => { const date = new Date(); return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`; })();
+    const missionStorageKey = `missions_${missionDate}`;
+    const markReadMission = () => {
+      try {
+        const missions = JSON.parse(localStorage.getItem(missionStorageKey) || 'null');
+        const mission = missions?.required?.find(item => item.id === 'read_once');
+        if (!mission || mission.done) return;
+        mission.progress = mission.target;
+        mission.done = true;
+        localStorage.setItem(missionStorageKey, JSON.stringify(missions));
+      } catch (error) { /* Ignore malformed mission data. */ }
+    };
     const applyPreferences = () => { document.documentElement.style.setProperty('--reader-size', `${prefs.size}px`); document.documentElement.style.setProperty('--reader-leading', prefs.leading); document.body.className = ''; document.querySelectorAll('[data-setting]').forEach(group => group.querySelectorAll('.choice').forEach(button => button.classList.toggle('active', String(button.dataset.value) === String(prefs[group.dataset.setting])))); };
-    const keyFor = verse => `${readerChapter}:${verse}`;
+    const keyFor = verse => `${readerBook}:${readerChapter}:${verse}`;
     const renderHighlights = () => document.querySelectorAll('.verse').forEach(item => { const color = highlights[keyFor(item.dataset.verse)]; item.className = `verse${color ? ` highlight-${color}` : ''}`; item.tabIndex = 0; });
     const openModal = id => document.getElementById(id).classList.add('open');
     const closeModal = id => document.getElementById(id).classList.remove('open');
     document.getElementById('chapterPickerButton').onclick = () => openModal('pickerModal');
+    const renderChapterChoices = () => {
+      const select = document.getElementById('bookSelect');
+      const chapters = JSON.parse(select.selectedOptions[0].dataset.chapters || '[]');
+      const grid = document.getElementById('chapterGrid');
+      grid.innerHTML = chapters.map(item => `<a href="/read/${select.value}/${item}">${item}</a>`).join('');
+    };
+    document.getElementById('bookSelect').onchange = renderChapterChoices;
     document.getElementById('settingsButton').onclick = () => openModal('settingsModal');
     document.getElementById('menuButton').onclick = () => openModal('pickerModal');
     document.querySelectorAll('[data-close]').forEach(button => button.onclick = () => closeModal(button.dataset.close));
     document.querySelectorAll('[data-setting] .choice').forEach(button => button.onclick = () => { prefs[button.closest('[data-setting]').dataset.setting] = button.dataset.setting === 'theme' ? button.dataset.value : Number(button.dataset.value); saveJson(prefKey, prefs); applyPreferences(); });
-    document.querySelectorAll('.verse').forEach(item => { const select = () => { selectedVerse = item.dataset.verse; document.getElementById('actionTitle').textContent = `Khải Huyền ${readerChapter}:${selectedVerse}`; document.getElementById('clearHighlight').hidden = !highlights[keyFor(selectedVerse)]; document.getElementById('actionSheet').classList.add('open'); }; item.onclick = select; item.onkeydown = event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); select(); } }; });
+    document.querySelectorAll('.verse').forEach(item => { const select = () => { selectedVerse = item.dataset.verse; document.getElementById('actionTitle').textContent = `${readerBookName} ${readerChapter}:${selectedVerse}`; document.getElementById('clearHighlight').hidden = !highlights[keyFor(selectedVerse)]; document.getElementById('actionSheet').classList.add('open'); }; item.onclick = select; item.onkeydown = event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); select(); } }; });
     document.querySelectorAll('.color-dot').forEach(button => button.onclick = () => { if (!selectedVerse) return; highlights[keyFor(selectedVerse)] = button.dataset.color; saveJson(markKey, highlights); renderHighlights(); closeModal('actionSheet'); });
     document.getElementById('clearHighlight').onclick = () => { if (selectedVerse) { delete highlights[keyFor(selectedVerse)]; saveJson(markKey, highlights); renderHighlights(); closeModal('actionSheet'); } };
-    document.getElementById('copyVerse').onclick = async () => { const item = document.querySelector(`[data-verse="${selectedVerse}"] .verse-text`); if (!item) return; try { await navigator.clipboard.writeText(`Khải Huyền ${readerChapter}:${selectedVerse} — ${item.textContent}`); document.getElementById('copyVerse').textContent = 'Đã sao chép'; setTimeout(() => document.getElementById('copyVerse').textContent = 'Sao chép', 1200); } catch (error) { window.prompt('Sao chép câu này:', `Khải Huyền ${readerChapter}:${selectedVerse} — ${item.textContent}`); } };
-    document.getElementById('noteVerse').onclick = () => { document.getElementById('noteVerseNumber').textContent = `${readerChapter}:${selectedVerse}`; document.getElementById('noteText').value = notes[keyFor(selectedVerse)] || ''; closeModal('actionSheet'); openModal('noteModal'); };
+    document.getElementById('copyVerse').onclick = async () => { const item = document.querySelector(`[data-verse="${selectedVerse}"] .verse-text`); if (!item) return; try { await navigator.clipboard.writeText(`${readerBookName} ${readerChapter}:${selectedVerse} — ${item.textContent}`); document.getElementById('copyVerse').textContent = 'Đã sao chép'; setTimeout(() => document.getElementById('copyVerse').textContent = 'Sao chép', 1200); } catch (error) { window.prompt('Sao chép câu này:', `${readerBookName} ${readerChapter}:${selectedVerse} — ${item.textContent}`); } };
+    document.getElementById('noteVerse').onclick = () => { document.getElementById('noteVerseNumber').textContent = `${readerBookName} ${readerChapter}:${selectedVerse}`; document.getElementById('noteText').value = notes[keyFor(selectedVerse)] || ''; closeModal('actionSheet'); openModal('noteModal'); };
     document.getElementById('saveNote').onclick = () => { if (selectedVerse) { notes[keyFor(selectedVerse)] = document.getElementById('noteText').value.trim(); saveJson(noteKey, notes); closeModal('noteModal'); } };
     document.querySelectorAll('.modal').forEach(modal => modal.onclick = event => { if (event.target === modal) closeModal(modal.id); });
-    applyPreferences(); renderHighlights();
+    applyPreferences(); renderHighlights(); markReadMission();
   </script>
 </body>
 </html>
