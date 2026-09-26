@@ -215,14 +215,15 @@
       margin: 0 auto 20px;
       color: var(--verse-ink);
       font-family: 'SVN-Recoleta', sans-serif;
-      font-size: 5.25rem;
+      font-size: clamp(2.7rem, 4vw, 5.25rem);
       font-weight: 700;
-      letter-spacing: 0;
-      line-height: .86;
+      letter-spacing: -0.04em;
+      line-height: .9;
       text-align: center;
       text-transform: none;
       text-decoration: none;
       overflow-wrap: anywhere;
+      max-width: 100%;
     }
     .verse-of-day-reference:hover { color: var(--verse-ink); opacity: .82; }
     .verse-of-day-list { display:block; max-width:620px; margin:0 auto; padding:0; list-style:none; text-align:center; }
@@ -1424,7 +1425,7 @@
       <div class="home-reading-layout">
         {% if verse_of_day %}
         <section class="verse-of-day" aria-labelledby="verseOfDayTitle" data-verse-image="{{ verse_of_day.image_url }}" style="background-image: url('{{ verse_of_day.image_url }}');">
-          <a class="verse-of-day-reference" href="{{ url_for('read_bible', book=verse_of_day.book, chapter=verse_of_day.chapter) }}">{{ verse_of_day.book_name }} {{ verse_of_day.chapter }}:{{ verse_of_day.start_verse }}{% if verse_of_day.end_verse != verse_of_day.start_verse %}-{{ verse_of_day.end_verse }}{% endif %}</a>
+          <a class="verse-of-day-reference" href="{{ url_for('read_bible', book=verse_of_day.book, chapter=verse_of_day.chapter) }}">{{ verse_of_day.book_name }}<br>{{ verse_of_day.chapter }}:{{ verse_of_day.start_verse }}{% if verse_of_day.end_verse != verse_of_day.start_verse %}-{{ verse_of_day.end_verse }}{% endif %}</a>
           <ol class="verse-of-day-list">
             {% for verse in verse_of_day.verses %}<li><strong>{{ verse.verse }}</strong><span>{{ verse.text }}</span></li>{% endfor %}
           </ol>
