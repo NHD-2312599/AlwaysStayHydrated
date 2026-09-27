@@ -1134,6 +1134,23 @@ function isBlankAnswerCorrect(expected, submitted) {
   return expectedWords.every(word => submittedWords.includes(word)) || submittedWords.every(word => expectedWords.includes(word));
 }
 
+function renderAllQuestionsForResults() {
+  const list = document.getElementById('questions-list');
+  list.innerHTML = EXAM_CARDS.map((card, index) => `
+    <div class="question-block${IS_SPECIAL_EXAM ? ' special' : ''}" id="q-${card.id}">
+      <div class="question-stripe"><div class="question-left-bar"></div><div class="question-inner">
+        <div class="question-header"><div class="question-num">${index + 1}</div><div class="question-title">${escapeHtml(card.question || '')}</div></div>
+        ${IS_BLANK_MODE ? renderSpecialBlankGuide(card) : ''}
+        <div class="field-label"><span>Câu trả lời</span></div>
+        <textarea class="text-input" id="inp-${card.id}" disabled>${escapeHtml(EXAM_ANSWERS[card.id] || '')}</textarea>
+        <div class="result-feedback" id="fb-${card.id}"></div>
+      </div></div>
+    </div>
+  `).join('');
+  document.getElementById('question-counter').style.display = 'none';
+  document.querySelector('.question-nav-row').style.display = 'none';
+}
+
 function submitExam() {
   if (SUBMITTED) return;
 
@@ -1159,6 +1176,7 @@ function submitExam() {
   }
 
   SUBMITTED = true;
+  renderAllQuestionsForResults();
   document.querySelectorAll('.text-input').forEach(inp => inp.disabled = true);
   document.getElementById('btn-submit').disabled = true;
   document.getElementById('btn-submit').textContent = 'Đã Nộp ✓';
@@ -1327,6 +1345,8 @@ function resetExam() {
   });
 
   document.getElementById('result-summary').classList.remove('show');
+  document.getElementById('question-counter').style.display = '';
+  document.querySelector('.question-nav-row').style.display = '';
   document.getElementById('progress-fill').style.width = '0%';
   const circle = document.getElementById('ring-circle');
   if (circle) circle.style.strokeDashoffset = '163.4';
