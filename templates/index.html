@@ -3,6 +3,7 @@
   <head>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#386641">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8" />
   <link rel="stylesheet" href="/static/css/theme.css">
 
@@ -1373,6 +1374,26 @@
   <link rel="stylesheet" href="/static/css/mobile-responsive.css">
   <style>
     body.index-page { background: #FFFFFF; }
+    @media (max-width: 768px) {
+      body.index-page .container { width:100%; padding:18px 14px 104px !important; gap:14px; }
+      body.index-page .home-reading-layout { grid-template-columns:minmax(0,1fr); gap:12px; }
+      body.index-page .verse-of-day { min-height:0; height:auto; padding:24px 18px; border-radius:18px; gap:20px; justify-content:center; }
+      body.index-page .verse-of-day-reference { margin-bottom:0; font-size:2.4rem; line-height:1.05; }
+      body.index-page .verse-of-day-list { width:100%; gap:10px; }
+      body.index-page .verse-of-day-list li { width:100%; font-size:1rem; line-height:1.55; }
+      body.index-page .verse-of-day-list li span { text-align:left; }
+      body.index-page .home-quick-links { gap:8px; }
+      body.index-page .mission-banner { box-sizing:border-box; min-height:68px; touch-action:manipulation; }
+      body.index-page .mode-card { min-height:0; touch-action:manipulation; }
+      body.index-page .mode-card-btn { min-height:44px; }
+    }
+    @media (max-width: 380px) {
+      body.index-page .container { padding:16px 10px 100px !important; }
+      body.index-page .verse-of-day { padding:20px 14px; }
+      body.index-page .verse-of-day-reference { font-size:2rem; }
+      body.index-page .verse-of-day-list li { gap:7px; font-size:.93rem; }
+      body.index-page .verse-of-day-list li strong { min-width:1.35em; }
+    }
   </style>
 
   <script src="/static/js/session-refresh.js"></script>
