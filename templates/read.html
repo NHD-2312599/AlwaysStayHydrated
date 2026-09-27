@@ -39,25 +39,34 @@
     .verse.selected { background:rgba(45,106,79,.16); box-shadow:inset 3px 0 var(--reader-accent); }
     .verse-number { padding-top:6px; color:var(--reader-muted); font:600 .76rem/1 'NeueHaasGroteskDisplay',sans-serif; text-align:right; }
     .verse-text { margin:0; font-size:var(--reader-size); line-height:var(--reader-leading); letter-spacing:.005em; }
-    .verse.highlight-yellow { background:#fff3bc; } .verse.highlight-mint { background:#d5f1df; } .verse.highlight-blue { background:#dceefa; } .verse.highlight-pink { background:#f9e0ea; }
-    .theme-dark .verse.highlight-yellow { background:#756625; } .theme-dark .verse.highlight-mint { background:#255b42; } .theme-dark .verse.highlight-blue { background:#245273; } .theme-dark .verse.highlight-pink { background:#713d56; }
+    .verse.highlight-forest { background:#00402E; color:#fff; } .verse.highlight-glacier { background:#BCD4E6; color:#0D2B1E; } .verse.highlight-butter { background:#F2F2B0; color:#0D2B1E; } .verse.highlight-violet { background:#6A0DAD; color:#fff; }
+    .verse.highlight-vermilion { background:#E13E14; color:#0D2B1E; } .verse.highlight-cobalt { background:#0F52BA; color:#fff; } .verse.highlight-sand { background:#EBE1A9; color:#0D2B1E; } .verse.highlight-ultramarine { background:#002FA7; color:#fff; }
+    .verse.highlight-rose { background:#FFB6C1; color:#0D2B1E; } .verse.highlight-lime { background:#CCFF00; color:#0D2B1E; } .verse.highlight-scarlet { background:#FF0000; color:#0D2B1E; } .verse.highlight-clay { background:#B3674B; color:#0D2B1E; }
     .reader-empty { padding:34px 0; color:var(--reader-muted); font-size:var(--reader-size); line-height:var(--reader-leading); }
     .reader-bottom { display:flex; align-items:center; justify-content:space-between; gap:10px; border-top:1px solid var(--reader-line); margin-top:50px; padding:22px 0 8px; font-family:'NeueHaasGroteskDisplay',sans-serif; }
     .chapter-nav { min-height:42px; display:inline-flex; align-items:center; padding:0 14px; border-radius:12px; background:rgba(45,106,79,.09); color:var(--reader-accent); font-weight:700; text-decoration:none; font-size:.85rem; }
     .chapter-nav.disabled { color:var(--reader-muted); pointer-events:none; opacity:.55; }
     .chapter-count { color:var(--reader-text); font-size:.85rem; font-weight:800; white-space:nowrap; }
     .study-cta { margin-top:12px; padding:15px 16px; border:1px solid var(--reader-line); border-radius:14px; background:var(--reader-surface); font-family:'NeueHaasGroteskDisplay',sans-serif; }
-    .multi-select-bar { position:fixed; left:50%; bottom:92px; z-index:25; display:flex; align-items:center; gap:10px; transform:translateX(-50%) translateY(12px); opacity:0; pointer-events:none; padding:8px 10px 8px 14px; border:1px solid var(--reader-line); border-radius:999px; background:var(--reader-surface); box-shadow:0 8px 24px rgba(13,43,30,.14); font-family:'NeueHaasGroteskDisplay',sans-serif; transition:opacity .2s ease, transform .2s ease; }
-    .multi-select-bar.open { transform:translateX(-50%); opacity:1; pointer-events:auto; }
-    .multi-select-bar button { border:0; border-radius:999px; padding:8px 13px; background:var(--reader-accent); color:#fff; font:inherit; font-size:.78rem; font-weight:700; cursor:pointer; }
+    .multi-select-bar { position:fixed; left:50%; bottom:calc(88px + env(safe-area-inset-bottom)); z-index:1001; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:10px 14px; width:min(520px,calc(100% - 24px)); padding:12px; border:1px solid var(--reader-line); border-radius:16px; background:var(--reader-surface); box-shadow:0 8px 24px rgba(13,43,30,.16); font-family:'NeueHaasGroteskDisplay',sans-serif; transform:translate(-50%,12px); opacity:0; pointer-events:none; transition:opacity .2s ease,transform .2s ease; }
+    .multi-select-bar.open { transform:translate(-50%,0); opacity:1; pointer-events:auto; }
+    .selection-count { display:block; color:var(--reader-text); font-size:.82rem; font-weight:800; }
+    .selection-reference { display:block; max-width:100%; overflow:hidden; color:var(--reader-muted); font-size:.72rem; text-overflow:ellipsis; white-space:nowrap; }
+    .selection-actions { display:flex; align-items:center; justify-content:flex-end; gap:5px; }
+    .multi-select-bar button { min-height:36px; border:0; border-radius:9px; padding:8px 10px; background:rgba(45,106,79,.1); color:var(--reader-accent-dark); font:inherit; font-size:.76rem; font-weight:700; cursor:pointer; white-space:nowrap; }
+    .multi-select-bar button:hover { background:rgba(45,106,79,.18); }
+    .multi-select-bar button:disabled { opacity:.45; cursor:not-allowed; }
+    .selection-close { width:36px; padding:0 !important; font-size:1.25rem !important; }
+    .highlight-palette { grid-column:1 / -1; display:grid; grid-template-columns:repeat(6,32px) 1fr; align-items:center; gap:10px; padding-top:10px; border-top:1px solid var(--reader-line); }
+    .highlight-palette[hidden] { display:none; }
+    .highlight-palette .color-dot { width:32px; height:32px; }
+    .clear-selection-highlight { grid-column:1 / -1; justify-self:end; }
     .reader-side-nav { position:fixed; top:50%; left:50%; z-index:12; width:min(860px, calc(100% - 32px)); transform:translate(-50%,-50%); display:flex; justify-content:space-between; pointer-events:none; }
     .reader-side-nav .chapter-nav { pointer-events:auto; box-shadow:0 6px 18px rgba(13,43,30,.08); transition:transform .2s ease, background .2s ease, opacity .2s ease; }
     .reader-side-nav .chapter-nav:hover { transform:translateY(-2px); background:var(--reader-accent); color:#fff; }
     .reader-side-nav .disabled { visibility:hidden; }
     .study-cta strong { display:block; font-size:.9rem; margin-bottom:11px; }
     .study-links { display:flex; flex-wrap:wrap; gap:8px; } .study-links a { display:inline-flex; padding:9px 14px; border-radius:999px; background:var(--reader-accent); color:#fff; text-decoration:none; font-size:.8rem; font-weight:700; } .study-links a.secondary { background:transparent; border:1px solid var(--reader-accent); color:var(--reader-accent-dark); }
-    .sheet-backdrop { position:fixed; inset:0; z-index:1100; display:none; background:rgba(13,43,30,.35); } .sheet-backdrop.open { display:block; }
-    .sheet { position:absolute; left:50%; bottom:0; width:min(100%,520px); transform:translate(-50%,100%); padding:22px 20px 28px; border-radius:18px 18px 0 0; background:var(--reader-surface); color:var(--reader-text); box-shadow:0 -12px 34px rgba(0,0,0,.16); transition:transform .22s ease; font-family:'NeueHaasGroteskDisplay',sans-serif; } .sheet-backdrop.open .sheet { transform:translate(-50%,0); }
     .book-search { width:100%; min-height:42px; margin:0 0 8px; padding:9px 11px; border:1px solid var(--reader-line); border-radius:9px; background:var(--reader-surface); color:inherit; font:inherit; }
     .book-search-results { display:grid; max-height:190px; margin-bottom:14px; overflow-y:auto; border:1px solid var(--reader-line); border-radius:9px; }
     .book-search-results[hidden] { display:none; }
@@ -65,9 +74,9 @@
     .book-search-result:last-child { border-bottom:0; }
     .book-search-result:hover, .book-search-result:focus-visible { background:rgba(45,106,79,.1); outline:none; }
     .book-search-empty { margin:0; padding:11px 12px; color:var(--reader-muted); font-size:.82rem; }
-    .sheet-title { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; font-weight:800; } .sheet-title button { border:0; background:transparent; color:var(--reader-muted); font-size:1.3rem; cursor:pointer; }
-    .action-row { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; } .action-btn { min-height:54px; border:1px solid var(--reader-line); border-radius:10px; background:transparent; color:inherit; font:inherit; font-size:.78rem; font-weight:700; cursor:pointer; } .action-btn:hover { background:rgba(45,106,79,.1); } .action-btn[hidden] { display:none; } .action-btn.active { background:var(--reader-accent); border-color:var(--reader-accent); color:#fff; }
-    .highlight-row { display:flex; gap:10px; margin-top:14px; } .color-dot { width:34px; height:34px; border:2px solid transparent; border-radius:50%; cursor:pointer; } .color-dot.selected { border-color:var(--reader-text); box-shadow:0 0 0 2px var(--reader-surface); outline:2px solid var(--reader-accent); } .yellow { background:#f5d76e; } .mint { background:#9bd7af; } .blue { background:#9bcbe9; } .pink { background:#e6a9c2; }
+    .color-dot { width:34px; height:34px; border:2px solid transparent; border-radius:50%; cursor:pointer; } .color-dot.selected { border-color:var(--reader-text); box-shadow:0 0 0 2px var(--reader-surface); outline:2px solid var(--reader-accent); }
+    .highlight-palette [data-color="forest"] { background:#00402E; } .highlight-palette [data-color="glacier"] { background:#BCD4E6; } .highlight-palette [data-color="butter"] { background:#F2F2B0; } .highlight-palette [data-color="violet"] { background:#6A0DAD; } .highlight-palette [data-color="vermilion"] { background:#E13E14; } .highlight-palette [data-color="cobalt"] { background:#0F52BA; }
+    .highlight-palette [data-color="sand"] { background:#EBE1A9; } .highlight-palette [data-color="ultramarine"] { background:#002FA7; } .highlight-palette [data-color="rose"] { background:#FFB6C1; } .highlight-palette [data-color="lime"] { background:#CCFF00; } .highlight-palette [data-color="scarlet"] { background:#FF0000; } .highlight-palette [data-color="clay"] { background:#B3674B; }
     .modal { position:fixed; inset:0; z-index:1100; display:none; align-items:center; justify-content:center; padding:18px; background:rgba(13,43,30,.42); font-family:'NeueHaasGroteskDisplay',sans-serif; } .modal.open { display:flex; } .modal-card { width:min(100%,520px); max-height:min(88vh,620px); overflow:auto; border-radius:16px; padding:24px; background:var(--reader-surface); color:var(--reader-text); box-shadow:0 18px 50px rgba(0,0,0,.2); } .modal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; } .modal-head h2 { margin:0; font-size:1.15rem; } .modal-head button { border:0; background:transparent; color:var(--reader-muted); font-size:1.3rem; cursor:pointer; } .chapter-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; } .chapter-grid a { display:grid; place-items:center; aspect-ratio:1; border-radius:9px; background:rgba(45,106,79,.08); color:inherit; text-decoration:none; font-weight:800; } .chapter-grid a.current { background:var(--reader-accent); color:#fff; }
     .settings { display:grid; gap:22px; } .setting-label { display:block; margin-bottom:9px; font-size:.82rem; font-weight:800; } .choice-row { display:flex; flex-wrap:wrap; gap:7px; } .choice { border:1px solid var(--reader-line); border-radius:8px; background:transparent; color:inherit; padding:9px 12px; font:inherit; font-size:.8rem; cursor:pointer; } .choice.active { border-color:var(--reader-accent); background:rgba(45,106,79,.12); color:var(--reader-accent-dark); font-weight:700; }
     @media (max-width:720px) { .reader-side-nav { position:static; width:auto; transform:none; margin:18px 0 0; } .reader-side-nav .chapter-nav { box-shadow:none; } }
@@ -97,21 +106,21 @@
     <nav class="reader-bottom" aria-label="Điều hướng chương"><a class="chapter-nav{% if chapter == chapters[0] %} disabled{% endif %}" href="{{ url_for('read_bible', book=book, chapter=chapter - 1) }}">← Chương trước</a><span class="chapter-count">{{ chapter }} / {{ chapters[-1] }}</span><a class="chapter-nav{% if chapter == chapters[-1] %} disabled{% endif %}" href="{{ url_for('read_bible', book=book, chapter=chapter + 1) }}">Chương sau →</a></nav>
     <section class="study-cta"><strong>Học chương này</strong><div class="study-links"><a href="{{ url_for('index', tab='fill') }}">Điền chỗ trống</a><a class="secondary" href="{{ url_for('flashcard') }}">Flashcard</a></div></section>
   </main>
-  <div class="multi-select-bar" id="multiSelectBar"><span id="selectedCount">0 câu đã chọn</span><button id="copySelectedVerses" type="button">Sao chép</button></div>
-
-  <div class="sheet-backdrop" id="actionSheet"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="actionTitle"><div class="sheet-title"><span id="actionTitle">{{ book_name }} {{ chapter }}</span><button type="button" data-close="actionSheet" aria-label="Đóng">×</button></div><div class="action-row"><button class="action-btn" id="copyVerse" type="button">Sao chép</button><button class="action-btn" id="toggleMultiSelect" type="button">Chọn nhiều</button><button class="action-btn" id="noteVerse" type="button">Ghi chú</button><button class="action-btn" id="clearHighlight" type="button" hidden>Bỏ highlight</button></div><div class="highlight-row" aria-label="Chọn màu highlight"><button class="color-dot yellow" data-color="yellow" aria-label="Highlight vàng"></button><button class="color-dot mint" data-color="mint" aria-label="Highlight mint"></button><button class="color-dot blue" data-color="blue" aria-label="Highlight xanh"></button><button class="color-dot pink" data-color="pink" aria-label="Highlight hồng"></button></div></div></div>
+  <div class="multi-select-bar" id="multiSelectBar" role="toolbar" aria-label="Thao tác câu đã chọn">
+    <div><span id="selectedCount" class="selection-count">0 câu đã chọn</span><span id="selectedReference" class="selection-reference"></span></div>
+    <div class="selection-actions"><button id="highlightSelectedVerses" type="button" aria-expanded="false" aria-controls="highlightPalette">Tô sáng</button><button id="copySelectedVerses" type="button">Sao chép</button><button id="noteSelectedVerse" type="button">Ghi chú</button><button id="clearSelectedVerses" class="selection-close" type="button" aria-label="Bỏ chọn">×</button></div>
+    <div class="highlight-palette" id="highlightPalette" aria-label="Chọn màu tô sáng" hidden><button class="color-dot" data-color="forest" type="button" aria-label="Tô sáng xanh rừng"></button><button class="color-dot" data-color="glacier" type="button" aria-label="Tô sáng xanh băng"></button><button class="color-dot" data-color="butter" type="button" aria-label="Tô sáng vàng nhạt"></button><button class="color-dot" data-color="violet" type="button" aria-label="Tô sáng tím"></button><button class="color-dot" data-color="vermilion" type="button" aria-label="Tô sáng đỏ cam"></button><button class="color-dot" data-color="cobalt" type="button" aria-label="Tô sáng xanh dương"></button><button class="color-dot" data-color="sand" type="button" aria-label="Tô sáng be vàng"></button><button class="color-dot" data-color="ultramarine" type="button" aria-label="Tô sáng xanh lam đậm"></button><button class="color-dot" data-color="rose" type="button" aria-label="Tô sáng hồng"></button><button class="color-dot" data-color="lime" type="button" aria-label="Tô sáng xanh chanh"></button><button class="color-dot" data-color="scarlet" type="button" aria-label="Tô sáng đỏ"></button><button class="color-dot" data-color="clay" type="button" aria-label="Tô sáng nâu đất"></button><button id="clearSelectedHighlight" class="clear-selection-highlight" type="button" hidden>Bỏ tô sáng</button></div>
+  </div>
   <div class="modal" id="pickerModal"><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="pickerTitle"><div class="modal-head"><h2 id="pickerTitle">Chọn sách và đoạn</h2><button type="button" data-close="pickerModal" aria-label="Đóng">×</button></div><label class="setting-label" for="bookSearch">Bước 1: Tìm sách</label><input id="bookSearch" class="book-search" type="search" placeholder="Nhập tên hoặc số sách..." autocomplete="off" aria-controls="bookSearchResults"><div id="bookSearchResults" class="book-search-results" role="listbox" aria-label="Kết quả tìm sách" hidden></div><select id="bookSelect" style="width:100%;padding:11px;border:1px solid var(--reader-line);border-radius:9px;background:transparent;color:inherit;font:inherit;margin-bottom:18px">{% for item in books %}<option value="{{ item.number }}" data-chapters="{{ item.chapters|tojson|forceescape }}"{% if item.number == book %} selected{% endif %}>{{ item.number }}. {{ item.name }}</option>{% endfor %}</select><span class="setting-label">Bước 2: Chọn đoạn</span><div class="chapter-grid" id="chapterGrid">{% for item in chapters %}<a class="{% if item == chapter %}current{% endif %}" href="{{ url_for('read_bible', book=book, chapter=item) }}">{{ item }}</a>{% endfor %}</div></div></div>
   <div class="modal" id="settingsModal"><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="modal-head"><h2 id="settingsTitle">Điều chỉnh đọc</h2><button type="button" data-close="settingsModal" aria-label="Đóng">×</button></div><div class="settings"><div><span class="setting-label">Cỡ chữ</span><div class="choice-row" data-setting="size"><button class="choice" data-value="16">16</button><button class="choice" data-value="18">18</button><button class="choice" data-value="20">20</button><button class="choice" data-value="22">22</button><button class="choice" data-value="24">24</button></div></div><div><span class="setting-label">Giãn dòng</span><div class="choice-row" data-setting="leading"><button class="choice" data-value="1.55">Chặt</button><button class="choice" data-value="1.8">Vừa</button><button class="choice" data-value="2.05">Rộng</button></div></div></div></div></div>
-  <div class="modal" id="noteModal"><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="noteTitle"><div class="modal-head"><h2 id="noteTitle">Ghi chú câu <span id="noteVerseNumber"></span></h2><button type="button" data-close="noteModal" aria-label="Đóng">×</button></div><textarea id="noteText" rows="6" style="width:100%;padding:12px;border:1px solid var(--reader-line);border-radius:9px;background:transparent;color:inherit;font:inherit;resize:vertical" placeholder="Điều bạn muốn ghi nhớ..."></textarea><button id="saveNote" type="button" style="margin-top:12px;width:100%;padding:11px;border:0;border-radius:9px;background:var(--reader-accent);color:#fff;font:inherit;font-weight:700">Lưu ghi chú</button></div></div>
+  <div class="modal" id="noteModal"><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="noteTitle"><div class="modal-head"><h2 id="noteTitle">Ghi chú đoạn <span id="noteVerseNumber"></span></h2><button type="button" data-close="noteModal" aria-label="Đóng">×</button></div><textarea id="noteText" rows="6" style="width:100%;padding:12px;border:1px solid var(--reader-line);border-radius:9px;background:transparent;color:inherit;font:inherit;resize:vertical" placeholder="Ghi chú này sẽ gắn với tất cả câu đang chọn..."></textarea><button id="saveNote" type="button" style="margin-top:12px;width:100%;padding:11px;border:0;border-radius:9px;background:var(--reader-accent);color:#fff;font:inherit;font-weight:700">Lưu ghi chú</button></div></div>
   {% include "_bottom_nav.html" %}
   <script>
     const readerBook = Number(document.body.dataset.book);
     const readerChapter = Number(document.body.dataset.chapter);
     const readerBookName = {{ book_name|tojson }};
     let selectedVerse = null;
-    let multiSelectMode = false;
     const selectedVerses = new Set();
-    const updateMultiSelectBar = () => { document.getElementById('selectedCount').textContent = `${selectedVerses.size} câu đã chọn`; document.getElementById('multiSelectBar').classList.toggle('open', multiSelectMode && selectedVerses.size > 0); };
     const prefKey = 'ash-reader-preferences';
     const markKey = 'ash-reader-highlights';
     const noteKey = 'ash-reader-notes';
@@ -121,6 +130,13 @@
     prefs.size = [16, 18, 20, 22, 24].includes(Number(prefs.size)) ? Number(prefs.size) : 19;
     prefs.leading = [1.55, 1.8, 2.05].includes(Number(prefs.leading)) ? Number(prefs.leading) : 1.8;
     const highlights = readJson(markKey, {});
+    const legacyHighlightColors = { yellow:'butter', mint:'glacier', blue:'glacier', pink:'rose', orange:'sand', purple:'violet', teal:'glacier', red:'rose' };
+    let migratedHighlights = false;
+    Object.keys(highlights).forEach(key => {
+      const color = highlights[key];
+      if (legacyHighlightColors[color]) { highlights[key] = legacyHighlightColors[color]; migratedHighlights = true; }
+    });
+    if (migratedHighlights) saveJson(markKey, highlights);
     const notes = readJson(noteKey, {});
     const missionDate = (() => { const date = new Date(); return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`; })();
     const missionStorageKey = `missions_${missionDate}`;
@@ -136,6 +152,27 @@
     };
     const applyPreferences = () => { document.documentElement.style.setProperty('--reader-size', `${prefs.size}px`); document.documentElement.style.setProperty('--reader-leading', prefs.leading); document.body.className = ''; document.querySelectorAll('[data-setting]').forEach(group => group.querySelectorAll('.choice').forEach(button => button.classList.toggle('active', String(button.dataset.value) === String(prefs[group.dataset.setting])))); };
     const keyFor = verse => `${readerBook}:${readerChapter}:${verse}`;
+    const verseNumbers = () => [...selectedVerses].map(Number).sort((first, second) => first - second);
+    const formatVerseRanges = numbers => {
+      const ranges = [];
+      for (let index = 0; index < numbers.length;) {
+        const start = numbers[index];
+        let end = start;
+        while (index + 1 < numbers.length && numbers[index + 1] === end + 1) end = numbers[++index];
+        ranges.push(start === end ? String(start) : `${start}-${end}`);
+        index++;
+      }
+      return ranges.join(',');
+    };
+    const updateMultiSelectBar = () => {
+      const numbers = verseNumbers();
+      const hasSelection = numbers.length > 0;
+      document.getElementById('selectedCount').textContent = `${numbers.length} câu đã chọn`;
+      document.getElementById('selectedReference').textContent = hasSelection ? `${readerBookName} ${readerChapter}:${formatVerseRanges(numbers)}` : '';
+      document.getElementById('multiSelectBar').classList.toggle('open', hasSelection);
+      document.getElementById('noteSelectedVerse').disabled = !hasSelection;
+      document.getElementById('clearSelectedHighlight').hidden = !numbers.some(number => highlights[keyFor(number)]);
+    };
     const renderHighlights = () => { document.querySelectorAll('.verse').forEach(item => { const color = highlights[keyFor(item.dataset.verse)]; item.className = `verse${color ? ` highlight-${color}` : ''}${selectedVerses.has(item.dataset.verse) ? ' selected' : ''}`; item.tabIndex = 0; }); updateMultiSelectBar(); };
     const openModal = id => document.getElementById(id).classList.add('open');
     const closeModal = id => document.getElementById(id).classList.remove('open');
@@ -188,14 +225,80 @@
     document.getElementById('menuButton').onclick = () => openModal('pickerModal');
     document.querySelectorAll('[data-close]').forEach(button => button.onclick = () => closeModal(button.dataset.close));
     document.querySelectorAll('[data-setting] .choice').forEach(button => button.onclick = () => { prefs[button.closest('[data-setting]').dataset.setting] = button.dataset.setting === 'theme' ? button.dataset.value : Number(button.dataset.value); saveJson(prefKey, prefs); applyPreferences(); });
-    document.querySelectorAll('.verse').forEach(item => { const select = () => { selectedVerse = item.dataset.verse; if (multiSelectMode) { selectedVerses.has(selectedVerse) ? selectedVerses.delete(selectedVerse) : selectedVerses.add(selectedVerse); renderHighlights(); document.getElementById('actionTitle').textContent = `${selectedVerses.size} câu đã chọn`; return; } document.getElementById('actionTitle').textContent = `${readerBookName} ${readerChapter}:${selectedVerse}`; document.getElementById('clearHighlight').hidden = !highlights[keyFor(selectedVerse)]; document.getElementById('actionSheet').classList.add('open'); }; item.onclick = select; item.onkeydown = event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); select(); } }; });
-    document.getElementById('toggleMultiSelect').onclick = () => { multiSelectMode = !multiSelectMode; document.getElementById('toggleMultiSelect').classList.toggle('active', multiSelectMode); document.getElementById('toggleMultiSelect').textContent = multiSelectMode ? 'Xong chọn' : 'Chọn nhiều'; if (multiSelectMode) { selectedVerses.clear(); closeModal('actionSheet'); document.getElementById('actionTitle').textContent = 'Chọn các câu muốn sao chép'; } else { selectedVerses.clear(); renderHighlights(); } };
-    document.querySelectorAll('.color-dot').forEach(button => button.onclick = () => { if (!selectedVerse) return; highlights[keyFor(selectedVerse)] = button.dataset.color; saveJson(markKey, highlights); renderHighlights(); closeModal('actionSheet'); });
-    document.getElementById('clearHighlight').onclick = () => { if (selectedVerse) { delete highlights[keyFor(selectedVerse)]; saveJson(markKey, highlights); renderHighlights(); closeModal('actionSheet'); } };
-    document.getElementById('copyVerse').onclick = async () => { const versesToCopy = multiSelectMode ? [...selectedVerses] : (selectedVerse ? [selectedVerse] : []); const text = versesToCopy.map(number => { const item = document.querySelector(`[data-verse="${number}"] .verse-text`); return item ? `${readerBookName} ${readerChapter}:${number} — ${item.textContent}` : ''; }).filter(Boolean).join('\n'); if (!text) return; try { await navigator.clipboard.writeText(text); document.getElementById('copyVerse').textContent = 'Đã sao chép'; setTimeout(() => document.getElementById('copyVerse').textContent = 'Sao chép', 1200); } catch (error) { window.prompt('Sao chép các câu đã chọn:', text); } };
-    document.getElementById('copySelectedVerses').onclick = () => { document.getElementById('copyVerse').click(); };
-    document.getElementById('noteVerse').onclick = () => { document.getElementById('noteVerseNumber').textContent = `${readerBookName} ${readerChapter}:${selectedVerse}`; document.getElementById('noteText').value = notes[keyFor(selectedVerse)] || ''; closeModal('actionSheet'); openModal('noteModal'); };
-    document.getElementById('saveNote').onclick = () => { if (selectedVerse) { notes[keyFor(selectedVerse)] = document.getElementById('noteText').value.trim(); saveJson(noteKey, notes); closeModal('noteModal'); } };
+    document.querySelectorAll('.verse').forEach(item => {
+      const select = () => {
+        const number = item.dataset.verse;
+        if (selectedVerses.has(number)) selectedVerses.delete(number);
+        else selectedVerses.add(number);
+        selectedVerse = selectedVerses.has(number) ? number : ([...selectedVerses].pop() || null);
+        renderHighlights();
+      };
+      item.onclick = select;
+      item.onkeydown = event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); select(); } };
+    });
+    document.getElementById('highlightSelectedVerses').onclick = event => {
+      const palette = document.getElementById('highlightPalette');
+      palette.hidden = !palette.hidden;
+      event.currentTarget.setAttribute('aria-expanded', String(!palette.hidden));
+    };
+    document.querySelectorAll('.color-dot').forEach(button => button.onclick = () => {
+      verseNumbers().forEach(number => { highlights[keyFor(number)] = button.dataset.color; });
+      saveJson(markKey, highlights);
+      document.getElementById('highlightPalette').hidden = true;
+      document.getElementById('highlightSelectedVerses').setAttribute('aria-expanded', 'false');
+      renderHighlights();
+    });
+    document.getElementById('clearSelectedHighlight').onclick = () => {
+      verseNumbers().forEach(number => { delete highlights[keyFor(number)]; });
+      saveJson(markKey, highlights);
+      renderHighlights();
+    };
+    document.getElementById('clearSelectedVerses').onclick = () => {
+      selectedVerses.clear();
+      selectedVerse = null;
+      document.getElementById('highlightPalette').hidden = true;
+      document.getElementById('highlightSelectedVerses').setAttribute('aria-expanded', 'false');
+      renderHighlights();
+    };
+    document.getElementById('copySelectedVerses').onclick = async event => {
+      const versesToCopy = verseNumbers();
+      const verseTexts = versesToCopy.map(number => {
+        const item = document.querySelector(`[data-verse="${number}"] .verse-text`);
+        return item?.textContent.trim() || '';
+      }).filter(Boolean);
+      if (!verseTexts.length) return;
+
+      let text;
+      if (versesToCopy.length > 1) {
+        text = `${verseTexts.join(' ')}\n\n${readerBookName} ${readerChapter}:${formatVerseRanges(versesToCopy)}`;
+      } else {
+        text = `${readerBookName} ${readerChapter}:${versesToCopy[0]} — ${verseTexts[0]}`;
+      }
+
+      try {
+        await navigator.clipboard.writeText(text);
+        const button = event.currentTarget;
+        button.textContent = 'Đã sao chép';
+        setTimeout(() => button.textContent = 'Sao chép', 1200);
+      } catch (error) {
+        window.prompt('Sao chép các câu đã chọn:', text);
+      }
+    };
+    let noteTargetVerses = [];
+    document.getElementById('noteSelectedVerse').onclick = () => {
+      noteTargetVerses = verseNumbers();
+      if (!noteTargetVerses.length) return;
+      document.getElementById('noteVerseNumber').textContent = `${readerBookName} ${readerChapter}:${formatVerseRanges(noteTargetVerses)}`;
+      const existingNotes = noteTargetVerses.map(number => notes[keyFor(number)] || '');
+      document.getElementById('noteText').value = existingNotes.every(note => note === existingNotes[0]) ? existingNotes[0] : '';
+      openModal('noteModal');
+    };
+    document.getElementById('saveNote').onclick = () => {
+      const note = document.getElementById('noteText').value.trim();
+      noteTargetVerses.forEach(number => { notes[keyFor(number)] = note; });
+      saveJson(noteKey, notes);
+      closeModal('noteModal');
+    };
     document.querySelectorAll('.modal').forEach(modal => modal.onclick = event => { if (event.target === modal) closeModal(modal.id); });
     const readerMain = document.querySelector('.reader-main'); let touchStartX = 0; let touchStartY = 0;
     readerMain.addEventListener('touchstart', event => { const touch = event.changedTouches[0]; touchStartX = touch.clientX; touchStartY = touch.clientY; }, { passive:true });
