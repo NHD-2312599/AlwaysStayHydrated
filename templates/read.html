@@ -58,6 +58,13 @@
     .study-links { display:flex; flex-wrap:wrap; gap:8px; } .study-links a { display:inline-flex; padding:9px 14px; border-radius:999px; background:var(--reader-accent); color:#fff; text-decoration:none; font-size:.8rem; font-weight:700; } .study-links a.secondary { background:transparent; border:1px solid var(--reader-accent); color:var(--reader-accent-dark); }
     .sheet-backdrop { position:fixed; inset:0; z-index:1100; display:none; background:rgba(13,43,30,.35); } .sheet-backdrop.open { display:block; }
     .sheet { position:absolute; left:50%; bottom:0; width:min(100%,520px); transform:translate(-50%,100%); padding:22px 20px 28px; border-radius:18px 18px 0 0; background:var(--reader-surface); color:var(--reader-text); box-shadow:0 -12px 34px rgba(0,0,0,.16); transition:transform .22s ease; font-family:'NeueHaasGroteskDisplay',sans-serif; } .sheet-backdrop.open .sheet { transform:translate(-50%,0); }
+    .book-search { width:100%; min-height:42px; margin:0 0 8px; padding:9px 11px; border:1px solid var(--reader-line); border-radius:9px; background:var(--reader-surface); color:inherit; font:inherit; }
+    .book-search-results { display:grid; max-height:190px; margin-bottom:14px; overflow-y:auto; border:1px solid var(--reader-line); border-radius:9px; }
+    .book-search-results[hidden] { display:none; }
+    .book-search-result { padding:10px 12px; border:0; border-bottom:1px solid var(--reader-line); background:transparent; color:inherit; font:inherit; text-align:left; cursor:pointer; }
+    .book-search-result:last-child { border-bottom:0; }
+    .book-search-result:hover, .book-search-result:focus-visible { background:rgba(45,106,79,.1); outline:none; }
+    .book-search-empty { margin:0; padding:11px 12px; color:var(--reader-muted); font-size:.82rem; }
     .sheet-title { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; font-weight:800; } .sheet-title button { border:0; background:transparent; color:var(--reader-muted); font-size:1.3rem; cursor:pointer; }
     .action-row { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; } .action-btn { min-height:54px; border:1px solid var(--reader-line); border-radius:10px; background:transparent; color:inherit; font:inherit; font-size:.78rem; font-weight:700; cursor:pointer; } .action-btn:hover { background:rgba(45,106,79,.1); } .action-btn[hidden] { display:none; } .action-btn.active { background:var(--reader-accent); border-color:var(--reader-accent); color:#fff; }
     .highlight-row { display:flex; gap:10px; margin-top:14px; } .color-dot { width:34px; height:34px; border:2px solid transparent; border-radius:50%; cursor:pointer; } .color-dot.selected { border-color:var(--reader-text); box-shadow:0 0 0 2px var(--reader-surface); outline:2px solid var(--reader-accent); } .yellow { background:#f5d76e; } .mint { background:#9bd7af; } .blue { background:#9bcbe9; } .pink { background:#e6a9c2; }
@@ -93,7 +100,7 @@
   <div class="multi-select-bar" id="multiSelectBar"><span id="selectedCount">0 câu đã chọn</span><button id="copySelectedVerses" type="button">Sao chép</button></div>
 
   <div class="sheet-backdrop" id="actionSheet"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="actionTitle"><div class="sheet-title"><span id="actionTitle">{{ book_name }} {{ chapter }}</span><button type="button" data-close="actionSheet" aria-label="Đóng">×</button></div><div class="action-row"><button class="action-btn" id="copyVerse" type="button">Sao chép</button><button class="action-btn" id="toggleMultiSelect" type="button">Chọn nhiều</button><button class="action-btn" id="noteVerse" type="button">Ghi chú</button><button class="action-btn" id="clearHighlight" type="button" hidden>Bỏ highlight</button></div><div class="highlight-row" aria-label="Chọn màu highlight"><button class="color-dot yellow" data-color="yellow" aria-label="Highlight vàng"></button><button class="color-dot mint" data-color="mint" aria-label="Highlight mint"></button><button class="color-dot blue" data-color="blue" aria-label="Highlight xanh"></button><button class="color-dot pink" data-color="pink" aria-label="Highlight hồng"></button></div></div></div>
-  <div class="modal" id="pickerModal"><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="pickerTitle"><div class="modal-head"><h2 id="pickerTitle">Chọn sách và đoạn</h2><button type="button" data-close="pickerModal" aria-label="Đóng">×</button></div><label class="setting-label" for="bookSelect">Bước 1: Chọn sách</label><select id="bookSelect" style="width:100%;padding:11px;border:1px solid var(--reader-line);border-radius:9px;background:transparent;color:inherit;font:inherit;margin-bottom:18px">{% for item in books %}<option value="{{ item.number }}" data-chapters="{{ item.chapters|tojson|forceescape }}"{% if item.number == book %} selected{% endif %}>{{ item.number }}. {{ item.name }}</option>{% endfor %}</select><span class="setting-label">Bước 2: Chọn đoạn</span><div class="chapter-grid" id="chapterGrid">{% for item in chapters %}<a class="{% if item == chapter %}current{% endif %}" href="{{ url_for('read_bible', book=book, chapter=item) }}">{{ item }}</a>{% endfor %}</div></div></div>
+  <div class="modal" id="pickerModal"><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="pickerTitle"><div class="modal-head"><h2 id="pickerTitle">Chọn sách và đoạn</h2><button type="button" data-close="pickerModal" aria-label="Đóng">×</button></div><label class="setting-label" for="bookSearch">Bước 1: Tìm sách</label><input id="bookSearch" class="book-search" type="search" placeholder="Nhập tên hoặc số sách..." autocomplete="off" aria-controls="bookSearchResults"><div id="bookSearchResults" class="book-search-results" role="listbox" aria-label="Kết quả tìm sách" hidden></div><select id="bookSelect" style="width:100%;padding:11px;border:1px solid var(--reader-line);border-radius:9px;background:transparent;color:inherit;font:inherit;margin-bottom:18px">{% for item in books %}<option value="{{ item.number }}" data-chapters="{{ item.chapters|tojson|forceescape }}"{% if item.number == book %} selected{% endif %}>{{ item.number }}. {{ item.name }}</option>{% endfor %}</select><span class="setting-label">Bước 2: Chọn đoạn</span><div class="chapter-grid" id="chapterGrid">{% for item in chapters %}<a class="{% if item == chapter %}current{% endif %}" href="{{ url_for('read_bible', book=book, chapter=item) }}">{{ item }}</a>{% endfor %}</div></div></div>
   <div class="modal" id="settingsModal"><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><div class="modal-head"><h2 id="settingsTitle">Điều chỉnh đọc</h2><button type="button" data-close="settingsModal" aria-label="Đóng">×</button></div><div class="settings"><div><span class="setting-label">Cỡ chữ</span><div class="choice-row" data-setting="size"><button class="choice" data-value="16">16</button><button class="choice" data-value="18">18</button><button class="choice" data-value="20">20</button><button class="choice" data-value="22">22</button><button class="choice" data-value="24">24</button></div></div><div><span class="setting-label">Giãn dòng</span><div class="choice-row" data-setting="leading"><button class="choice" data-value="1.55">Chặt</button><button class="choice" data-value="1.8">Vừa</button><button class="choice" data-value="2.05">Rộng</button></div></div></div></div></div>
   <div class="modal" id="noteModal"><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="noteTitle"><div class="modal-head"><h2 id="noteTitle">Ghi chú câu <span id="noteVerseNumber"></span></h2><button type="button" data-close="noteModal" aria-label="Đóng">×</button></div><textarea id="noteText" rows="6" style="width:100%;padding:12px;border:1px solid var(--reader-line);border-radius:9px;background:transparent;color:inherit;font:inherit;resize:vertical" placeholder="Điều bạn muốn ghi nhớ..."></textarea><button id="saveNote" type="button" style="margin-top:12px;width:100%;padding:11px;border:0;border-radius:9px;background:var(--reader-accent);color:#fff;font:inherit;font-weight:700">Lưu ghi chú</button></div></div>
   {% include "_bottom_nav.html" %}
@@ -139,7 +146,44 @@
       const grid = document.getElementById('chapterGrid');
       grid.innerHTML = chapters.map(item => `<a href="/read/${select.value}/${item}">${item}</a>`).join('');
     };
-    document.getElementById('bookSelect').onchange = renderChapterChoices;
+    const bookSelect = document.getElementById('bookSelect');
+    const bookSearch = document.getElementById('bookSearch');
+    const bookSearchResults = document.getElementById('bookSearchResults');
+    const normalizeBookSearch = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('vi').replace(/đ/g, 'd');
+    const renderBookSearchResults = () => {
+      const query = normalizeBookSearch(bookSearch.value.trim());
+      bookSearchResults.replaceChildren();
+      if (!query) { bookSearchResults.hidden = true; return; }
+      const matches = [...bookSelect.options].filter(option => normalizeBookSearch(option.textContent).includes(query));
+      if (!matches.length) {
+        const empty = document.createElement('p');
+        empty.className = 'book-search-empty';
+        empty.textContent = 'Không tìm thấy sách phù hợp.';
+        bookSearchResults.appendChild(empty);
+      } else {
+        matches.forEach(option => {
+          const result = document.createElement('button');
+          result.type = 'button';
+          result.className = 'book-search-result';
+          result.setAttribute('role', 'option');
+          result.textContent = option.textContent;
+          result.onclick = () => {
+            bookSelect.value = option.value;
+            bookSearch.value = option.textContent;
+            bookSearchResults.hidden = true;
+            renderChapterChoices();
+          };
+          bookSearchResults.appendChild(result);
+        });
+      }
+      bookSearchResults.hidden = false;
+    };
+    bookSearch.addEventListener('input', renderBookSearchResults);
+    bookSelect.onchange = () => {
+      bookSearch.value = bookSelect.selectedOptions[0].textContent;
+      bookSearchResults.hidden = true;
+      renderChapterChoices();
+    };
     document.getElementById('settingsButton').onclick = () => openModal('settingsModal');
     document.getElementById('menuButton').onclick = () => openModal('pickerModal');
     document.querySelectorAll('[data-close]').forEach(button => button.onclick = () => closeModal(button.dataset.close));

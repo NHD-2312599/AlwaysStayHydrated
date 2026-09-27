@@ -28,6 +28,8 @@
     .mission-go, .mission-delete { color:var(--accent); font-size:.76rem; font-weight:800; text-decoration:none; border:0; background:transparent; cursor:pointer; white-space:nowrap; }
     .mission-go:hover, .mission-delete:hover { color:var(--accent-dk); }
     .mission-empty { color:var(--text-ter); background:var(--bg2); border-radius:14px; padding:18px; font-size:.85rem; }
+    .mission-toast { position:fixed; left:50%; bottom:110px; z-index:120; width:min(90vw,420px); padding:13px 18px; border-radius:12px; background:var(--accent-dk); color:#fff; box-shadow:0 10px 28px rgba(0,0,0,.2); opacity:0; pointer-events:none; transform:translate(-50%,12px); transition:opacity .2s,transform .2s; }
+    .mission-toast.show { opacity:1; transform:translate(-50%,0); }
     .add-mission-btn { border:0; border-radius:99px; background:var(--accent-lt); color:var(--accent-dk); padding:9px 14px; font:inherit; font-size:.78rem; font-weight:800; cursor:pointer; }
     .mission-form { display:grid; grid-template-columns:minmax(0,2fr) 1fr 90px auto auto; gap:8px; margin-top:12px; }
     .mission-form input, .mission-form select { min-height:40px; width:100%; border:1px solid rgba(0,0,0,.08); border-radius:10px; padding:8px 10px; font:inherit; color:var(--text-pri); background:var(--bg2); }
@@ -78,6 +80,7 @@
     </section>
     <a class="progress-link" href="{{ url_for('profile') }}">Xem lịch tiến độ →</a>
   </main>
+  <div id="missionToast" class="mission-toast" role="status" aria-live="polite"></div>
   {% include "_bottom_nav.html" %}
   <script>
     const missionPool = [
@@ -97,16 +100,37 @@
     const now = new Date();
     const dateKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
     const storageKey = `missions_${dateKey}`;
+    const notifiedKey = `missions_notified_${dateKey}`;
+    let missionToastTimer;
+    let missionToastQueue = [];
     function dailySeed() { return [...dateKey].reduce((sum, character) => sum + character.charCodeAt(0), 0); }
     function chooseDailyMissions() { const pool=[...missionPool]; let seed=dailySeed(); const selected=[]; while(selected.length<5 && pool.length){ seed=(seed*9301+49297)%233280; const index=seed%pool.length; selected.push(pool.splice(index,1)[0]); } return selected; }
     function loadMissions() { try { const data=JSON.parse(localStorage.getItem(storageKey)||'null'); if(data?.version===2 && data.required?.length===5 && data.optional) { if(!data.required.some(item=>item.id==='read_once')) { data.required[data.required.length-1]={id:'read_once',title:'Đọc một phân đoạn Kinh Thánh hôm nay',mode:'read',target:1,metric:'read_chapter',progress:0,done:false}; saveMissions(data); } return data; } } catch(error) {} const data={version:2,required:chooseDailyMissions().map(item=>({...item,progress:0,done:false})),optional:[]}; if(!data.required.some(item=>item.id==='read_once')) data.required[data.required.length-1]={id:'read_once',title:'Đọc một phân đoạn Kinh Thánh hôm nay',mode:'read',target:1,metric:'read_chapter',progress:0,done:false}; saveMissions(data); return data; }
     function saveMissions(data) { localStorage.setItem(storageKey, JSON.stringify(data)); localStorage.setItem(`activity_${dateKey}`, '1'); }
     function done(item) { return item.done || item.progress >= item.target; }
     function progress(item) { return done(item) ? 'Hoàn thành' : item.progress ? `${item.progress}/${item.target}` : 'Chưa bắt đầu'; }
+    function showNextMissionToast() {
+      const toast = document.getElementById('missionToast');
+      if (!missionToastQueue.length) { toast.classList.remove('show'); return; }
+      toast.textContent = `Hoàn thành nhiệm vụ: ${missionToastQueue.shift()}`;
+      toast.classList.add('show');
+      clearTimeout(missionToastTimer);
+      missionToastTimer = setTimeout(showNextMissionToast, 3200);
+    }
+    function announceCompletedMissions(data) {
+      let notified = [];
+      try { notified = JSON.parse(localStorage.getItem(notifiedKey) || '[]'); } catch (error) {}
+      const newlyCompleted = data.required.filter(item => done(item) && !notified.includes(item.id));
+      if (!newlyCompleted.length) return;
+      localStorage.setItem(notifiedKey, JSON.stringify([...notified, ...newlyCompleted.map(item => item.id)]));
+      missionToastQueue.push(...newlyCompleted.map(item => item.title));
+      if (missionToastQueue.length === newlyCompleted.length) showNextMissionToast();
+    }
     function render() {
       const data=loadMissions(); document.getElementById('missionDate').textContent=now.toLocaleDateString('vi-VN',{weekday:'long',day:'2-digit',month:'2-digit',year:'numeric'});
       document.getElementById('requiredSummary').textContent=`${data.required.filter(done).length}/${data.required.length} hoàn thành`;
       renderList('requiredMissions',data.required,false); renderList('optionalMissions',data.optional,true); document.getElementById('optionalEmpty').hidden=!!data.optional.length;
+      announceCompletedMissions(data);
     }
     function renderList(id, items, optional) { document.getElementById(id).innerHTML=items.map((item,index)=>{ const link=missionLinks[item.mode]; return `<div class="mission-item ${done(item)?'done':''}"><button class="mission-check" data-toggle="${optional?'optional':'required'}" data-index="${index}">${done(item)?'✓':''}</button><div><div class="mission-title">${item.title}</div><div class="mission-progress">${progress(item)}${item.mode?' · '+item.mode:''}</div></div>${!done(item)&&link?`<a class="mission-go" href="${link}">Làm ngay →</a>`:optional?`<button class="mission-delete" data-delete="${index}">Xóa</button>`:''}</div>`;}).join(''); document.querySelectorAll('[data-toggle]').forEach(button=>button.onclick=()=>{const data=loadMissions(),list=button.dataset.toggle==='optional'?data.optional:data.required,item=list[Number(button.dataset.index)]; item.done=!done(item); item.progress=item.done?item.target:0; saveMissions(data); render();}); document.querySelectorAll('[data-delete]').forEach(button=>button.onclick=()=>{const data=loadMissions();data.optional.splice(Number(button.dataset.delete),1);saveMissions(data);render();}); }
     document.getElementById('addMissionBtn').onclick=()=>{document.getElementById('missionForm').hidden=false;document.getElementById('missionTitleInput').focus();};
