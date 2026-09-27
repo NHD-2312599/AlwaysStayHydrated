@@ -212,7 +212,7 @@
     }
     .verse-of-day-reference {
       display: block;
-      margin: 0 auto 20px;
+      margin: 0 auto 16px;
       color: var(--verse-ink);
       font-family: 'SVN-Recoleta', sans-serif;
       font-size: clamp(2.7rem, 4vw, 5.25rem);
@@ -226,11 +226,42 @@
       max-width: 100%;
     }
     .verse-of-day-reference:hover { color: var(--verse-ink); opacity: .82; }
-    .verse-of-day-list { display:block; max-width:620px; margin:0 auto; padding:0; list-style:none; text-align:center; }
-    .verse-of-day-list li { display:inline; color:var(--verse-ink); font-family:'SVN-Recoleta', Georgia, serif; font-size:1rem; line-height:1.55; }
-    .verse-of-day-list li:not(:last-child)::after { content:' '; }
-    .verse-of-day-list li strong { display:none; }
-    .verse-of-day-list li span::after { content:' '; }
+    .verse-of-day-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0;
+      list-style: none;
+      text-align: center;
+    }
+    .verse-of-day-list li {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 10px;
+      width: min(100%, 620px);
+      color: var(--verse-ink);
+      font-family:'SVN-Recoleta', Georgia, serif;
+      font-size: clamp(1rem, 1.4vw, 1.35rem);
+      line-height: 1.55;
+      text-align: left;
+    }
+    .verse-of-day-list li strong {
+      display: inline-block;
+      min-width: 1.5em;
+      font-weight: 800;
+      color: var(--verse-ink);
+      opacity: .95;
+    }
+    .verse-of-day-list li span {
+      display: block;
+      flex: 1 1 auto;
+      text-align: center;
+    }
     .verse-of-day-list::after { content:'Lời Kinh Thánh hôm nay'; display:block; margin-top:18px; color:var(--verse-muted); font-family:'NeueHaasGroteskDisplay', sans-serif; font-size:.68rem; font-weight:800; letter-spacing:.12em; }
     .home-reading-layout { display:grid; grid-template-columns:minmax(0, 1.7fr) minmax(280px, .85fr); gap:18px; align-items:stretch; }
     .home-reading-layout .verse-of-day { margin:0; height:100%; }

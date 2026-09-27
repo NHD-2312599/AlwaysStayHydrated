@@ -136,22 +136,60 @@ def get_verse_image_keywords(book_number):
         return VERSE_IMAGE_KEYWORDS["letters"]
     return VERSE_IMAGE_KEYWORDS["revelation"]
 
+POSITIVE_VERSE_KEYWORDS = [
+    "yêu thương", "thương xót", "an nghỉ", "hân hoan", "niềm tin", "được chữa lành",
+    "cầu nguyện", "lòng kiên nhẫn", "hy vọng", "tỉnh thức", "phục hồi", "được sống lại",
+    "sự sáng", "được mạnh lên", "dũng lực", "hạnh phúc", "sự bình an", "sự thương", "lòng nhân ái",
+    "được tái sinh", "sanh lại", "yên ổn", "ổn định", "cứu rỗi", "sự khích lệ", "vui mừng", "vững mạnh"
+]
+POSITIVE_IMAGE_POOL = [
+    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1600&q=80",
+]
+
+
 def get_verse_of_day():
     passages = []
     for book_number, book in enumerate(BIBLE_BOOKS, 1):
         for chapter_value, verses in book.get("chapters", {}).items():
-            if len(verses) >= 2:
-                passages.append((book_number, book, int(chapter_value), verses))
+            if len(verses) < 1:
+                continue
+            chapter_verses = verses[:]
+            text_blob = " ".join(v.get("text", "") for v in chapter_verses).lower()
+            score = sum(1 for keyword in POSITIVE_VERSE_KEYWORDS if keyword.lower() in text_blob)
+            if score > 0:
+                passages.append((book_number, book, int(chapter_value), chapter_verses, score))
+
+    if not passages:
+        for book_number, book in enumerate(BIBLE_BOOKS, 1):
+            for chapter_value, verses in book.get("chapters", {}).items():
+                if len(verses) >= 1:
+                    passages.append((book_number, book, int(chapter_value), verses, 0))
 
     if not passages:
         return None
 
     date_key = datetime.now().date().isoformat()
     daily_random = random.Random(date_key)
-    book_number, book, chapter, verses = daily_random.choice(passages)
-    passage_length = daily_random.randint(2, min(4, len(verses)))
-    start_index = daily_random.randint(0, len(verses) - passage_length)
+    book_number, book, chapter, verses, _ = max(passages, key=lambda item: (item[4], len(item[3])))
+    if passages:
+        ranked = sorted(passages, key=lambda item: (-item[4], -len(item[3])))
+        chosen = daily_random.choice(ranked[:max(1, min(6, len(ranked)))])
+        book_number, book, chapter, verses, _ = chosen
+
+    max_length = min(3, len(verses))
+    passage_length = daily_random.choice([1, 2, max_length])
+    passage_length = min(passage_length, max_length)
+    if len(verses) < passage_length:
+        passage_length = len(verses)
+    start_index = daily_random.randint(0, max(0, len(verses) - passage_length))
     selected_verses = verses[start_index:start_index + passage_length]
+    image_url = POSITIVE_IMAGE_POOL[daily_random.randrange(len(POSITIVE_IMAGE_POOL))]
     return {
         "book": book_number,
         "book_name": book.get("abbrev", "Kinh Thánh"),
@@ -159,11 +197,7 @@ def get_verse_of_day():
         "start_verse": selected_verses[0]["verse"],
         "end_verse": selected_verses[-1]["verse"],
         "verses": selected_verses,
-        "image_url": (
-            "https://loremflickr.com/1600/900/"
-            f"{quote(get_verse_image_keywords(book_number), safe=',')}"
-            f"?lock={date_key.replace('-', '')}"
-        ),
+        "image_url": image_url,
     }
 
 USERS_FILE = os.path.join(os.path.dirname(__file__), "users.json")
