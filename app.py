@@ -1,6 +1,7 @@
 import json
 import random
 import os
+import re
 from datetime import datetime, timedelta
 from functools import wraps
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for, send_from_directory
@@ -107,7 +108,90 @@ def after_request(response):
     return response
 
 with open(os.path.join(BASE_DIR, "khai_huyen_data.json"), encoding="utf-8") as f:
-    BIBLE_BOOKS = json.load(f)
+    bible_source = json.load(f)
+
+
+def normalize_bible_books(source):
+    """Normalize the section based VIE1925 JSON and the legacy reader format."""
+    if isinstance(source, dict) and isinstance(source.get("books"), list):
+        def split_overview_note(value):
+            if not isinstance(value, str):
+                return "", ""
+            value = value.strip()
+            note_match = re.search(r"\s*(\([^)]*đoạn\s+\d+[^)]*\))\s*$", value, re.I)
+            if not note_match:
+                return value, ""
+            return value[:note_match.start()].strip(), note_match.group(1).strip()
+
+        def is_overview_title(title):
+            return bool(re.search(
+                r"(?i)từ\s+đoạn\s+\d+|từ\s+\d+\s*[:：]?\s*\d*\s+đến|\(từ\s+|tiểu-?dẫn|"
+                r"^i{1,3}\.\s*[—\-–]|^iv\.\s*[—\-–]|^v\.\s*[—\-–]|^vi\.\s*[—\-–]|"
+                r"đại-?ý\s+trong\s+thơ|về\s+thời\s+cổ",
+                title.strip(),
+            ) or re.search(r"\([^)]*đoạn[^)]*đến[^)]*\)", title, re.I))
+
+        books = []
+        for source_book in source["books"]:
+            chapters = {}
+            chapter_overviews = {}
+            chapter_overview_notes = {}
+            for source_chapter in source_book.get("chapters", []):
+                verses = []
+                overview = source_chapter.get("overview")
+                inline_note = ""
+                if isinstance(overview, str) and overview.strip():
+                    overview, inline_note = split_overview_note(overview)
+                    chapter_overviews[str(source_chapter.get("number"))] = overview
+                overview_note = source_chapter.get("overview_note")
+                if isinstance(overview_note, str) and overview_note.strip():
+                    chapter_overview_notes[str(source_chapter.get("number"))] = overview_note.strip()
+                elif overview and inline_note:
+                    chapter_overview_notes[str(source_chapter.get("number"))] = inline_note
+                for section in source_chapter.get("sections", []):
+                    section_title = section.get("title", "")
+                    all_titles = section.get("_all_titles_found", [])
+                    if isinstance(section_title, str) and is_overview_title(section_title):
+                        overview_title, inline_note = split_overview_note(section_title)
+                        if not chapter_overviews.get(str(source_chapter.get("number"))):
+                            chapter_overviews[str(source_chapter.get("number"))] = overview_title
+                        if inline_note and not chapter_overview_notes.get(str(source_chapter.get("number"))):
+                            chapter_overview_notes[str(source_chapter.get("number"))] = inline_note
+                        real_titles = [
+                            title.strip() for title in all_titles
+                            if isinstance(title, str) and title.strip() and not is_overview_title(title)
+                        ]
+                        section_title = real_titles[0] if real_titles else ""
+
+                    titles = section_title
+                    if isinstance(titles, str):
+                        titles = [titles]
+                    titles = [title.strip() for title in titles if isinstance(title, str) and title.strip()]
+                    section_verses = section.get("verses", [])
+                    for index, verse in enumerate(section_verses):
+                        normalized_verse = {
+                            "verse": verse.get("number", verse.get("verse")),
+                            "text": verse.get("text", ""),
+                        }
+                        if index == 0 and titles:
+                            normalized_verse["section_titles"] = titles
+                        verses.append(normalized_verse)
+                chapters[str(source_chapter.get("number"))] = verses
+            books.append({
+                "abbrev": source_book.get("abbr") or source_book.get("abbrev") or "",
+                "name": source_book.get("name") or source_book.get("abbrev") or source_book.get("abbr") or "Kinh Thánh",
+                "book_overview": source_book.get("overview", ""),
+                "chapters": chapters,
+                "overviews": chapter_overviews,
+                "overview_notes": chapter_overview_notes,
+            })
+        return books
+
+    # Older data uses a list of books and a chapter-to-verses mapping.
+    return source if isinstance(source, list) else []
+
+
+BIBLE_BOOKS = normalize_bible_books(bible_source)
 
 BIBLE_DATA = BIBLE_BOOKS[-1].get("chapters", {}) if BIBLE_BOOKS else {}
 
@@ -192,7 +276,7 @@ def get_verse_of_day():
     image_url = POSITIVE_IMAGE_POOL[daily_random.randrange(len(POSITIVE_IMAGE_POOL))]
     return {
         "book": book_number,
-        "book_name": book.get("abbrev", "Kinh Thánh"),
+        "book_name": book.get("name") or book.get("abbrev", "Kinh Thánh"),
         "chapter": chapter,
         "start_verse": selected_verses[0]["verse"],
         "end_verse": selected_verses[-1]["verse"],
@@ -490,8 +574,11 @@ def read_bible(book=66, chapter=1):
     return render_template(
         "read.html",
         book=book,
-        book_name=selected_book.get("abbrev", "Kinh Thánh"),
-        books=[{"number": index, "name": item.get("abbrev", "Kinh Thánh"), "chapters": sorted(int(value) for value in item.get("chapters", {}))} for index, item in enumerate(BIBLE_BOOKS, 1)],
+        book_name=selected_book.get("name") or selected_book.get("abbrev", "Kinh Thánh"),
+        book_overview=selected_book.get("book_overview", ""),
+        overview=selected_book.get("overviews", {}).get(str(chapter), ""),
+        overview_note=selected_book.get("overview_notes", {}).get(str(chapter), ""),
+        books=[{"number": index, "name": item.get("name") or item.get("abbrev", "Kinh Thánh"), "chapters": sorted(int(value) for value in item.get("chapters", {}))} for index, item in enumerate(BIBLE_BOOKS, 1)],
         chapter=chapter,
         verses=verses,
         chapters=chapter_numbers,

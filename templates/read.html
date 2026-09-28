@@ -34,6 +34,13 @@
     .reader-kicker { display:none; }
     .reader-heading { margin:0; font-size:clamp(2.05rem,5vw,3.1rem); line-height:1.05; letter-spacing:-.02em; }
     .reader-subtitle { margin:14px 0 0; color:var(--reader-muted); font-family:'NeueHaasGroteskDisplay',sans-serif; font-size:.92rem; }
+    .section-title { margin:32px 0 14px; color:var(--reader-accent-dark); font-family:'NeueHaasGroteskDisplay',Georgia,serif; font-size:1.22rem; font-weight:700; line-height:1.35; }
+    .section-title:first-child { margin-top:0; }
+    .chapter-overview { margin:0 0 28px; padding:16px 18px; border-left:3px solid var(--reader-accent); border-radius:0 10px 10px 0; background:rgba(45,106,79,.07); color:var(--reader-accent-dark); font-family:'NeueHaasGroteskDisplay',Georgia,serif; font-size:1.12rem; font-weight:700; line-height:1.5; }
+    .overview-note { display:block; margin-top:3px; font-size:.94em; font-style:italic; font-weight:600; }
+    .book-overview { margin:0 0 30px; padding:18px 20px; border:1px solid var(--reader-line); border-radius:14px; background:var(--reader-surface); }
+    .book-overview h2 { margin:0 0 10px; color:var(--reader-accent-dark); font-family:'NeueHaasGroteskDisplay',sans-serif; font-size:1rem; }
+    .book-overview p { margin:0; color:var(--reader-text); font-size:.96rem; line-height:1.7; white-space:pre-line; }
     .verse { position:relative; display:grid; grid-template-columns:28px minmax(0,1fr); gap:14px; margin:0 -8px 13px; padding:6px 8px; border-radius:8px; cursor:pointer; scroll-margin-top:140px; transition:background .16s; }
     .verse:hover, .verse:focus-visible { background:rgba(45,106,79,.08); outline:none; }
     .verse.selected { background:rgba(45,106,79,.16); box-shadow:inset 3px 0 var(--reader-accent); }
@@ -97,8 +104,10 @@
 
   <main class="reader-main" data-prev-url="{% if chapter != chapters[0] %}{{ url_for('read_bible', book=book, chapter=chapter - 1) }}{% endif %}" data-next-url="{% if chapter != chapters[-1] %}{{ url_for('read_bible', book=book, chapter=chapter + 1) }}{% endif %}">
     <div class="reader-intro"><h1 class="reader-heading">{{ book_name }} {{ chapter }}</h1><p class="reader-subtitle">VIE 1925</p></div>
+    {% if chapter == chapters[0] and book_overview %}<aside class="book-overview"><h2>Tổng quan sách {{ book_name }}</h2><p>{{ book_overview }}</p></aside>{% endif %}
+    {% if overview %}<h2 class="chapter-overview">{{ overview }}{% if overview_note %}<span class="overview-note">{{ overview_note }}</span>{% endif %}</h2>{% endif %}
     <section id="verses" aria-label="Nội dung {{ book_name }} chương {{ chapter }}">
-      {% for verse in verses %}<article class="verse" id="verse-{{ verse.verse }}" data-verse="{{ verse.verse }}" tabindex="0"><span class="verse-number">{{ verse.verse }}</span><p class="verse-text">{{ verse.text }}</p></article>{% else %}<p class="reader-empty">Nội dung chương {{ chapter }} đang được cập nhật.</p>{% endfor %}
+      {% for verse in verses %}{% for section_title in verse.section_titles|default([]) %}<h2 class="section-title">{{ section_title }}</h2>{% endfor %}<article class="verse" id="verse-{{ verse.verse }}" data-verse="{{ verse.verse }}" tabindex="0"><span class="verse-number">{{ verse.verse }}</span><p class="verse-text">{{ verse.text }}</p></article>{% else %}<p class="reader-empty">Nội dung chương {{ chapter }} đang được cập nhật.</p>{% endfor %}
     </section>
     <nav class="reader-side-nav" aria-label="Chuyển chương giữa trang">
       <a class="chapter-nav{% if chapter == chapters[0] %} disabled{% endif %}" href="{% if chapter != chapters[0] %}{{ url_for('read_bible', book=book, chapter=chapter - 1) }}{% else %}#{% endif %}" aria-label="Chương trước">←</a>
