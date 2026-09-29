@@ -209,7 +209,7 @@
       font-size: .68rem;
       font-weight: 800;
       letter-spacing: .1em;
-      text-transform: lowercase;
+      text-transform: none;
     }
     .verse-of-day-reference {
       display: block;
@@ -1477,6 +1477,7 @@
       <div class="home-reading-layout">
         {% if verse_of_day %}
         <section class="verse-of-day" aria-labelledby="verseOfDayTitle" data-verse-image="{{ verse_of_day.image_url }}" style="background-image: url('{{ verse_of_day.image_url }}');">
+          <span class="verse-of-day-kicker">{{ verse_of_day.theme }} · Câu Kinh Thánh mỗi ngày</span>
           <a class="verse-of-day-reference" href="{{ url_for('read_bible', book=verse_of_day.book, chapter=verse_of_day.chapter) }}">{{ verse_of_day.book_name }}<br>{{ verse_of_day.chapter }}:{{ verse_of_day.start_verse }}{% if verse_of_day.end_verse != verse_of_day.start_verse %}-{{ verse_of_day.end_verse }}{% endif %}</a>
           <ol class="verse-of-day-list">
             {% for verse in verse_of_day.verses %}<li><strong>{{ verse.verse }}</strong><span>{{ verse.text }}</span></li>{% endfor %}

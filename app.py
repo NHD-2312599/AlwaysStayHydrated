@@ -220,11 +220,44 @@ def get_verse_image_keywords(book_number):
         return VERSE_IMAGE_KEYWORDS["letters"]
     return VERSE_IMAGE_KEYWORDS["revelation"]
 
-POSITIVE_VERSE_KEYWORDS = [
-    "yêu thương", "thương xót", "an nghỉ", "hân hoan", "niềm tin", "được chữa lành",
-    "cầu nguyện", "lòng kiên nhẫn", "hy vọng", "tỉnh thức", "phục hồi", "được sống lại",
-    "sự sáng", "được mạnh lên", "dũng lực", "hạnh phúc", "sự bình an", "sự thương", "lòng nhân ái",
-    "được tái sinh", "sanh lại", "yên ổn", "ổn định", "cứu rỗi", "sự khích lệ", "vui mừng", "vững mạnh"
+DAILY_VERSE_PASSAGES = [
+    # Love
+    (43, 15, 12, 13, "Tình yêu thương"),
+    (46, 13, 4, 7, "Tình yêu thương"),
+    (62, 4, 19, 19, "Tình yêu thương"),
+    (51, 3, 12, 14, "Tình yêu thương"),
+    # God's guidance and teaching
+    (19, 119, 105, 105, "Lời dạy dỗ của Chúa"),
+    (20, 3, 5, 6, "Lời dạy dỗ của Chúa"),
+    (40, 6, 33, 33, "Lời dạy dỗ của Chúa"),
+    (43, 3, 16, 17, "Lời dạy dỗ của Chúa"),
+    # Daily encouragement
+    (6, 1, 9, 9, "Khích lệ mỗi ngày"),
+    (23, 40, 31, 31, "Khích lệ mỗi ngày"),
+    (50, 4, 13, 13, "Khích lệ mỗi ngày"),
+    (23, 41, 10, 10, "Khích lệ mỗi ngày"),
+    (48, 6, 9, 9, "Khích lệ mỗi ngày"),
+    # Wisdom
+    (59, 1, 5, 5, "Sự khôn ngoan"),
+    (20, 4, 7, 7, "Sự khôn ngoan"),
+    (20, 16, 3, 3, "Sự khôn ngoan"),
+    # Patience and strength through difficulty
+    (45, 5, 3, 5, "Kiên nhẫn và bền lòng"),
+    (59, 1, 2, 4, "Kiên nhẫn và bền lòng"),
+    (47, 12, 9, 9, "Kiên nhẫn và bền lòng"),
+    (60, 5, 7, 7, "Kiên nhẫn và bền lòng"),
+    # Peace and rest
+    (43, 14, 27, 27, "Bình an"),
+    (40, 11, 28, 30, "Bình an"),
+    (50, 4, 6, 7, "Bình an"),
+    (19, 23, 1, 4, "Bình an"),
+    # Hope and gratitude
+    (25, 3, 22, 23, "Hy vọng và lòng biết ơn"),
+    (45, 15, 13, 13, "Hy vọng và lòng biết ơn"),
+    (45, 8, 28, 28, "Hy vọng và lòng biết ơn"),
+    (52, 5, 16, 18, "Hy vọng và lòng biết ơn"),
+    (19, 37, 4, 5, "Hy vọng và lòng biết ơn"),
+    (21, 3, 11, 11, "Hy vọng và lòng biết ơn"),
 ]
 POSITIVE_IMAGE_POOL = [
     "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80",
@@ -239,47 +272,37 @@ POSITIVE_IMAGE_POOL = [
 
 def get_verse_of_day():
     passages = []
-    for book_number, book in enumerate(BIBLE_BOOKS, 1):
-        for chapter_value, verses in book.get("chapters", {}).items():
-            if len(verses) < 1:
-                continue
-            chapter_verses = verses[:]
-            text_blob = " ".join(v.get("text", "") for v in chapter_verses).lower()
-            score = sum(1 for keyword in POSITIVE_VERSE_KEYWORDS if keyword.lower() in text_blob)
-            if score > 0:
-                passages.append((book_number, book, int(chapter_value), chapter_verses, score))
-
-    if not passages:
-        for book_number, book in enumerate(BIBLE_BOOKS, 1):
-            for chapter_value, verses in book.get("chapters", {}).items():
-                if len(verses) >= 1:
-                    passages.append((book_number, book, int(chapter_value), verses, 0))
+    date_key = datetime.now().date().isoformat()
+    chapter_maps = {}
+    for book_number, chapter, start_verse, end_verse, theme in DAILY_VERSE_PASSAGES:
+        if book_number < 1 or book_number > len(BIBLE_BOOKS):
+            continue
+        book = BIBLE_BOOKS[book_number - 1]
+        verses = book.get("chapters", {}).get(str(chapter), [])
+        verse_map = chapter_maps.setdefault(
+            (book_number, chapter),
+            {int(verse["verse"]): verse for verse in verses if verse.get("verse") is not None},
+        )
+        selected_verses = [verse_map.get(number) for number in range(start_verse, end_verse + 1)]
+        if not selected_verses or any(verse is None for verse in selected_verses):
+            continue
+        passages.append((book_number, book, chapter, start_verse, end_verse, theme, selected_verses))
 
     if not passages:
         return None
 
-    date_key = datetime.now().date().isoformat()
+    # Rotate through hand-picked, encouraging passages so each date has a stable verse.
+    passage_index = datetime.now().date().toordinal() % len(passages)
+    book_number, book, chapter, start_verse, end_verse, theme, selected_verses = passages[passage_index]
     daily_random = random.Random(date_key)
-    book_number, book, chapter, verses, _ = max(passages, key=lambda item: (item[4], len(item[3])))
-    if passages:
-        ranked = sorted(passages, key=lambda item: (-item[4], -len(item[3])))
-        chosen = daily_random.choice(ranked[:max(1, min(6, len(ranked)))])
-        book_number, book, chapter, verses, _ = chosen
-
-    max_length = min(3, len(verses))
-    passage_length = daily_random.choice([1, 2, max_length])
-    passage_length = min(passage_length, max_length)
-    if len(verses) < passage_length:
-        passage_length = len(verses)
-    start_index = daily_random.randint(0, max(0, len(verses) - passage_length))
-    selected_verses = verses[start_index:start_index + passage_length]
     image_url = POSITIVE_IMAGE_POOL[daily_random.randrange(len(POSITIVE_IMAGE_POOL))]
     return {
         "book": book_number,
         "book_name": book.get("name") or book.get("abbrev", "Kinh Thánh"),
         "chapter": chapter,
-        "start_verse": selected_verses[0]["verse"],
-        "end_verse": selected_verses[-1]["verse"],
+        "start_verse": start_verse,
+        "end_verse": end_verse,
+        "theme": theme,
         "verses": selected_verses,
         "image_url": image_url,
     }
