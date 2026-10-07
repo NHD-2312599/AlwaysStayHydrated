@@ -4,126 +4,223 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#2D6A4F">
-  <link rel="manifest" href="/manifest.json">
-  <link rel="apple-touch-icon" href="/static/pictures/Logo_White.png">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
-  <link rel="stylesheet" href="/static/css/mobile-responsive.css">
-  <title>Always Stay Hydrated | Đóng Ấn Ngôi Lời</title>
+  <meta name="robots" content="noindex, nofollow">
+  <title>Always Stay Hydrated | Đã chuyển tên miền</title>
   <style>
-    @font-face { font-family:'NeueHaasGroteskDisplay'; src:url('/static/fonts/SVN-NeueHaasGroteskDisplay-Regular.ttf') format('truetype'); font-weight:500; }
-    @font-face { font-family:'NeueHaasGroteskDisplay'; src:url('/static/fonts/SVN-NeueHaasGroteskDisplay-Bold.ttf') format('truetype'); font-weight:700; }
-    @font-face { font-family:'Recoleta'; src:url('/static/fonts/SVN-Recoleta Regular.ttf') format('truetype'); font-weight:400; }
-    @font-face { font-family:'Recoleta'; src:url('/static/fonts/SVN-Recoleta SemiBold.ttf') format('truetype'); font-weight:600; }
-    :root { --white:#FFFFFF; --cream:#F7F3E8; --cream-dark:#EDE8D8; --green:#2D6A4F; --green-dark:#1B4332; --green-deeper:#0D2B1E; --text:#0D2B1E; --mint:#E8F5E9; --sky:#E3F2FD; --lilac:#F3E5F5; --amber:#FFF8E1; --peach:#FBE9E7; --line:rgba(13,43,30,.12); --shadow:0 18px 45px rgba(13,43,30,.09); }
-    *,*::before,*::after { box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
-    body { margin:0; background:var(--cream); color:var(--text); font-family:'NeueHaasGroteskDisplay',sans-serif; font-size:16px; line-height:1.5; }
-    img { max-width:100%; display:block; }
-    a { color:inherit; }
-    .site-nav { position:sticky; top:0; z-index:20; display:flex; align-items:center; justify-content:space-between; gap:24px; padding:clamp(12px,3vw,24px) clamp(16px,5vw,64px); background:rgba(247,243,232,.92); border-bottom:1px solid transparent; transition:box-shadow .2s,border-color .2s; }
-    .site-nav.scrolled { border-color:var(--line); box-shadow:0 8px 24px rgba(13,43,30,.06); }
-    .nav-logo img { width:122px; height:auto; }
-    .nav-links { display:flex; align-items:center; gap:clamp(18px,3vw,40px); margin:0; padding:0; list-style:none; }
-    .nav-links a { color:var(--green-deeper); font-size:.88rem; font-weight:700; text-decoration:none; }
-    .nav-links a:hover { color:var(--green); }
-    .nav-login,.hero-actions a,.mission-band a,.feedback-send { border-radius:11px; font-weight:700; text-decoration:none; transition:transform .2s,background .2s,box-shadow .2s; }
-    .nav-login { padding:10px 17px; background:var(--green-dark); color:#fff; font-size:.82rem; }
-    .nav-login:hover,.hero-primary:hover,.feedback-send:hover { transform:translateY(-2px); background:var(--green); box-shadow:0 10px 20px rgba(45,106,79,.2); }
-    .hero { position:relative; overflow:hidden; display:grid; grid-template-columns:minmax(0,1fr) minmax(320px,.9fr); align-items:center; gap:clamp(32px,7vw,96px); max-width:1200px; min-height:660px; margin:0 auto; padding:clamp(60px,9vw,112px) clamp(20px,4vw,48px); }
-    .hero::before { content:''; position:absolute; width:420px; height:420px; right:5%; top:8%; border-radius:50%; background:radial-gradient(circle,rgba(216,243,220,.85),rgba(216,243,220,0) 68%); pointer-events:none; }
-    .hero-copy,.hero-visual { position:relative; z-index:1; }
-    .eyebrow { color:var(--green); font-size:.75rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
-    .hero h1 { max-width:680px; margin:16px 0 20px; font-family:Recoleta,serif; font-size:clamp(3rem,7vw,6.4rem); font-weight:600; letter-spacing:-.04em; line-height:1.02; }
-    .hero h1 .title-line { display:block; white-space:nowrap; }
-    .hero h1 em { color:var(--green); font-style:normal; }
-    .hero-lede { max-width:570px; margin:0 0 24px; color:rgba(13,43,30,.75); font-size:1.12rem; }
-    .hero-meta { margin:0 0 30px; color:var(--green); font-size:.82rem; font-weight:700; }
-    .hero-actions { display:flex; flex-wrap:wrap; gap:11px; }
-    .hero-actions a { display:inline-flex; align-items:center; justify-content:center; padding:13px 19px; font-size:.86rem; }
-    .hero-primary { background:var(--green-dark); color:#fff; }
-    .hero-secondary { border:1px solid var(--green-dark); color:var(--green-dark); }
-    .hero-secondary:hover { background:var(--white); transform:translateY(-2px); }
-    .hero-visual { display:grid; place-items:center; }
-    .hero-badge { position:absolute; z-index:2; top:-3%; right:6%; width:118px; height:118px; object-fit:contain; animation:floatBadge 5s ease-in-out infinite; }
-    .hero-device { width:min(100%,530px); filter:drop-shadow(0 28px 32px rgba(13,43,30,.2)); transform:rotate(2deg); animation:float 6s ease-in-out infinite; }
-    @keyframes float { 0%,100%{transform:translateY(0) rotate(2deg)} 50%{transform:translateY(-10px) rotate(2deg)} }
-    @keyframes floatBadge { 0%,100%{transform:translateY(0) rotate(-5deg)} 50%{transform:translateY(-8px) rotate(2deg)} }
-    .section { max-width:1200px; margin:0 auto; padding:clamp(64px,9vw,104px) clamp(20px,4vw,48px); }
-    .section-heading { max-width:650px; margin-bottom:32px; }
-    .section-heading h2,.about-copy h2,.feedback-section h2 { margin:10px 0 12px; font-family:Recoleta,serif; font-size:clamp(2.2rem,4.5vw,4.2rem); font-weight:600; letter-spacing:-.035em; line-height:1.05; }
-    .section-heading p { margin:0; color:rgba(13,43,30,.68); }
-    .feature-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; }
-    .feature-card { min-height:235px; display:flex; flex-direction:column; padding:20px; border:1px solid rgba(13,43,30,.08); border-radius:18px; box-shadow:0 10px 25px rgba(13,43,30,.06); transition:transform .2s,box-shadow .2s; }
-    .feature-card:hover { transform:translateY(-5px); box-shadow:var(--shadow); }
-    .feature-card:nth-child(1){background:var(--mint)} .feature-card:nth-child(2){background:var(--sky)} .feature-card:nth-child(3){background:var(--lilac)} .feature-card:nth-child(4){background:var(--amber)} .feature-card:nth-child(5){background:var(--peach)}
-    .feature-icon { width:42px; height:42px; display:grid; place-items:center; margin-bottom:25px; border-radius:13px; background:rgba(255,255,255,.72); font-size:1.35rem; }
-    .feature-card h3 { margin:0 0 8px; font-size:1rem; line-height:1.2; }
-    .feature-card p { margin:0; color:rgba(13,43,30,.7); font-size:.84rem; line-height:1.45; }
-    .mission-band { background:var(--green-dark); color:#fff; }
-    .mission-band-inner { max-width:1200px; display:flex; align-items:center; justify-content:space-between; gap:28px; margin:0 auto; padding:clamp(48px,7vw,78px) clamp(20px,8vw,96px); }
-    .mission-band h2 { max-width:680px; margin:8px 0 0; font-family:Recoleta,serif; font-size:clamp(2rem,4vw,3.8rem); font-weight:600; line-height:1.08; }
-    .mission-band .eyebrow { color:#B7E4C7; }
-    .mission-band p { margin:10px 0 0; color:rgba(255,255,255,.7); }
-    .mission-band a { flex:0 0 auto; padding:13px 20px; background:var(--cream); color:var(--green-deeper); font-size:.86rem; }
-    .mission-band a:hover { transform:translateY(-2px); background:#fff; }
-    .about-section { background:var(--white); }
-    .about-inner { display:grid; grid-template-columns:1fr .8fr; align-items:center; gap:clamp(34px,8vw,110px); }
-    .about-copy p { max-width:580px; margin:0 0 16px; color:rgba(13,43,30,.72); }
-    .about-quote { margin:26px 0; padding:13px 0 13px 18px; border-left:3px solid var(--green); color:var(--green-dark); font-family:Recoleta,serif; font-size:1.25rem; line-height:1.35; }
-    .about-list { display:flex; flex-wrap:wrap; gap:9px; margin:0; padding:0; list-style:none; }
-    .about-list li { padding:8px 12px; border-radius:99px; background:var(--mint); color:var(--green-dark); font-size:.78rem; font-weight:700; }
-    .about-art { justify-self:center; width:min(100%,330px); aspect-ratio:1; padding:18px; border-radius:28px; background:var(--cream); box-shadow:var(--shadow); transform:rotate(3deg); }
-    .about-art img { width:100%; height:100%; border-radius:20px; object-fit:cover; }
-    .feedback-section { text-align:center; }
-    .feedback-section h2 { margin-bottom:10px; }
-    .feedback-intro { margin:0 auto 28px; color:rgba(13,43,30,.68); }
-    .feedback-wrap { max-width:650px; margin:0 auto; }
-    .feedback-textarea { width:100%; min-height:135px; padding:16px; border:1px solid var(--line); border-radius:14px; outline:none; resize:vertical; background:#fff; color:var(--text); font:inherit; }
-    .feedback-textarea:focus { border-color:var(--green); box-shadow:0 0 0 4px rgba(45,106,79,.1); }
-    .feedback-actions { display:flex; justify-content:flex-end; margin-top:10px; }
-    .feedback-send { padding:12px 20px; border:0; background:var(--green-dark); color:#fff; font:inherit; cursor:pointer; }
-    footer { background:var(--green-deeper); color:#fff; }
-    .footer-inner { max-width:1200px; display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:48px; margin:0 auto; padding:62px clamp(20px,8vw,96px) 44px; }
-    .footer-logo { width:145px; margin-bottom:14px; }
-    .footer-tagline { max-width:260px; margin:0; color:rgba(255,255,255,.62); font-size:.86rem; }
-    .footer-col h3 { margin:0 0 14px; font-size:.82rem; color:#B7E4C7; text-transform:uppercase; letter-spacing:.08em; }
-    .footer-col ul { display:grid; gap:9px; margin:0; padding:0; list-style:none; }
-    .footer-col a { color:rgba(255,255,255,.78); font-size:.88rem; text-decoration:none; }
-    .footer-col a:hover { color:#fff; }
-    .footer-copy { max-width:1200px; margin:0 auto; padding:18px clamp(20px,8vw,96px) 26px; border-top:1px solid rgba(255,255,255,.14); color:rgba(255,255,255,.48); font-size:.76rem; }
-    .toast { position:fixed; left:50%; bottom:28px; z-index:100; display:flex; align-items:center; gap:10px; max-width:min(90vw,420px); padding:13px 18px; border-radius:11px; background:var(--green-dark); color:#fff; box-shadow:0 12px 32px rgba(0,0,0,.22); opacity:0; pointer-events:none; transform:translate(-50%,20px); transition:opacity .25s,transform .25s; }
-    .toast.show { opacity:1; transform:translate(-50%,0); }
-    .toast-icon { width:18px; flex:0 0 18px; }
-    @media (max-width:900px) { .feature-grid { grid-template-columns:repeat(3,1fr); } }
-    @media (max-width:700px) { .site-nav { flex-wrap:wrap; } .nav-links { order:3; width:100%; justify-content:space-between; gap:8px; } .nav-links a{font-size:.78rem;} .hero { grid-template-columns:1fr; min-height:auto; padding-top:64px; text-align:center; } .hero-lede{margin-left:auto;margin-right:auto;} .hero-actions{justify-content:center;} .hero-visual{order:-1;} .hero-device{width:min(100%,430px);} .hero-badge{top:-2%; right:3%; width:92px; height:92px;} .feature-grid{grid-template-columns:1fr 1fr;} .mission-band-inner{align-items:flex-start;flex-direction:column;} .about-inner{grid-template-columns:1fr;} .about-art{width:min(75vw,300px);} .footer-inner{grid-template-columns:1fr 1fr;gap:32px;} .footer-logo-col{grid-column:1/-1;} }
-    @media (max-width:430px) { .nav-login{padding:9px 12px;} .feature-grid{grid-template-columns:1fr;} .feature-card{min-height:190px;} .feature-icon{margin-bottom:18px;} .hero h1{font-size:2.8rem;} .hero h1 .title-line{white-space:normal;} .footer-inner{grid-template-columns:1fr;} .footer-logo-col{grid-column:auto;} }
+    :root {
+      --white: #FFFFFF;
+      --cream: #F7F3E8;
+      --cream-dark: #EDE8D8;
+      --green: #2D6A4F;
+      --green-dark: #1B4332;
+      --green-deeper: #0D2B1E;
+      --text: #0D2B1E;
+      --mint: #E8F5E9;
+      --line: rgba(13, 43, 30, 0.12);
+      --shadow: 0 18px 45px rgba(13, 43, 30, 0.09);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--cream);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.5;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 480px;
+      background: var(--white);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 40px 32px;
+      text-align: center;
+      border: 1px solid var(--line);
+    }
+
+    .logo {
+      width: 140px;
+      height: auto;
+      margin: 0 auto 28px;
+      display: block;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--mint);
+      color: var(--green-dark);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+      letter-spacing: 0.02em;
+    }
+
+    .badge svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: var(--green-deeper);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    p {
+      color: rgba(13, 43, 30, 0.75);
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .old-domain {
+      font-size: 0.88rem;
+      color: rgba(13, 43, 30, 0.5);
+      text-decoration: line-through;
+      margin-bottom: 4px;
+    }
+
+    .new-domain {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--green);
+      word-break: break-all;
+      margin-bottom: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      max-width: 320px;
+      padding: 16px 24px;
+      background: var(--green);
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 8px 20px rgba(45, 106, 79, 0.25);
+    }
+
+    .btn:hover {
+      background: var(--green-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 12px 28px rgba(45, 106, 79, 0.3);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .countdown {
+      margin-top: 22px;
+      font-size: 0.88rem;
+      color: rgba(13, 43, 30, 0.5);
+    }
+
+    .countdown strong {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .footer {
+      margin-top: 32px;
+      font-size: 0.8rem;
+      color: rgba(13, 43, 30, 0.4);
+      text-align: center;
+    }
+
+    @media (max-width: 420px) {
+      .card {
+        padding: 32px 22px;
+      }
+      h1 {
+        font-size: 1.4rem;
+      }
+    }
   </style>
-  <script>
-    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js').catch(error => console.error(error)); }
-  </script>
 </head>
 <body>
-  <nav class="site-nav" id="siteNav">
-    <a class="nav-logo" href="#top" aria-label="Always Stay Hydrated"><img src="{{ url_for('static', filename='pictures/Logo2.png') }}" alt="Always Stay Hydrated"></a>
-    <ul class="nav-links"><li><a href="#top">Trang chủ</a></li><li><a href="#about">Giới thiệu</a></li><li><a href="#features">Tính năng</a></li><li><a href="#feedback">Góp ý</a></li></ul>
-    <a href="{{ url_for('login') }}" class="nav-login">Đăng nhập</a>
-  </nav>
-  <main id="top">
-    <section class="hero"><div class="hero-copy"><span class="eyebrow">Always Stay Hydrated · Đóng Ấn Ngôi Lời</span><h1><span class="title-line">Đưa <em>Ngôi Lời</em></span><span class="title-line">vào trong lòng.</span></h1><p class="hero-lede">Một hành trình học Khải Huyền nhẹ nhàng, đều đặn và có bạn đồng hành. Mỗi ngày một bước nhỏ để ghi nhớ điều thật sự quan trọng.</p><p class="hero-meta">5 chế độ học · 22 đoạn Khải Huyền · Web &amp; Android</p><div class="hero-actions"><a href="{{ url_for('login') }}" class="hero-primary">Tham gia ngay →</a><a href="{{ url_for('download_page') }}" class="hero-secondary">Tải xuống Android</a></div></div><div class="hero-visual"><img class="hero-badge" src="{{ url_for('static', filename='pictures/Logo.png') }}" alt="Biểu tượng Đóng Ấn Ngôi Lời"><img class="hero-device" src="{{ url_for('static', filename='pictures/Device - Macbook Pro.png') }}" alt="Giao diện Always Stay Hydrated trên MacBook"></div></section>
-    <section class="section" id="features"><div class="section-heading"><span class="eyebrow">Một không gian, nhiều cách ghi nhớ</span><h2>Học Ngôi Lời đủ cách.</h2><p>Chọn nhịp học phù hợp với bạn hôm nay, rồi quay lại vào ngày mai với một chút tiến bộ mới.</p></div><div class="feature-grid"><article class="feature-card"><div class="feature-icon">✎</div><h3>Điền chỗ trống</h3><p>Ghi nhớ từng từ qua những câu hỏi vừa sức.</p></article><article class="feature-card"><div class="feature-icon">⌨</div><h3>Luyện gõ 10 ngón</h3><p>Rèn tốc độ và độ chính xác trong từng câu.</p></article><article class="feature-card"><div class="feature-icon">▣</div><h3>Flashcard</h3><p>Ôn tập linh hoạt với những thẻ ghi nhớ trực quan.</p></article><article class="feature-card"><div class="feature-icon">✓</div><h3>Kiểm tra đóng ấn</h3><p>Thử sức và nhìn thấy tiến bộ của mình.</p></article><article class="feature-card"><div class="feature-icon">♧</div><h3>Đấu trường Khải Huyền</h3><p>Học cùng nhau, thi đấu vui và cùng tiến lên.</p></article></div></section>
-    <section class="mission-band"><div class="mission-band-inner"><div><span class="eyebrow">Một lời mời nhỏ mỗi ngày</span><h2>Đừng chỉ đọc. Hãy để Ngôi Lời ở trong trí trong lòng.</h2><p>Bắt đầu bằng một câu hôm nay.</p></div><a href="{{ url_for('login') }}">Tham gia ngay →</a></div></section>
-    <section class="section about-section" id="about"><div class="about-inner"><div class="about-copy"><span class="eyebrow">Về dự án</span><h2>Uống đủ nước.<br>Ghi đủ Lời.</h2><p>Always Stay Hydrated bắt đầu từ một hình ảnh đơn giản: nước nuôi sống thân thể, còn Ngôi Lời nuôi sống tâm hồn.</p><p>Đây là một không gian học Khải Huyền để bạn có thể học đều đặn, theo dõi tiến độ và giữ nhịp cùng những người bạn khác.</p><div class="about-quote">“Mỗi ngày một chút, để điều mình học trở thành sự sống.”</div><ul class="about-list"><li>Ghi nhớ từng câu</li><li>Luyện tập đều</li><li>Học cùng nhau</li></ul></div><div class="about-art"><img src="{{ url_for('static', filename='pictures/3d.png') }}" alt="Minh họa biểu tượng dự án"></div></div></section>
-    <section class="section feedback-section" id="feedback"><span class="eyebrow">Bạn nghĩ gì?</span><h2>Góp ý của bạn.</h2><p class="feedback-intro">Một lời nhắn của bạn có thể giúp hành trình này tốt hơn cho rất nhiều người.</p><div class="feedback-wrap"><textarea id="feedbackText" class="feedback-textarea" placeholder="Hãy ghi cảm nhận hoặc điều bạn muốn thấy ở dự án…" rows="5"></textarea><div class="feedback-actions"><button class="feedback-send" type="button" onclick="sendFeedback()">Gửi →</button></div></div></section>
-  </main>
-  <footer><div class="footer-inner"><div class="footer-logo-col"><img class="footer-logo" src="{{ url_for('static', filename='pictures/Logo_White.png') }}" alt="Always Stay Hydrated"><p class="footer-tagline">Một nhịp học nhỏ để Ngôi Lời đi cùng bạn mỗi ngày.</p></div><div class="footer-col"><h3>Khám phá</h3><ul><li><a href="#top">Trang chủ</a></li><li><a href="#about">Giới thiệu</a></li><li><a href="#features">Tính năng</a></li><li><a href="#feedback">Góp ý</a></li></ul></div><div class="footer-col"><h3>Bắt đầu</h3><ul><li><a href="{{ url_for('login') }}">Đăng nhập</a></li><li><a href="{{ url_for('download_page') }}">Tải Android</a></li></ul></div></div><div class="footer-copy">© 2026 Always Stay Hydrated. All rights reserved.</div></footer>
-  <div class="toast" id="feedbackToast"><svg class="toast-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="2"/><path d="M8 12.5l2.5 2.5L16 9.5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="feedbackToastMsg">Cảm ơn bạn đã gửi phản hồi!</span></div>
+  <div class="card">
+    <img class="logo" src="{{ url_for('static', filename='pictures/Logo.png') }}" alt="Always Stay Hydrated" onerror="this.style.display='none'">
+
+    <div class="badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+      </svg>
+      Thông báo quan trọng
+    </div>
+
+    <h1>Chúng tôi đã chuyển tên miền</h1>
+
+    <p>Website <strong>Always Stay Hydrated</strong> đã được chuyển sang địa chỉ mới.</p>
+
+    <p class="old-domain">alwaysstayhydrated.onrender.com</p>
+    <p class="new-domain">alwaysstayhydrated.vercel.app</p>
+
+    <a class="btn" href="https://alwaysstayhydrated.vercel.app/" id="goBtn">
+      Đi đến trang mới
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M13 5l7 7-7 7"/>
+      </svg>
+    </a>
+
+    <p class="countdown">Tự động chuyển sau <strong id="timer">8</strong> giây…</p>
+  </div>
+
+  <p class="footer">Always Stay Hydrated · Cảm ơn bạn đã đồng hành</p>
+
   <script>
-    const siteNav = document.getElementById('siteNav');
-    window.addEventListener('scroll', () => siteNav.classList.toggle('scrolled', window.scrollY > 8), { passive:true });
-    let feedbackToastTimer = null;
-    function showFeedbackToast(message) { const toast=document.getElementById('feedbackToast'); document.getElementById('feedbackToastMsg').textContent=message; toast.classList.add('show'); clearTimeout(feedbackToastTimer); feedbackToastTimer=setTimeout(()=>toast.classList.remove('show'),3000); }
-    async function sendFeedback() { const textarea=document.getElementById('feedbackText'); const message=textarea.value.trim(); if(!message){showFeedbackToast('Vui lòng nhập nội dung trước khi gửi nhé!');return;} try { const res=await fetch('/api/feedback',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message})}); const data=await res.json(); if(res.ok){showFeedbackToast('Cảm ơn bạn đã gửi phản hồi!');textarea.value='';}else{showFeedbackToast(data.error||'Có lỗi xảy ra, vui lòng thử lại.');} } catch(error){showFeedbackToast('Không thể kết nối tới máy chủ. Vui lòng thử lại.');} }
+    (function () {
+      var seconds = 8;
+      var timerEl = document.getElementById('timer');
+      var newUrl = 'https://alwaysstayhydrated.vercel.app/';
+
+      // Giữ lại path + query nếu người dùng vào từ link cũ cụ thể
+      var path = window.location.pathname + window.location.search + window.location.hash;
+      if (path && path !== '/' && path !== '/index.html') {
+        newUrl = 'https://alwaysstayhydrated.vercel.app' + path;
+        document.getElementById('goBtn').href = newUrl;
+      }
+
+      var interval = setInterval(function () {
+        seconds -= 1;
+        if (timerEl) timerEl.textContent = seconds;
+        if (seconds <= 0) {
+          clearInterval(interval);
+          window.location.replace(newUrl);
+        }
+      }, 1000);
+    })();
   </script>
-  <script src="/static/js/pwa-install.js"></script>
 </body>
 </html>
